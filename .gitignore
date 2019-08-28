@@ -240,4 +240,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-/web/Migrations
+/web/Migrations/*
+/web/bin/*
+/web/obj/*

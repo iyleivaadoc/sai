@@ -207,6 +207,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908281627204_primera.cs" />
+    <Compile Include="Migrations\201908281627204_primera.Designer.cs">
+      <DependentUpon>201908281627204_primera.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accesos.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -246,6 +250,9 @@
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <EmbeddedResource Include="Migrations\201908281627204_primera.resx">
+      <DependentUpon>201908281627204_primera.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resourses\Strings.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.en.Designer.cs</LastGenOutput>
