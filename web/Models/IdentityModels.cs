@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace web.Models
 {
@@ -18,7 +19,10 @@ namespace web.Models
         public string Apellidos { get; set; }
 
         public bool Eliminado { get; set; }
+        [ForeignKey("DepartamentoPertenence")]
+        public int? IdDepartamentoPertenece { get; set; }
 
+        public virtual Departamentos DepartamentoPertenence { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -45,6 +49,7 @@ namespace web.Models
         public DateTime FechaModifica { get; set; }
         public ApplicationRole() : base(){ }
         public ApplicationRole(string roleName) : base(roleName) { }
+        
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -58,11 +63,19 @@ namespace web.Models
         {
             return new ApplicationDbContext();
         }
-
-        public DbSet<Persona> Persona { get; set; }
+        
         public DbSet<Accesos> Accesos { get; set; }
 
         public DbSet<Permisos> Permisos { get; set; }
+        public DbSet<Departamentos> Departamentos { get; set; }
+        public DbSet<Planes> Planes { get; set; }
+        public DbSet<Periodos> Periodos { get; set; }
+        public DbSet<Auditorias> Auditorias { get; set; }
+        public DbSet<Estados> Estados { get; set; }
+        public DbSet<Fases> Fases { get; set; }
+        public DbSet<Actividades> Actividades { get; set; }
+        public DbSet<Hallazgos> Hallazgos { get; set; }
+        public DbSet<Evidencias> Evidencias { get; set; }
 
     }
 }

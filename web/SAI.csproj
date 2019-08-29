@@ -211,14 +211,68 @@
     <Compile Include="Migrations\201908281627204_primera.Designer.cs">
       <DependentUpon>201908281627204_primera.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908281754165_primera2.cs" />
+    <Compile Include="Migrations\201908281754165_primera2.Designer.cs">
+      <DependentUpon>201908281754165_primera2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908281802157_primera3.cs" />
+    <Compile Include="Migrations\201908281802157_primera3.Designer.cs">
+      <DependentUpon>201908281802157_primera3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908282027336_primera4.cs" />
+    <Compile Include="Migrations\201908282027336_primera4.Designer.cs">
+      <DependentUpon>201908282027336_primera4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908282039003_primera5.cs" />
+    <Compile Include="Migrations\201908282039003_primera5.Designer.cs">
+      <DependentUpon>201908282039003_primera5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908282106568_primera6.cs" />
+    <Compile Include="Migrations\201908282106568_primera6.Designer.cs">
+      <DependentUpon>201908282106568_primera6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908282141306_primera7.cs" />
+    <Compile Include="Migrations\201908282141306_primera7.Designer.cs">
+      <DependentUpon>201908282141306_primera7.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908282202445_primera8.cs" />
+    <Compile Include="Migrations\201908282202445_primera8.Designer.cs">
+      <DependentUpon>201908282202445_primera8.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908282223325_primera9.cs" />
+    <Compile Include="Migrations\201908282223325_primera9.Designer.cs">
+      <DependentUpon>201908282223325_primera9.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291444394_primera10.cs" />
+    <Compile Include="Migrations\201908291444394_primera10.Designer.cs">
+      <DependentUpon>201908291444394_primera10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291450490_primera101.cs" />
+    <Compile Include="Migrations\201908291450490_primera101.Designer.cs">
+      <DependentUpon>201908291450490_primera101.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291518437_primera11.cs" />
+    <Compile Include="Migrations\201908291518437_primera11.Designer.cs">
+      <DependentUpon>201908291518437_primera11.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accesos.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Actividades.cs" />
+    <Compile Include="Models\Auditorias.cs" />
+    <Compile Include="Models\Departamentos.cs" />
+    <Compile Include="Models\Estados.cs" />
+    <Compile Include="Models\Evidencias.cs" />
+    <Compile Include="Models\Fases.cs" />
+    <Compile Include="Models\Hallazgos.cs" />
+    <Compile Include="Models\Periodos.cs" />
     <Compile Include="Models\Permisos.cs" />
-    <Compile Include="Models\Persona.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Planes.cs" />
+    <Compile Include="Models\PlanesDeAccion.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
+    <Compile Include="Models\Sociedades.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resourses\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -252,6 +306,39 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <EmbeddedResource Include="Migrations\201908281627204_primera.resx">
       <DependentUpon>201908281627204_primera.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281754165_primera2.resx">
+      <DependentUpon>201908281754165_primera2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908281802157_primera3.resx">
+      <DependentUpon>201908281802157_primera3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908282027336_primera4.resx">
+      <DependentUpon>201908282027336_primera4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908282039003_primera5.resx">
+      <DependentUpon>201908282039003_primera5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908282106568_primera6.resx">
+      <DependentUpon>201908282106568_primera6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908282141306_primera7.resx">
+      <DependentUpon>201908282141306_primera7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908282202445_primera8.resx">
+      <DependentUpon>201908282202445_primera8.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908282223325_primera9.resx">
+      <DependentUpon>201908282223325_primera9.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291444394_primera10.resx">
+      <DependentUpon>201908291444394_primera10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291450490_primera101.resx">
+      <DependentUpon>201908291450490_primera101.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291518437_primera11.resx">
+      <DependentUpon>201908291518437_primera11.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resourses\Strings.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
