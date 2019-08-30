@@ -241,5 +241,7 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /web/Migrations/*
-/web/bin/*
+
+/web/bin/*/*
+
 /web/obj/*
