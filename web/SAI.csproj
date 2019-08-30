@@ -256,6 +256,10 @@
     <Compile Include="Migrations\201908291518437_primera11.Designer.cs">
       <DependentUpon>201908291518437_primera11.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908302113342_primera12.cs" />
+    <Compile Include="Migrations\201908302113342_primera12.Designer.cs">
+      <DependentUpon>201908302113342_primera12.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accesos.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -340,6 +344,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908291518437_primera11.resx">
       <DependentUpon>201908291518437_primera11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908302113342_primera12.resx">
+      <DependentUpon>201908302113342_primera12.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resourses\Strings.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>

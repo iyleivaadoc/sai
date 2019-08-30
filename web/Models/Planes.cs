@@ -18,6 +18,8 @@ namespace web.Models
         [DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode =true,DataFormatString ="{0:yyyy-MM-dd}")]
         public DateTime FechaInicio { get; set; }
         public int anio { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public double Porcentaje { get; set; }
         public bool Eliminado { get; set; }
         public DateTime FechaCrea { get; set; }
         public DateTime? FechaMod { get; set; }
