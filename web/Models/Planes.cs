@@ -11,10 +11,11 @@ namespace web.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPlan { get; set; }
-        [StringLength(256)]
+        [StringLength(256),Display(Name ="Plan")]
         public string NombrePlan { get; set; }
-        [StringLength(256)]
+        [StringLength(256),Display(Name ="Nombre")]
         public string DescripcionPlan { get; set; }
+        [DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode =true,DataFormatString ="{0:yyyy-MM-dd}")]
         public DateTime FechaInicio { get; set; }
         public int anio { get; set; }
         public bool Eliminado { get; set; }

@@ -202,6 +202,7 @@
     <Compile Include="Controllers\CalendarioController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PlanesController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -416,6 +417,11 @@
     <Content Include="Views\Accesos\Index.cshtml" />
     <Content Include="Views\Role\AsignarAccesos.cshtml" />
     <Content Include="Views\User\AsignarRoles.cshtml" />
+    <Content Include="Views\Planes\Create.cshtml" />
+    <Content Include="Views\Planes\Delete.cshtml" />
+    <Content Include="Views\Planes\Details.cshtml" />
+    <Content Include="Views\Planes\Edit.cshtml" />
+    <Content Include="Views\Planes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<web.Models.Planes>
+
+@{
+    ViewBag.Title = "Planes de auditoría";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="position: relative;">
+    <div style="position: absolute;">
+        <h2>Planes</h2>
+    </div>
+    <div style="position: absolute; top: 20px; right:0px;">
+        @Html.ActionLink("Crear nuevo plan", "Create", null, new { @class = "btn btn-success" })
+        <br /><br />
+    </div>
+</div>
+<div class="col-md-12" style="position: relative; top: 60px; left:0;">
+    <table class="table table-striped table-responsive table-bordered">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NombrePlan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescripcionPlan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.anio)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombrePlan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescripcionPlan)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => item.FechaInicio, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled" } })
+                    @*@Html.DisplayFor(modelItem => item.FechaInicio)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.anio)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdPlan }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IdPlan }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IdPlan })
+                </td>
+            </tr>
+        }
+
+    </table>
+    </div>

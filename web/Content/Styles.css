@@ -64,6 +64,11 @@
     background-color: #FECA2B;
 }
 
+.editFechaToDisplay {
+    background-color: transparent;
+    border: none;
+}
+
 @media (max-width: 767px) {
     .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
         color: #000000;
