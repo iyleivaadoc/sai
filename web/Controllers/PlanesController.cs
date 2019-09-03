@@ -4,9 +4,12 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using web.Models;
+using PagedList;
 
 namespace web.Controllers
 {
@@ -15,9 +18,12 @@ namespace web.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Planes
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.Planes.ToList());
+            var planes=db.Planes.Where(n=>n.Eliminado!=true).OrderByDescending(p => p.anio);
+            int pageSize = 7;
+            int pageNumber = (page ?? 1);
+            return View(planes.ToPagedList(pageNumber,pageSize));
         }
 
         // GET: Planes/Details/5
@@ -38,7 +44,10 @@ namespace web.Controllers
         // GET: Planes/Create
         public ActionResult Create()
         {
-            return View();
+            Planes plan=new Planes();
+            plan.FechaInicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            plan.anio = DateTime.Now.Year;
+            return View(plan);
         }
 
         // POST: Planes/Create
@@ -48,6 +57,11 @@ namespace web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IdPlan,NombrePlan,DescripcionPlan,FechaInicio,anio,Eliminado,FechaCrea,FechaMod,UsuarioCrea,UsuarioMod")] Planes planes)
         {
+            planes.FechaCrea = DateTime.Now;
+            planes.Eliminado = false;
+            planes.UsuarioCrea=this.GetUserId(User);
+            ModelState.Clear();
+            TryValidateModel(planes);
             if (ModelState.IsValid)
             {
                 db.Planes.Add(planes);
@@ -78,8 +92,10 @@ namespace web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdPlan,NombrePlan,DescripcionPlan,FechaInicio,anio,Eliminado,FechaCrea,FechaMod,UsuarioCrea,UsuarioMod")] Planes planes)
+        public ActionResult Edit(Planes planes)
         {
+            planes.UsuarioMod = this.GetUserId(User);
+            planes.FechaMod = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Entry(planes).State = EntityState.Modified;
@@ -110,7 +126,10 @@ namespace web.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Planes planes = db.Planes.Find(id);
-            db.Planes.Remove(planes);
+            planes.Eliminado = true;
+            planes.UsuarioMod = this.GetUserId(User);
+            planes.FechaMod = DateTime.Now;
+            db.Entry(planes).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -122,6 +141,12 @@ namespace web.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        public string GetUserId(IPrincipal principal)
+        {
+            var claimsIdentity = (ClaimsIdentity)principal.Identity;
+            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            return claim.Value;
         }
     }
 }

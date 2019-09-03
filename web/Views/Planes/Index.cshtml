@@ -1,10 +1,10 @@
-﻿@model IEnumerable<web.Models.Planes>
-
+﻿@model PagedList.IPagedList<web.Models.Planes>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Planes de auditoría";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <div style="position: relative;">
     <div style="position: absolute;">
         <h2>Planes</h2>
@@ -17,20 +17,20 @@
 <div class="col-md-12" style="position: relative; top: 60px; left:0;">
     <table class="table table-striped table-responsive table-bordered">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NombrePlan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DescripcionPlan)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaInicio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.anio)
-            </th>
-            <th></th>
-        </tr>
+                <th>
+                    <label>Plan</label>
+                </th>
+                <th>
+                    <label>Descripción</label>
+                </th>
+                <th>
+                    <label>Fecha de Inicio</label>
+                </th>
+                <th>
+                   <label>Año</label>
+                </th>
+                <th><label>Opciones</label></th>
+            </tr>
 
         @foreach (var item in Model)
         {
@@ -56,5 +56,14 @@
             </tr>
         }
 
-    </table>
-    </div>
+    </table> 
+    @*Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount*@  
+    Mostrando de @Model.FirstItemOnPage a @Model.LastItemOnPage De @Model.TotalItemCount
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new
+    {
+        page,
+        sortOrder = ViewBag.CurrentSort,
+        currentFilter = ViewBag.CurrentFilter
+    }))
+</div>

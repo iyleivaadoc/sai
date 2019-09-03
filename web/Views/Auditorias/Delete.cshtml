@@ -1,0 +1,129 @@
+﻿@model web.Models.Auditorias
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Auditorias</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado.Estado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Plan.NombrePlan)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Plan.NombrePlan)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioRealiza.Nombres)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioRealiza.Nombres)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Auditoria)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Auditoria)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DescripcionAuditoria)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescripcionAuditoria)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaInicio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaInicio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaFin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaFin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Planificada)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Planificada)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Elimanado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Elimanado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaCrea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaCrea)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaMod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaMod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioCrea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioCrea)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioMod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioMod)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

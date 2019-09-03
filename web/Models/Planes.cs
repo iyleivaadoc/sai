@@ -11,14 +11,15 @@ namespace web.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPlan { get; set; }
-        [StringLength(256),Display(Name ="Plan")]
+        [Required(ErrorMessage ="El nombre del plan es Requerido."),StringLength(256),Display(Name ="Plan")]
         public string NombrePlan { get; set; }
-        [StringLength(256),Display(Name ="Nombre")]
+        [Required(ErrorMessage ="La descripcion del plan es requerida."),StringLength(256),Display(Name ="Descripción")]
         public string DescripcionPlan { get; set; }
-        [DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode =true,DataFormatString ="{0:yyyy-MM-dd}")]
+        [Required(ErrorMessage ="La fecha de inicio es requerida.") ,Display(Name ="Fecha de inicio"),DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode =true,DataFormatString ="{0:yyyy-MM-dd}")]
         public DateTime FechaInicio { get; set; }
+        [Display(Name ="Año"),Required(ErrorMessage ="El año al que pertenece el plan es requerido.")]
         public int anio { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed),Display(Name ="Porcentaje de avance")]
         public double Porcentaje { get; set; }
         public bool Eliminado { get; set; }
         public DateTime FechaCrea { get; set; }

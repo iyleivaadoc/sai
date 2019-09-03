@@ -77,6 +77,14 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -199,6 +207,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccesosController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AuditoriasController.cs" />
     <Compile Include="Controllers\CalendarioController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -256,9 +265,21 @@
     <Compile Include="Migrations\201908291518437_primera11.Designer.cs">
       <DependentUpon>201908291518437_primera11.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201908302113342_primera12.cs" />
-    <Compile Include="Migrations\201908302113342_primera12.Designer.cs">
-      <DependentUpon>201908302113342_primera12.cs</DependentUpon>
+    <Compile Include="Migrations\201909031358386_primera12.cs" />
+    <Compile Include="Migrations\201909031358386_primera12.Designer.cs">
+      <DependentUpon>201909031358386_primera12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909031617385_primera13.cs" />
+    <Compile Include="Migrations\201909031617385_primera13.Designer.cs">
+      <DependentUpon>201909031617385_primera13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909032134290_primera14.cs" />
+    <Compile Include="Migrations\201909032134290_primera14.Designer.cs">
+      <DependentUpon>201909032134290_primera14.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909032230147_primera15.cs" />
+    <Compile Include="Migrations\201909032230147_primera15.Designer.cs">
+      <DependentUpon>201909032230147_primera15.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accesos.cs" />
@@ -300,6 +321,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fondo1.jpg" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\Styles.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -345,8 +367,17 @@
     <EmbeddedResource Include="Migrations\201908291518437_primera11.resx">
       <DependentUpon>201908291518437_primera11.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908302113342_primera12.resx">
-      <DependentUpon>201908302113342_primera12.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909031358386_primera12.resx">
+      <DependentUpon>201909031358386_primera12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909031617385_primera13.resx">
+      <DependentUpon>201909031617385_primera13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909032134290_primera14.resx">
+      <DependentUpon>201909032134290_primera14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909032230147_primera15.resx">
+      <DependentUpon>201909032230147_primera15.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resourses\Strings.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -429,6 +460,11 @@
     <Content Include="Views\Planes\Details.cshtml" />
     <Content Include="Views\Planes\Edit.cshtml" />
     <Content Include="Views\Planes\Index.cshtml" />
+    <Content Include="Views\Auditorias\Create.cshtml" />
+    <Content Include="Views\Auditorias\Delete.cshtml" />
+    <Content Include="Views\Auditorias\Details.cshtml" />
+    <Content Include="Views\Auditorias\Edit.cshtml" />
+    <Content Include="Views\Auditorias\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
