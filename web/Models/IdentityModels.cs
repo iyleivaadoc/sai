@@ -17,6 +17,14 @@ namespace web.Models
         public string Nombres { get; set; }
 
         public string Apellidos { get; set; }
+        [NotMapped]
+        public string NombreCompleto
+        {
+            get
+            {
+                return Nombres + " " + Apellidos;
+            }
+        }
 
         public bool Eliminado { get; set; }
         [ForeignKey("DepartamentoPertenence")]
@@ -45,11 +53,11 @@ namespace web.Models
         public string UsuarioCrea { get; set; }
         public string UsuarioModifica { get; set; }
         public DateTime FechaCrea { get; set; }
-        
+
         public DateTime FechaModifica { get; set; }
-        public ApplicationRole() : base(){ }
+        public ApplicationRole() : base() { }
         public ApplicationRole(string roleName) : base(roleName) { }
-        
+
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -63,7 +71,7 @@ namespace web.Models
         {
             return new ApplicationDbContext();
         }
-        
+
         public DbSet<Accesos> Accesos { get; set; }
 
         public DbSet<Permisos> Permisos { get; set; }

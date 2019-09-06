@@ -15,12 +15,15 @@ namespace web.Models
         public string Auditoria { get; set; }
         [Required(ErrorMessage = "La Descripción es requerida."), Display(Name = "Descripción"), StringLength(256)]
         public string DescripcionAuditoria { get; set; }
-        [Required(ErrorMessage = "La fecha de inicio es requerida."), Display(Name = "Fecha de inicio"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [Required(ErrorMessage = "La fecha de inicio es requerida."), Display(Name = "Inicio"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaInicio { get; set; }
-        [Display(Name = "Duración de auditoría")]
+        [Display(Name = "Duración")]
         [NotMapped]
-        public int Duracion { get; set; }
-        [Required(ErrorMessage = "La Fecha de Finalización es requerida.") Display(Name = "Fecha Finalización"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public int Duracion { get {
+                TimeSpan dias = FechaFin - FechaInicio;
+                return dias.Days;
+            } }
+        [Required(ErrorMessage = "La Fecha de Finalización es requerida.") Display(Name = "Finalización"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaFin { get; set; }
         public bool? Planificada { get; set; }
         public bool Elimanado { get; set; }
@@ -28,7 +31,7 @@ namespace web.Models
         public DateTime? FechaMod { get; set; }
         public string UsuarioCrea { get; set; }
         public string UsuarioMod { get; set; }
-        [ForeignKey("UsuarioRealiza")]
+        [ForeignKey("UsuarioRealiza"),Display(Name ="Asignada")]
         public string IdUsuarioRealiza { get; set; }
         [ForeignKey("Plan")]
         public int IdPlan { get; set; }

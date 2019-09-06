@@ -119,5 +119,5 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.IdAuditoria }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Cancelar", "Index",new { idplan=Model.IdPlan, nombrePlan=Model.Plan.NombrePlan})
 </p>

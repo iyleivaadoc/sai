@@ -18,12 +18,23 @@ namespace web.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Planes
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string searchString)
         {
-            var planes=db.Planes.Where(n=>n.Eliminado!=true).OrderByDescending(p => p.anio);
+            //page = !ViewBag.CurrentFilter==null && ViewBag.CurrentFilter.equals(searchString) ? 1 : page;
+
+            var planes = db.Planes.Where(n => n.Eliminado != true);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                planes = planes.Where(s => s.NombrePlan.Contains(searchString)
+                                       || s.DescripcionPlan.Contains(searchString));
+            }
+            
+            ViewBag.CurrentFilter = searchString;
+            var a = DateTime.Now.ToString();
+            planes = planes.OrderByDescending(p => p.anio);
             int pageSize = 7;
             int pageNumber = (page ?? 1);
-            return View(planes.ToPagedList(pageNumber,pageSize));
+            return View(planes.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Planes/Details/5
@@ -44,7 +55,7 @@ namespace web.Controllers
         // GET: Planes/Create
         public ActionResult Create()
         {
-            Planes plan=new Planes();
+            Planes plan = new Planes();
             plan.FechaInicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             plan.anio = DateTime.Now.Year;
             return View(plan);
@@ -59,7 +70,7 @@ namespace web.Controllers
         {
             planes.FechaCrea = DateTime.Now;
             planes.Eliminado = false;
-            planes.UsuarioCrea=this.GetUserId(User);
+            planes.UsuarioCrea = this.GetUserId(User);
             ModelState.Clear();
             TryValidateModel(planes);
             if (ModelState.IsValid)

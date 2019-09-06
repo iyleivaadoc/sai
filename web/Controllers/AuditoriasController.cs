@@ -8,6 +8,9 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using web.Models;
+using PagedList;
+using System.Security.Principal;
+using System.Security.Claims;
 
 namespace web.Controllers
 {
@@ -16,12 +19,15 @@ namespace web.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Auditorias
-        public async Task<ActionResult> Index(int? IdPlan,int? page)
+        public ActionResult Index(int? IdPlan, int? page, string nombreplan)
         {
             ViewBag.page = page;
-            ViewBag.plan = IdPlan;
-            var auditorias = db.Auditorias.Where(a=>a.IdPlan==IdPlan).Include(a => a.Estado).Include(a => a.Plan).Include(a => a.UsuarioRealiza);
-            return View(await auditorias.ToListAsync());
+            ViewBag.idPlan = IdPlan;
+            ViewBag.nombrePlan = nombreplan;
+            var auditorias = db.Auditorias.Where(a => a.IdPlan == IdPlan && a.Elimanado != true).Include(a => a.Estado).Include(a => a.Plan).Include(a => a.UsuarioRealiza).OrderBy(a => a.FechaInicio);
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+            return View(auditorias.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Auditorias/Details/5
@@ -40,12 +46,18 @@ namespace web.Controllers
         }
 
         // GET: Auditorias/Create
-        public ActionResult Create()
+        public ActionResult Create(int idplan,string nombrePlan)
         {
-            ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado");
-            ViewBag.IdPlan = new SelectList(db.Planes, "IdPlan", "NombrePlan");
-            ViewBag.IdUsuarioRealiza = null; //new SelectList(db.ApplicationUsers, "Id", "Nombres");
-            return View();
+            ViewBag.idPlan = idplan;
+            ViewBag.nombrePlan = nombrePlan;
+            Auditorias auditoria = new Auditorias();
+            auditoria.FechaInicio = DateTime.Now;
+            auditoria.FechaFin = DateTime.Now.AddDays(60);
+            auditoria.IdPlan = idplan;
+            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78"));
+            ViewBag.IdUsuarioRealiza=new SelectList(usuarios, "Id", "NombreCompleto", auditoria.IdUsuarioRealiza);
+
+            return View(auditoria);
         }
 
         // POST: Auditorias/Create
@@ -53,17 +65,21 @@ namespace web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "IdAuditoria,Auditoria,DescripcionAuditoria,FechaInicio,Duracion,Planificada,Elimanado,FechaCrea,FechaMod,UsuarioCrea,UsuarioMod,IdUsuarioRealiza,IdPlan,IdEstado")] Auditorias auditorias)
+        public async Task<ActionResult> Create([Bind(Include = "IdAuditoria,Auditoria,DescripcionAuditoria,FechaInicio,FechaFin,Planificada,Elimanado,FechaCrea,FechaMod,UsuarioCrea,UsuarioMod,IdUsuarioRealiza,IdPlan,IdEstado")] Auditorias auditorias)
         {
+            auditorias.FechaCrea = DateTime.Now;
+            auditorias.UsuarioCrea = this.GetUserId(User);
+            auditorias.IdEstado = 1;
             if (ModelState.IsValid)
             {
+
                 db.Auditorias.Add(auditorias);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index",new { idplan=auditorias.IdPlan});
             }
 
-            ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", auditorias.IdEstado);
-            ViewBag.IdPlan = new SelectList(db.Planes, "IdPlan", "NombrePlan", auditorias.IdPlan);
+            ViewBag.IdEstado = null;// new SelectList(db.Estados, "IdEstado", "Estado", auditorias.IdEstado);
+            ViewBag.IdPlan = null; // new SelectList(db.Planes, "IdPlan", "NombrePlan", auditorias.IdPlan);
             ViewBag.IdUsuarioRealiza = null;// new SelectList(db.ApplicationUsers, "Id", "Nombres", auditorias.IdUsuarioRealiza);
             return View(auditorias);
         }
@@ -82,7 +98,8 @@ namespace web.Controllers
             }
             ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", auditorias.IdEstado);
             ViewBag.IdPlan = new SelectList(db.Planes, "IdPlan", "NombrePlan", auditorias.IdPlan);
-            ViewBag.IdUsuarioRealiza = null; // new SelectList(db.ApplicationUsers, "Id", "Nombres", auditorias.IdUsuarioRealiza);
+            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78"));
+            ViewBag.IdUsuarioRealiza = new SelectList(usuarios, "Id", "NombreCompleto", auditorias.IdUsuarioRealiza);
             return View(auditorias);
         }
 
@@ -91,13 +108,18 @@ namespace web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "IdAuditoria,Auditoria,DescripcionAuditoria,FechaInicio,Duracion,Planificada,Elimanado,FechaCrea,FechaMod,UsuarioCrea,UsuarioMod,IdUsuarioRealiza,IdPlan,IdEstado")] Auditorias auditorias)
+        public async Task<ActionResult> Edit([Bind(Include = "IdAuditoria,Auditoria,DescripcionAuditoria,FechaInicio,FechaFin ,Duracion,Planificada,Elimanado,FechaCrea,FechaMod,UsuarioCrea,UsuarioMod,IdUsuarioRealiza,IdPlan,IdEstado,Plan")] Auditorias auditorias)
         {
+            auditorias.FechaMod = DateTime.Now;
+            auditorias.UsuarioMod = this.GetUserId(User);
+            ModelState.Clear();
+            TryValidateModel(auditorias);
             if (ModelState.IsValid)
             {
                 db.Entry(auditorias).State = EntityState.Modified;
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                var aux = db.Planes.Where(p => p.IdPlan == auditorias.IdPlan).First();
+                return RedirectToAction("Index",new { idPlan=auditorias.IdPlan,nombrePlan=aux.NombrePlan});
             }
             ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", auditorias.IdEstado);
             ViewBag.IdPlan = new SelectList(db.Planes, "IdPlan", "NombrePlan", auditorias.IdPlan);
@@ -126,9 +148,10 @@ namespace web.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Auditorias auditorias = await db.Auditorias.FindAsync(id);
-            db.Auditorias.Remove(auditorias);
+            auditorias.Elimanado = true;
+            db.Entry(auditorias).State=EntityState.Modified;
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index",new { idplan=auditorias.IdPlan, nombrePlan = auditorias.Plan.NombrePlan });
         }
 
         protected override void Dispose(bool disposing)
@@ -138,6 +161,13 @@ namespace web.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public string GetUserId(IPrincipal principal)
+        {
+            var claimsIdentity = (ClaimsIdentity)principal.Identity;
+            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            return claim.Value;
         }
     }
 }
