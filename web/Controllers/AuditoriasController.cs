@@ -37,7 +37,8 @@ namespace web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Auditorias auditorias = await db.Auditorias.FindAsync(id);
+            //Auditorias auditorias = await db.Auditorias.FindAsync(id);
+            Auditorias auditorias = await db.Auditorias.Where(a=>a.IdAuditoria==id).Include(a => a.Fases).FirstOrDefaultAsync();
             if (auditorias == null)
             {
                 return HttpNotFound();
@@ -70,18 +71,22 @@ namespace web.Controllers
             auditorias.FechaCrea = DateTime.Now;
             auditorias.UsuarioCrea = this.GetUserId(User);
             auditorias.IdEstado = 1;
+            auditorias.Planificada = true;
             if (ModelState.IsValid)
             {
 
                 db.Auditorias.Add(auditorias);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index",new { idplan=auditorias.IdPlan});
+                return RedirectToAction("Index",new { idplan=auditorias.IdPlan, nombrePlan=ViewBag.nombrePlan});
             }
 
-            ViewBag.IdEstado = null;// new SelectList(db.Estados, "IdEstado", "Estado", auditorias.IdEstado);
-            ViewBag.IdPlan = null; // new SelectList(db.Planes, "IdPlan", "NombrePlan", auditorias.IdPlan);
-            ViewBag.IdUsuarioRealiza = null;// new SelectList(db.ApplicationUsers, "Id", "Nombres", auditorias.IdUsuarioRealiza);
+            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78"));
+            ViewBag.IdUsuarioRealiza = new SelectList(usuarios, "Id", "NombreCompleto", auditorias.IdUsuarioRealiza);
+            var planAux = db.Planes.Where(p => p.IdPlan == auditorias.IdPlan).First();
+            ViewBag.idPlan = auditorias.IdPlan;
+            ViewBag.nombrePlan = planAux.NombrePlan;
             return View(auditorias);
+           
         }
 
         // GET: Auditorias/Edit/5
@@ -96,10 +101,9 @@ namespace web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", auditorias.IdEstado);
-            ViewBag.IdPlan = new SelectList(db.Planes, "IdPlan", "NombrePlan", auditorias.IdPlan);
             var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78"));
             ViewBag.IdUsuarioRealiza = new SelectList(usuarios, "Id", "NombreCompleto", auditorias.IdUsuarioRealiza);
+            
             return View(auditorias);
         }
 
@@ -108,12 +112,12 @@ namespace web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "IdAuditoria,Auditoria,DescripcionAuditoria,FechaInicio,FechaFin ,Duracion,Planificada,Elimanado,FechaCrea,FechaMod,UsuarioCrea,UsuarioMod,IdUsuarioRealiza,IdPlan,IdEstado,Plan")] Auditorias auditorias)
+        public async Task<ActionResult> Edit(Auditorias auditorias)
         {
             auditorias.FechaMod = DateTime.Now;
             auditorias.UsuarioMod = this.GetUserId(User);
-            ModelState.Clear();
-            TryValidateModel(auditorias);
+            //ModelState.Clear();
+            //TryValidateModel(auditorias);
             if (ModelState.IsValid)
             {
                 db.Entry(auditorias).State = EntityState.Modified;
@@ -121,9 +125,12 @@ namespace web.Controllers
                 var aux = db.Planes.Where(p => p.IdPlan == auditorias.IdPlan).First();
                 return RedirectToAction("Index",new { idPlan=auditorias.IdPlan,nombrePlan=aux.NombrePlan});
             }
-            ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", auditorias.IdEstado);
-            ViewBag.IdPlan = new SelectList(db.Planes, "IdPlan", "NombrePlan", auditorias.IdPlan);
-            ViewBag.IdUsuarioRealiza = null; // new SelectList(db.ApplicationUsers, "Id", "Nombres", auditorias.IdUsuarioRealiza);
+            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78"));
+            ViewBag.IdUsuarioRealiza = new SelectList(usuarios, "Id", "NombreCompleto", auditorias.IdUsuarioRealiza);
+            var planAux = db.Planes.Where(p => p.IdPlan == auditorias.IdPlan).First();
+            ViewBag.idPlan = auditorias.IdPlan;
+            auditorias.Plan = planAux;
+            ViewBag.nombrePlan = planAux.NombrePlan;
             return View(auditorias);
         }
 

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<web.Models.Fases>
+
+@{
+    ViewBag.Title = ViewBag.nombreAuditoria;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.nombreAuditoria</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create",new { idAuditoria=ViewBag.idAuditoria, nombreAuditoria= ViewBag.nombreAuditoria })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Fase)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Porcentaje)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaInicio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaFin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Duracion)
+        </th>
+        <th>Opciones</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fase)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Porcentaje)
+        </td>
+        <td>
+            @Html.EditorFor(modelItem => item.FechaInicio, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "" } })
+        </td>
+        <td>
+            @Html.EditorFor(modelItem => item.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "" } })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Duracion)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdFase }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdFase }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdFase })
+        </td>
+    </tr>
+}
+
+</table>

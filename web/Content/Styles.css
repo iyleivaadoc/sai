@@ -67,6 +67,7 @@
 .editFechaToDisplay {
     background-color: transparent;
     border: none;
+    color: black;
 }
 
 @media (max-width: 767px) {

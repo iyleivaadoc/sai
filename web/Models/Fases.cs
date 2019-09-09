@@ -9,16 +9,25 @@ namespace web.Models
 {
     public class Fases
     {
-        [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdFase { get; set; }
-        [StringLength(256),Required(ErrorMessage ="Debe proporcionar un nombre a la fase")]
+        [Display(Name = "Fase"), StringLength(256), Required(ErrorMessage = "Debe proporcionar un nombre a la fase")]
         public string Fase { get; set; }
-        [Required(ErrorMessage ="Debe Proporcionar el porcentaje")]
+        [Display(Name = "Porcentaje"), Required(ErrorMessage = "Debe Proporcionar el porcentaje"),DataType(DataType.Currency,ErrorMessage ="El valor '{0}' no es valido para {1}"),DisplayFormat(ApplyFormatInEditMode =false,DataFormatString ="{0:P2}")]
         public double Porcentaje { get; set; }
-        [Required(ErrorMessage ="Debe Proporcionar la fecha de inicio")]
+        [Display(Name = "Inicio"), Required(ErrorMessage = "Debe Proporcionar la fecha de inicio"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaInicio { get; set; }
-        [Required(ErrorMessage = "Debe Proporcionar la duración de la fase")]
-        public int Duracion { get; set; }
+        [Display(Name = "Finalización"), Required(ErrorMessage = "Debe Proporcionar la fecha de Finalización"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime FechaFin { get; set; }
+        [NotMapped, Display(Name = "Duracion")]
+        public int Duracion
+        {
+            get
+            {
+                TimeSpan dias = FechaFin - FechaInicio;
+                return dias.Days;
+            }
+        }
         [ForeignKey("Auditoria")]
         public int IdAuditoria { get; set; }
         [ForeignKey("Estado")]

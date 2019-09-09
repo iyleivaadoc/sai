@@ -31,7 +31,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FechaInicio)
+            @Html.EditorFor(modelItem => modelItem.FechaInicio, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled" } })
         </dd>
 
         <dt>

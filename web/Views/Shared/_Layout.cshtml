@@ -55,15 +55,14 @@
                                 {
                                     <li class="nav-link dropdown-toggle">
                                         <a class="nav-link dropdown-toggle" href="/@item.Control/@item.Metodo">
-                                            @item.Nombre
-                                            <span style="font-size:24px;" class="pull-right showopacity fa aria-hidden="true"></span>
+                                            <strong>@item.Nombre</strong>
                                         </a>
                                     </li>
                                 }
                                 else
                                 {
                                     <li class="nav-item dropdown">
-                                        <a id="dropdown1" @item.Nombre data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@item.Nombre</a>
+                                        <a id="dropdown1" @item.Nombre data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><strong>@item.Nombre</strong><span class="glyphicon glyphicon-chevron-right btn-xs" style="padding-left: 2px;"></span></a>
                                         <ul class="dropdown-menu" aria-labelledby="dropdown1">
                                             @foreach (var item2 in item.hijos)
                                             {

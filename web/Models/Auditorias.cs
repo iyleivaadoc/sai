@@ -40,5 +40,6 @@ namespace web.Models
         public virtual ApplicationUser UsuarioRealiza { get; set; }
         public virtual Planes Plan { get; set; }
         public virtual Estados Estado { get; set; }
+        public ICollection<Fases> Fases { get; set; }
     }
 }

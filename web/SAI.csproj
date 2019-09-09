@@ -209,8 +209,10 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuditoriasController.cs" />
     <Compile Include="Controllers\CalendarioController.cs" />
+    <Compile Include="Controllers\FasesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OwnController.cs" />
     <Compile Include="Controllers\PlanesController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -280,6 +282,10 @@
     <Compile Include="Migrations\201909032230147_primera15.cs" />
     <Compile Include="Migrations\201909032230147_primera15.Designer.cs">
       <DependentUpon>201909032230147_primera15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909091800430_rel.cs" />
+    <Compile Include="Migrations\201909091800430_rel.Designer.cs">
+      <DependentUpon>201909091800430_rel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accesos.cs" />
@@ -379,6 +385,9 @@
     <EmbeddedResource Include="Migrations\201909032230147_primera15.resx">
       <DependentUpon>201909032230147_primera15.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909091800430_rel.resx">
+      <DependentUpon>201909091800430_rel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resourses\Strings.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.en.Designer.cs</LastGenOutput>
@@ -465,9 +474,15 @@
     <Content Include="Views\Auditorias\Details.cshtml" />
     <Content Include="Views\Auditorias\Edit.cshtml" />
     <Content Include="Views\Auditorias\Index.cshtml" />
+    <Content Include="Views\Fases\Create.cshtml" />
+    <Content Include="Views\Fases\Delete.cshtml" />
+    <Content Include="Views\Fases\Details.cshtml" />
+    <Content Include="Views\Fases\Edit.cshtml" />
+    <Content Include="Views\Fases\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Own\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

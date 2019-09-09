@@ -95,7 +95,7 @@
                     @Html.DisplayNameFor(model => model.First().IdUsuarioRealiza)
                 </th>
 
-                <th style="width:13%;"><label>Opciones</label></th>
+                <th style="width:15%;"><label>Opciones</label></th>
             </tr>
 
             @foreach (var item in Model)
@@ -128,6 +128,7 @@
                     </td>
 
                     <td style="vertical-align: middle;">
+                        @Html.ActionLink(" ", "Index", "Fases", new { IdAuditoria = item.IdAuditoria, nombreAuditoria = item.Auditoria }, new { @class = "btn btn-success btn-sm glyphicon glyphicon-list-alt", @title = "Inspeccionar fases" })
                         @Html.ActionLink(" ", "Details", new { id = item.IdAuditoria }, new { @class = "btn btn-info btn-sm glyphicon glyphicon-info-sign", @title = "Detalles" })
                         @Html.ActionLink(" ", "Edit", new { id = item.IdAuditoria, idPlan = ViewBag.idPlan }, new { @class = "btn btn-warning btn-sm glyphicon glyphicon-edit", @title = "Editar" })
                         @Html.ActionLink(" ", "Delete", new { id = item.IdAuditoria }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-remove-circle", @title = "Eliminar" })
@@ -144,7 +145,8 @@
         page,
         sortOrder = ViewBag.CurrentSort,
         currentFilter = ViewBag.CurrentFilter,
-        IdPlan = ViewBag.idPlan
+        IdPlan = ViewBag.idPlan,
+        nombrePlan=ViewBag.nombrePlan
     }))
 
     @*@Html.ActionLink("Regresar", "Index", "Planes",null, new { @class = "btn btn-default" })*@
