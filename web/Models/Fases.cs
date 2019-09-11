@@ -13,7 +13,7 @@ namespace web.Models
         public int IdFase { get; set; }
         [Display(Name = "Fase"), StringLength(256), Required(ErrorMessage = "Debe proporcionar un nombre a la fase")]
         public string Fase { get; set; }
-        [Display(Name = "Porcentaje"), Required(ErrorMessage = "Debe Proporcionar el porcentaje"),DataType(DataType.Currency,ErrorMessage ="El valor '{0}' no es valido para {1}"),DisplayFormat(ApplyFormatInEditMode =false,DataFormatString ="{0:P2}")]
+        [Display(Name = "Porcentaje"), Required(ErrorMessage = "Debe Proporcionar el porcentaje"),DataType(DataType.Currency,ErrorMessage ="El valor '{0}' no es valido para {1}"),DisplayFormat(ApplyFormatInEditMode =false,DataFormatString ="{0:P2}"),Range(0.001,100.0,ErrorMessage ="El porcentaje debe estar entre 0 y 100")]
         public double Porcentaje { get; set; }
         [Display(Name = "Inicio"), Required(ErrorMessage = "Debe Proporcionar la fecha de inicio"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaInicio { get; set; }

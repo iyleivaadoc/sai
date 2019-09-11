@@ -5,28 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="col-md-3"></div>
 
-<div>
-    <h4>Fases</h4>
+<div class="col-md-6">
+    <h4>Detalles Fase</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Auditoria.Auditoria)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Auditoria.Auditoria)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Estado.Estado)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Estado.Estado)
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Fase)
         </dt>
@@ -48,7 +32,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FechaInicio)
+            @*@Html.DisplayFor(model => model.FechaInicio)*@
+            @Html.EditorFor(modelItem => modelItem.FechaInicio, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "" } })
         </dd>
 
         <dt>
@@ -56,52 +41,15 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FechaFin)
+            @*@Html.DisplayFor(model => model.FechaFin)*@
+            @Html.EditorFor(modelItem => modelItem.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "" } })
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Eliminado)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Eliminado)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UsuarioCrea)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UsuarioCrea)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UsuarioModifica)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UsuarioModifica)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FechaCrea)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FechaCrea)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FechaModifica)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FechaModifica)
-        </dd>
-
+        
     </dl>
+    <div style="text-align:center;">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.IdFase },new { @class="btn btn-warning"})
+        @Html.ActionLink("Cancelar", "Index", new { idAuditoria = Model.IdAuditoria, nombreAuditoria = Model.Auditoria.Auditoria }, new { @class = "btn btn-success" })
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.IdFase }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

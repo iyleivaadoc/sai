@@ -23,7 +23,7 @@ namespace web.Models
                 TimeSpan dias = FechaFin - FechaInicio;
                 return dias.Days;
             } }
-        [Required(ErrorMessage = "La Fecha de Finalización es requerida.") Display(Name = "Finalización"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [Required(ErrorMessage = "La Fecha de Finalización es requerida."), Display(Name = "Finalización"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaFin { get; set; }
         public bool? Planificada { get; set; }
         public bool Elimanado { get; set; }

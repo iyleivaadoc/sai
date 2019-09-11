@@ -5,27 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<div class="row col-md-12">
-    <div class="col-md-6"><h2>
-        @ViewBag.nombrePlan</h2>
-    </div>
-    <div class="col-md-5" style="margin-top:20px;">
-        @using (Html.BeginForm())
-            {
-            <div>
-                <input type="submit" value="Buscar" class="btn btn-info" style="margin-left: 5px;" />
-                @Html.TextBox("SearchString", null, new { @class = "form-control col-md-6", @style = "margin-left: 5px;" })
-            </div>
-        }
-    </div>
-    <div class="col-md-1" style="margin-top:20px;">
-        @Html.ActionLink("Nueva Auditoría", "Create", new { idplan = ViewBag.idplan, nombrePlan = ViewBag.nombrePlan }, new { @class = "btn btn-success" })
-    </div>
 
-</div>*@
 <div style="position: relative;">
     <div class="row col-md-12" style="position: absolute;">
-        <h2 class="col-md-6">@ViewBag.nombrePlan</h2>
+        <h2 class="col-md-6">Auditorías</h2>
         <div class="col-md-5" style="top: 10px;">
             @using (Html.BeginForm())
             {
@@ -36,34 +19,11 @@
             }
         </div>
     </div>
-    <div style="position: absolute; top: 20px; right:0px;">
+    @*<div style="position: absolute; top: 20px; right:0px;">
         @Html.ActionLink("Nueva Auditoría", "Create", new { idplan = ViewBag.idplan, nombrePlan = ViewBag.nombrePlan }, new { @class = "btn btn-success" })
         <br /><br />
-    </div>
+    </div>*@
 </div>
-
-
-@*<div>
-    <div class="row col-md-12">
-        <h2 class="col-md-7">@ViewBag.nombrePlan</h2>
-        <div class="col-md-5" style="top: 10px;">
-            @using (Html.BeginForm())
-            {
-                <p>
-                    <input type="submit" value="Buscar" class="btn btn-info col-md-2" style="margin-left: 5px;" />
-                    @Html.TextBox("SearchString", null, new { @class = "form-control col-md-6", @style = "margin-left: 5px;" })
-                </p>
-            }
-        </div>
-    </div>
-    <div >
-        @Html.ActionLink("Nueva Auditoría", "Create", new { idplan = ViewBag.idplan, nombrePlan = ViewBag.nombrePlan }, new { @class = "btn btn-success" })
-        <br /><br />
-    </div>
-
-</div>*@
-
-
 
 <div class="col-md-12" style="position: relative; top: 60px; padding-right: 0px; background-color: white;">
     <div style="overflow-x:auto;">
@@ -71,17 +31,17 @@
             <tr>
                 @*<th>
                         @Html.DisplayNameFor(model => model.Estado.Estado)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Plan.NombrePlan)
                     </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Plan.NombrePlan)
+                </th>
 
                 <th style="width:15%">
                     @Html.DisplayNameFor(model => model.First().Auditoria)
                 </th>
-                <th style="width:25%">
+                @*<th style="width:25%">
                     @Html.DisplayNameFor(model => model.First().DescripcionAuditoria)
-                </th>
+                </th>*@
                 <th style="width:5%">
                     @Html.DisplayNameFor(model => model.First().FechaInicio)
                 </th>
@@ -103,17 +63,17 @@
                 <tr>
                     @*<td>
                             @Html.DisplayFor(modelItem => item.Estado.Estado)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Plan.NombrePlan)
                         </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Plan.NombrePlan)
+                    </td>
 
                     <td>
                         @Html.DisplayFor(modelItem => item.Auditoria)
                     </td>
-                    <td style="text-align:justify;">
+                    @*<td style="text-align:justify;">
                         @Html.DisplayFor(modelItem => item.DescripcionAuditoria)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.EditorFor(modelItem => item.FechaInicio, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "" } })
                     </td>
@@ -146,8 +106,8 @@
         sortOrder = ViewBag.CurrentSort,
         currentFilter = ViewBag.CurrentFilter,
         IdPlan = ViewBag.idPlan,
-        nombrePlan=ViewBag.nombrePlan,
-        SearchString= ViewBag.CurrentFilter
+        nombrePlan = ViewBag.nombrePlan,
+        SearchString = ViewBag.CurrentFilter
     }))
 
     @*@Html.ActionLink("Regresar", "Index", "Planes",null, new { @class = "btn btn-default" })*@

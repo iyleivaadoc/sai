@@ -394,6 +394,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="App_Code\GlyphIcon.cshtml" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Properties\PublishProfiles\webapp.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -479,6 +480,7 @@
     <Content Include="Views\Fases\Details.cshtml" />
     <Content Include="Views\Fases\Edit.cshtml" />
     <Content Include="Views\Fases\Index.cshtml" />
+    <Content Include="Views\Auditorias\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

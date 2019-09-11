@@ -19,12 +19,38 @@ namespace web.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Auditorias
-        public ActionResult Index(int? IdPlan, int? page, string nombreplan)
+        public ActionResult Index(int? IdPlan, string searchString, int? page, string nombreplan)
         {
             ViewBag.page = page;
             ViewBag.idPlan = IdPlan;
             ViewBag.nombrePlan = nombreplan;
-            var auditorias = db.Auditorias.Where(a => a.IdPlan == IdPlan && a.Elimanado != true).Include(a => a.Estado).Include(a => a.Plan).Include(a => a.UsuarioRealiza).OrderBy(a => a.FechaInicio);
+            ViewBag.CurrentFilter = searchString;
+            var auditorias = db.Auditorias.Where(a => a.IdPlan == IdPlan && a.Elimanado != true).Include(a => a.Estado).Include(a => a.Plan).Include(a => a.UsuarioRealiza);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                auditorias = auditorias.Where(s => s.Auditoria.Contains(searchString)
+                                       || s.DescripcionAuditoria.Contains(searchString));
+            }
+            auditorias = auditorias.OrderBy(a => a.FechaInicio);
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+            return View(auditorias.ToPagedList(pageNumber, pageSize));
+        }
+
+
+        public ActionResult Index2(string searchString, int? page, string nombreplan)
+        {
+            ViewBag.page = page;
+            ViewBag.nombrePlan = nombreplan;
+            ViewBag.CurrentFilter = searchString;
+            var idUsuario = GetUserId(User);
+            var auditorias = db.Auditorias.Where(a => a.Elimanado != true && a.IdUsuarioRealiza==idUsuario).Include(a => a.Estado).Include(a => a.Plan).Include(a => a.UsuarioRealiza);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                auditorias = auditorias.Where(s => s.Auditoria.Contains(searchString)
+                                       || s.DescripcionAuditoria.Contains(searchString));
+            }
+            auditorias = auditorias.OrderBy(a => a.FechaInicio);
             int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(auditorias.ToPagedList(pageNumber, pageSize));
@@ -125,6 +151,7 @@ namespace web.Controllers
                 var aux = db.Planes.Where(p => p.IdPlan == auditorias.IdPlan).First();
                 return RedirectToAction("Index",new { idPlan=auditorias.IdPlan,nombrePlan=aux.NombrePlan});
             }
+
             var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78"));
             ViewBag.IdUsuarioRealiza = new SelectList(usuarios, "Id", "NombreCompleto", auditorias.IdUsuarioRealiza);
             var planAux = db.Planes.Where(p => p.IdPlan == auditorias.IdPlan).First();

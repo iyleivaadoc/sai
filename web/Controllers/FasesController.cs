@@ -10,6 +10,7 @@ using web.Models;
 
 namespace web.Controllers
 {
+    [Authorize]
     public class FasesController : OwnController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -23,7 +24,7 @@ namespace web.Controllers
             }
             ViewBag.nombreAuditoria = nombreAuditoria;
             ViewBag.idAuditoria = idAuditoria;
-            var fases = db.Fases.Where(f=>f.IdAuditoria==idAuditoria && f.Eliminado!=true).Include(f => f.Auditoria).Include(f => f.Estado);
+            var fases = db.Fases.Where(f=>f.IdAuditoria==idAuditoria && f.Eliminado!=true).Include(f => f.Auditoria).Include(f => f.Estado).OrderBy(f=>f.FechaInicio);
             return View(fases.ToList());
         }
 
@@ -62,8 +63,9 @@ namespace web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdFase,Fase,Porcentaje,FechaInicio,FechaFin,IdAuditoria,IdEstado,Eliminado,UsuarioCrea,UsuarioModifica,FechaCrea,FechaModifica")] Fases fases)
+        public ActionResult Create(Fases fases)
         {
+            var aud = db.Auditorias.Where(a => a.IdAuditoria == fases.IdAuditoria).Include(a => a.Fases).SingleOrDefault();
             if (ModelState.IsValid)
             {
                 fases.FechaCrea = DateTime.Now;
@@ -72,9 +74,8 @@ namespace web.Controllers
                 fases.IdEstado = 1;
                 fases.Eliminado = false;
                 fases.Porcentaje = fases.Porcentaje / 100;
-                var aud = db.Auditorias.Where(a => a.IdAuditoria == fases.IdAuditoria).Include(a=>a.Fases).SingleOrDefault();
                 var porcent = 0.0;
-                foreach(var item in aud.Fases)
+                foreach(var item in aud.Fases.Where(f=>f.Eliminado!=true))
                 {
                     porcent += item.Porcentaje;
                 }
@@ -98,7 +99,9 @@ namespace web.Controllers
 
             ViewBag.IdAuditoria = new SelectList(db.Auditorias, "IdAuditoria", "Auditoria", fases.IdAuditoria);
             ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", fases.IdEstado);
-            fases.Porcentaje = fases.Porcentaje * 100;
+            ViewBag.idAuditoriaRet = aud.IdAuditoria;
+            ViewBag.nombreAuditoria = aud.Auditoria;
+            //fases.Porcentaje = fases.Porcentaje * 100;
             return View(fases);
         }
 
@@ -114,6 +117,8 @@ namespace web.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.idAuditoriaRet = fases.IdAuditoria;
+            ViewBag.nombreAuditoria = fases.Auditoria.Auditoria;
             ViewBag.IdAuditoria = new SelectList(db.Auditorias, "IdAuditoria", "Auditoria", fases.IdAuditoria);
             ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", fases.IdEstado);
             fases.Porcentaje = fases.Porcentaje * 100;
@@ -125,17 +130,40 @@ namespace web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdFase,Fase,Porcentaje,FechaInicio,FechaFin,IdAuditoria,IdEstado,Eliminado,UsuarioCrea,UsuarioModifica,FechaCrea,FechaModifica")] Fases fases)
+        public ActionResult Edit(Fases fases)
         {
+            var audaux = db.Auditorias.Where(a => a.IdAuditoria == fases.IdAuditoria).SingleOrDefault();
             if (ModelState.IsValid)
             {
                 fases.Porcentaje = fases.Porcentaje / 100;
-                db.Entry(fases).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var porcent = 0.0;
+                var fasesAux = db.Fases.Where(f => f.Eliminado != true && f.IdAuditoria== fases.IdAuditoria && f.IdFase!=fases.IdFase).ToList().AsReadOnly();
+                //var fasesAux = audaux.Fases.Where(f => f.Eliminado != true).ToList().AsReadOnly();
+                foreach (var item in fasesAux)
+                {
+                    if (item.IdFase != fases.IdFase)
+                    {
+                        porcent += item.Porcentaje;
+                    }
+                }
+                porcent += fases.Porcentaje;
+                if (porcent <= 1.0)
+                {
+                    db.Entry(fases).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", new { idAuditoria = fases.IdAuditoria, nombreAuditoria = audaux.Auditoria });
+                }
+                ModelState.AddModelError("", "La sumatoria de porcentajes sobrepasa el 100%.");
+                ViewBag.IdAuditoria = new SelectList(db.Auditorias, "IdAuditoria", "Auditoria", fases.IdAuditoria);
+                ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", fases.IdEstado);
+                ViewBag.idAuditoriaRet = fases.IdAuditoria;
+                ViewBag.nombreAuditoria = audaux.Auditoria;
+                return View(fases);
             }
             ViewBag.IdAuditoria = new SelectList(db.Auditorias, "IdAuditoria", "Auditoria", fases.IdAuditoria);
             ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", fases.IdEstado);
+            ViewBag.idAuditoriaRet = fases.IdAuditoria;
+            ViewBag.nombreAuditoria = audaux.Auditoria;
             return View(fases);
         }
 
@@ -159,10 +187,13 @@ namespace web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Fases fases = db.Fases.Find(id);
-            db.Fases.Remove(fases);
+            Fases fases = db.Fases.Include(f=>f.Auditoria).Where(f=>f.IdFase==id).SingleOrDefault();
+            var aud = db.Auditorias.Where(a => a.IdAuditoria == fases.IdAuditoria).SingleOrDefault();
+            fases.Eliminado = true;
+            fases.UsuarioModifica = GetUserId(User);
+            db.Entry(fases).State=EntityState.Modified;
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index",new { idAuditoria=fases.IdAuditoria,nombreAuditoria=aud.Auditoria});
         }
 
         protected override void Dispose(bool disposing)
