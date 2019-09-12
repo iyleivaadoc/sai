@@ -17,7 +17,7 @@ namespace web.Models
         public string DescripcionAuditoria { get; set; }
         [Required(ErrorMessage = "La fecha de inicio es requerida."), Display(Name = "Inicio"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaInicio { get; set; }
-        [Display(Name = "Duración")]
+        [Display(Name = "Duración (Días)")]
         [NotMapped]
         public int Duracion { get {
                 TimeSpan dias = FechaFin - FechaInicio;

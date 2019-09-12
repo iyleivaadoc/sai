@@ -56,8 +56,8 @@ namespace web.Controllers
         public ActionResult Create()
         {
             Planes plan = new Planes();
-            plan.FechaInicio = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            plan.anio = DateTime.Now.Year;
+            plan.FechaInicio = new DateTime(DateTime.Now.Year+1, 1, 2);
+            plan.anio = DateTime.Now.Year+1;
             return View(plan);
         }
 

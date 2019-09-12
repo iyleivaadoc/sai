@@ -78,8 +78,9 @@ namespace web.Controllers
             ViewBag.idPlan = idplan;
             ViewBag.nombrePlan = nombrePlan;
             Auditorias auditoria = new Auditorias();
-            auditoria.FechaInicio = DateTime.Now;
-            auditoria.FechaFin = DateTime.Now.AddDays(60);
+            var plan = db.Planes.Find(idplan);
+            auditoria.FechaInicio = plan.FechaInicio;
+            auditoria.FechaFin =auditoria.FechaInicio.AddDays(60);
             auditoria.IdPlan = idplan;
             var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78"));
             ViewBag.IdUsuarioRealiza=new SelectList(usuarios, "Id", "NombreCompleto", auditoria.IdUsuarioRealiza);

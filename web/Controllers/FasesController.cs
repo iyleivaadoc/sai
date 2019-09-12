@@ -48,11 +48,12 @@ namespace web.Controllers
         {
             ViewBag.IdAuditoria = new SelectList(db.Auditorias, "IdAuditoria", "Auditoria");
             ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado");
+            var audit = db.Auditorias.Find(idAuditoria);
             Fases fase = new Fases();
-            fase.FechaInicio = DateTime.Now;
-            fase.FechaFin = fase.FechaInicio.AddDays(11);
+            fase.FechaInicio = audit.FechaInicio;
+            fase.FechaFin = fase.FechaInicio.AddDays(8);
             fase.IdAuditoria = idAuditoria;
-            fase.Porcentaje = 20.0;
+            fase.Porcentaje = 14.0;
             ViewBag.idAuditoriaRet = idAuditoria;
             ViewBag.nombreAuditoria = nombreAuditoria;
             return View(fase);
@@ -153,7 +154,8 @@ namespace web.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index", new { idAuditoria = fases.IdAuditoria, nombreAuditoria = audaux.Auditoria });
                 }
-                ModelState.AddModelError("", "La sumatoria de porcentajes sobrepasa el 100%.");
+                ModelState.AddModelError("", "La sumatoria de porcentajes sobrepasa el 100%, sumatoria actual: "+(porcent*100));
+                fases.Porcentaje = fases.Porcentaje * 100;
                 ViewBag.IdAuditoria = new SelectList(db.Auditorias, "IdAuditoria", "Auditoria", fases.IdAuditoria);
                 ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", fases.IdEstado);
                 ViewBag.idAuditoriaRet = fases.IdAuditoria;

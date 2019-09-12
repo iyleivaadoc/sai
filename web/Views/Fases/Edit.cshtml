@@ -18,8 +18,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Fase, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10 input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-align-justify"></i></span>
+            <div class="col-md-10">
                 @Html.EditorFor(model => model.Fase, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Fase, "", new { @class = "text-danger" })
             </div>
@@ -27,8 +26,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Porcentaje, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10 input-group">
-                <span class="input-group-addon"><strong>%</strong></span>
+            <div class="col-md-10">
                 <input type="number" id="Porcentaje" name="Porcentaje" step="0.1" value="@Model.Porcentaje" class="form-control">
                 @*@Html.EditorFor(model => model.Porcentaje, new { htmlAttributes = new { @class = "form-control" } })*@
                 @Html.ValidationMessageFor(model => model.Porcentaje, "", new { @class = "text-danger" })
@@ -37,8 +35,7 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.FechaInicio, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10 input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            <div class="col-md-10">
                 @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
             </div>
@@ -46,12 +43,12 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.FechaFin, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10 input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            <div class="col-md-10">
                 @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
             </div>
         </div>
+
 
         @Html.HiddenFor(model => model.IdAuditoria)
         @Html.HiddenFor(model => model.IdEstado)

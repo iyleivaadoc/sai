@@ -19,7 +19,7 @@ namespace web.Models
         public DateTime FechaInicio { get; set; }
         [Display(Name = "Finalización"), Required(ErrorMessage = "Debe Proporcionar la fecha de Finalización"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaFin { get; set; }
-        [NotMapped, Display(Name = "Duracion")]
+        [NotMapped, Display(Name = "Duración (Días)")]
         public int Duracion
         {
             get

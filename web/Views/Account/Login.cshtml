@@ -25,6 +25,9 @@
                         <div class="form-group">
                             <div class="col-md-10 centerForm">
                                 @Html.PasswordFor(m => m.Password, new { placeholder = "Contraseña", @class = "form-control" })
+                                <div class="text-danger" style="font-size: x-small;">
+                                    <input id="show" type="checkbox" />Mostrar contraseña
+                                </div>
                                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -55,4 +58,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/contrasenias")
 }
