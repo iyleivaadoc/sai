@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using web.Models;
+using web.ViewModels;
 
 namespace web.Controllers
 {
@@ -28,6 +29,33 @@ namespace web.Controllers
             return View(fases.ToList());
         }
 
+        public ActionResult indexDefault(int idAuditoria, string nombreAuditoria)
+        {
+            ViewBag.idAuditoriaRet = idAuditoria;
+            ViewBag.nombreAuditoria = nombreAuditoria;
+            List<FasesDefaultViewModel> list = new List<FasesDefaultViewModel>();
+            foreach (var a in db.FasesDefault.OrderBy(f => f.orden).ToList()){
+                FasesDefaultViewModel fase = new FasesDefaultViewModel() { NombreFase =a.NombreFase, Porcentaje=a.Porcentaje*100,Duracion=a.Duracion,orden=a.orden};
+                list.Add(fase);
+            }
+            FasesDefaultViewModel fases = new FasesDefaultViewModel() { list=list.OrderBy(f => f.orden).ToList() };
+            return View(fases);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult indexDefault(FasesDefaultViewModel lista)
+        {
+            List<FasesDefaultViewModel> list = new List<FasesDefaultViewModel>();
+
+            var co=lista.list.Count;
+            foreach (var a in db.FasesDefault.OrderBy(f => f.orden).ToList())
+            {
+                FasesDefaultViewModel fase = new FasesDefaultViewModel() { NombreFase = a.NombreFase, Porcentaje = a.Porcentaje * 100, Duracion = a.Duracion, orden = a.orden };
+                list.Add(fase);
+            }
+            return View(list.OrderBy(f => f.orden).ToList());
+        }
         // GET: Fases/Details/5
         public ActionResult Details(int? id)
         {
@@ -88,7 +116,7 @@ namespace web.Controllers
                     return RedirectToAction("Index",new { idAuditoria=aud.IdAuditoria, nombreAuditoria=aud.Auditoria});
                 }else
                 {
-                    ModelState.AddModelError("", "La sumatoria de porcentajes sobrepasa el 100%.");
+                    ModelState.AddModelError("", "La sumatoria de porcentajes sobrepasa el 100%, sumatoria actual: "+(porcent*100)+" % ");
                     ViewBag.IdAuditoria = new SelectList(db.Auditorias, "IdAuditoria", "Auditoria", fases.IdAuditoria);
                     ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", fases.IdEstado);
                     ViewBag.idAuditoriaRet = aud.IdAuditoria;
@@ -154,7 +182,7 @@ namespace web.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index", new { idAuditoria = fases.IdAuditoria, nombreAuditoria = audaux.Auditoria });
                 }
-                ModelState.AddModelError("", "La sumatoria de porcentajes sobrepasa el 100%, sumatoria actual: "+(porcent*100));
+                ModelState.AddModelError("", "La sumatoria de porcentajes sobrepasa el 100%, sumatoria actual: "+(porcent*100)+"%");
                 fases.Porcentaje = fases.Porcentaje * 100;
                 ViewBag.IdAuditoria = new SelectList(db.Auditorias, "IdAuditoria", "Auditoria", fases.IdAuditoria);
                 ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", fases.IdEstado);

@@ -5,57 +5,107 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="col-md-3"></div>
-    <div class="form-horizontal col-md-6" style="text-align:center;">
-        <h4>Nueva Auditoría</h4>
+    <div class="form-horizontal col-md-12" style="z-index:2;">
+        <h4 style="text-align:center;">Nueva Auditoría</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Auditoria, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.Auditoria, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Auditoria, "", new { @class = "text-danger" })
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Auditoria, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Auditoria, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Auditoria, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DescripcionAuditoria, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextAreaFor(model => model.DescripcionAuditoria, new { @class = "form-control", @style = "height:100px;" })
+                    @Html.ValidationMessageFor(model => model.DescripcionAuditoria, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FechaInicio, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FechaFin, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdUsuarioRealiza, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownList("IdUsuarioRealiza", null, "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.IdUsuarioRealiza, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Objetivo, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextAreaFor(model => model.Objetivo, new { @class = "form-control", @style = "height:100px;" })
+                    @Html.ValidationMessageFor(model => model.Objetivo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Alcances, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextAreaFor(model => model.Alcances, new { @class = "form-control", @style = "height:100px;" })
+                    @Html.ValidationMessageFor(model => model.Alcances, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Procedimiento, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextAreaFor(model => model.Procedimiento, new { @class = "form-control", @style = "height:100px;" })
+                    @Html.ValidationMessageFor(model => model.Procedimiento, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Entregables, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextAreaFor(model => model.Entregables, new { @class = "form-control", @style = "height:100px;" })
+                    @Html.ValidationMessageFor(model => model.Entregables, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DescripcionAuditoria, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.TextAreaFor(model => model.DescripcionAuditoria, new { @class = "form-control", @style = "height:100px;" })
-                @Html.ValidationMessageFor(model => model.DescripcionAuditoria, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FechaInicio, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FechaFin, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.IdUsuarioRealiza, htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.DropDownList("IdUsuarioRealiza", null,"Seleccione...", htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.IdUsuarioRealiza, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-12" style="text-align:center;">
-                <input type="submit" value="Crear" class="btn btn-default btn btn-success" />
-                @Html.ActionLink(" Cancelar", "Index", new { idplan = ViewBag.idPlan, nombrePlan = ViewBag.nombrePlan },new { @class="btn btn-warning"})
-            </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12" style="text-align:center;">
+            <input type="submit" value="Crear" class="btn btn-default btn btn-success" />
+            @Html.ActionLink(" Cancelar", "Index", new { idplan = ViewBag.idPlan, nombrePlan = ViewBag.nombrePlan }, new { @class = "btn btn-warning" })
         </div>
     </div>
 }
+<script>
+    $("#IdUsuarioRealiza").on("change", function () {
+        urlget = "asignado?idPlan=" +@ViewBag.idPlan +"&idUser=" + $("#IdUsuarioRealiza").get(0).value;
+        $.ajax({
+            url: urlget,
+            error: function (data) {
+                alertify.error("Error al comunicarse con el servidor...")
+            }
+        }).then(function (data) {
+            if (data > 0) {
+                alertify.warning("El auditor seleccionado está asignado en "+data+" auditorías más.")
+            }
+            console.log(data);
+        });
+        
+    })
+</script>

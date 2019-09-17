@@ -1,4 +1,5 @@
 ﻿/// <autosync enabled="true" />
+/// <reference path="../content/alerts/alertify.js" />
 /// <reference path="../content/showcontra.js" />
 /// <reference path="ai.0.22.9-build00167.min.js" />
 /// <reference path="bootstrap.min.js" />

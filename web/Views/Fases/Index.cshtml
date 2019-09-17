@@ -20,6 +20,7 @@
         </div>*@
     </div>
     <div style="position: absolute; top: 20px; right:0px;">
+        @Html.ActionLink("Fases por defecto", "IndexDefault", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria}, new { @class = "btn btn-info" })
         @Html.ActionLink("Nueva Fase", "Create", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn btn-success" })
         <br /><br />
     </div>

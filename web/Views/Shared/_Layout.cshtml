@@ -7,8 +7,11 @@
     <title>@ViewBag.Title - SAI</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Content/alerts/alertify.min.js"></script>
+    <link href="~/Content/alerts/css/alertify.min.css" rel="stylesheet" />
+    <link href="~/Content/alerts/css/themes/default.css" rel="stylesheet" />
     @*@if (User.Identity.IsAuthenticated) {<script>
             var a = "@System.Web.HttpContext.Current.Session["sessionString"].ToString()";
             console.log(a,a.length);
@@ -94,8 +97,7 @@
 
 
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+   
 
     <script>
         $(document).ready(function () {

@@ -17,6 +17,14 @@ namespace web.Models
         public string DescripcionAuditoria { get; set; }
         [Required(ErrorMessage = "La fecha de inicio es requerida."), Display(Name = "Inicio"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaInicio { get; set; }
+        [StringLength(1024)]
+        public string Objetivo { get; set; }
+        [StringLength(1024)]
+        public string Alcances { get; set; }
+        [StringLength(1024)]
+        public string Procedimiento { get; set; }
+        [StringLength(1024)]
+        public string Entregables { get; set; }
         [Display(Name = "Duración (Días)")]
         [NotMapped]
         public int Duracion { get {

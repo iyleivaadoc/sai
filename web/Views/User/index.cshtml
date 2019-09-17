@@ -3,6 +3,7 @@
     ViewBag.Title = "Usuarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<p class="text-success" style="margin-top:10px;">@ViewBag.StatusMessage</p>
 <div class="col-md-12">
     <div style="position: relative;">
         <div style="position: absolute;">
@@ -29,7 +30,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Email)
                 </th>
-                <th style="text-align:center;">Opciones</th>
+                <th style="text-align:center; width: 31%;">Opciones</th>
             </tr>
 
             @foreach (var item in Model)
@@ -48,11 +49,15 @@
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
 
-                    <td style="text-align:center;">
+                    <td style="text-align:left;">
                         @Html.ActionLink("Asignar Roles", "AsignarRoles", new { id = item.Id }, new { @class = "btn btn-xs btn-success" })
                         @Html.ActionLink("Detalles", "Details", new { id = item.Id }, new { @class = "btn btn-xs btn-info" })
                         @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-xs btn-warning" })
                         @Html.ActionLink("Borrar", "Delete", new { id = item.Id }, new { @class = "btn btn-xs btn-danger" })
+                        @if (item.LockoutEndDateUtc > DateTime.Now)
+                        {
+                            @Html.ActionLink("Desbloquear", "Unlock", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })
+                        }
                     </td>
                 </tr>
             }

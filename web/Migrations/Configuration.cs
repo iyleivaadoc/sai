@@ -37,7 +37,7 @@ namespace web.Migrations
             //var usuario = context.Users.FirstOrDefault();
             //UserStore<ApplicationUser> userStore = new UserStore<ApplicationUser>(context);
             //ApplicationUserManager man = new ApplicationUserManager(userStore);
-            //man.AddToRoles(usuario.Id,"Administrador");
+            //man.AddToRoles(usuario.Id, "Administrador");
 
             //  This method will be called after migrating to the latest version.
 

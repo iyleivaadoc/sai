@@ -23,12 +23,21 @@ namespace web.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: User
-        public ActionResult Index()
+        public ActionResult Index(string message)
         {
-            List<ApplicationUser> list = new List<ApplicationUser>();
+            ViewBag.StatusMessage = message;
+            List <ApplicationUser> list = new List<ApplicationUser>();
             foreach (var user in UserManager.Users.Where(x=>x.Eliminado==false))
                 list.Add(user);
             return View(list);
+        }
+
+        public ActionResult Unlock(string id)
+        {
+            var user = UserManager.FindById(id);
+            user.LockoutEndDateUtc = DateTime.Now;
+            UserManager.Update(user);
+            return RedirectToAction("Index",new { message="Usuario Desbloqueado."});
         }
 
         public async Task<ActionResult> Details(string id)
@@ -93,8 +102,6 @@ namespace web.Controllers
         public async Task<ActionResult> Edit(ApplicationUser model)
         {
             var user = await UserManager.FindByIdAsync(model.Id);
-            var role = new ApplicationUser() { Id = model.Id, Email = model.Email,Nombres=model.Nombres,Apellidos=model.Apellidos, UserName=model.UserName };
-            
             user.Nombres = model.Nombres;
             user.Apellidos = model.Apellidos;
             user.Email = model.Email;

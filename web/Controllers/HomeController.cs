@@ -16,7 +16,6 @@ namespace web.Controllers
     {
         public ActionResult Index(ManageMessageId? message)
         {
-            ViewBag.saludo = Resourses.Strings.saludo;
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Tu contraseña ha sido cambiada."
                 : message == ManageMessageId.SetPasswordSuccess ? "Tu contraseña ha sido configurada."

@@ -93,7 +93,7 @@ namespace web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "IdAuditoria,Auditoria,DescripcionAuditoria,FechaInicio,FechaFin,Planificada,Elimanado,FechaCrea,FechaMod,UsuarioCrea,UsuarioMod,IdUsuarioRealiza,IdPlan,IdEstado")] Auditorias auditorias)
+        public async Task<ActionResult> Create(Auditorias auditorias)
         {
             auditorias.FechaCrea = DateTime.Now;
             auditorias.UsuarioCrea = this.GetUserId(User);
@@ -203,6 +203,11 @@ namespace web.Controllers
             var claimsIdentity = (ClaimsIdentity)principal.Identity;
             var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
             return claim.Value;
+        }
+
+        public int asignado(int idPlan,string idUser) {
+            var auditorias=db.Auditorias.Where(a => a.Elimanado != true && a.IdPlan==idPlan && a.IdUsuarioRealiza==idUser).ToList();
+            return auditorias.Count;
         }
     }
 }

@@ -1,0 +1,55 @@
+﻿@model web.ViewModels.FasesDefaultViewModel
+@{
+    ViewBag.Title = "Agregar fases";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Fases de auditoría</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="row">
+            <div class="container col-md-8 col-md-offset-2" style="max-height:350px; border:1px solid #ccc;overflow:auto;border-radius:10px; box-shadow: 2px 2px 0px grey;padding-left: 1px;padding-right: 1px;">
+                <div id="m" style="padding-left: 30px;">
+                    @Html.HiddenFor(m =>m.list)
+                    <table class="table">
+                        <tr>
+                            <th>
+
+                            </th>
+                            <th>@Html.DisplayNameFor(Model => Model.NombreFase)</th>
+                            <th>@Html.DisplayNameFor(Model => Model.Porcentaje)</th>
+                            <th style="width:20%">@Html.DisplayNameFor(Model => Model.Duracion)</th>
+                        </tr>
+                        @foreach (var item in Model.list)
+                        {
+                            <tr>
+                                <td>@Html.CheckBoxFor(m => item.Selected)</td>
+                                <td>@Html.DisplayFor(m => item.NombreFase)</td>
+                                <td style="text-align:center">@Html.DisplayFor(m => item.Porcentaje)</td>
+                                <td style="text-align:center">@Html.DisplayFor(m => item.Duracion)</td>
+                            </tr>
+
+                        }
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <br />
+
+        <div class="form-group col-md-12">
+            <div class="col-md-12" style="text-align:center;">
+                <input type="submit" value="Asignar" class="btn btn-success" />
+                @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-warning" })
+            </div>
+        </div>
+    </div>
+}

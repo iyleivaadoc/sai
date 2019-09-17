@@ -366,9 +366,13 @@ namespace web.Controllers
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError("", error.Replace("Incorrect password.", "Contraseña incorrecta."));
+                ModelState.AddModelError("", error.Replace("Incorrect password.", "Contraseña incorrecta.").Replace("must be at least", "debe tener al menos").Replace("characters long.", "caracteres de largo")
+                    .Replace("Passwords must have at least one non letter or digit character.", "La contraseña debe tener al meno un caracter especial.").Replace("Passwords must have at least one lowercase ('a'-'z').", "La contraseña debe tener al menos una minúscula ('a'-'z').")
+                    .Replace("Passwords must have at least one uppercase ('A'-'Z').", "La contraseña debe tener al menos una mayúscula ('A'-'Z').")
+                    .Replace("Passwords must have at least one digit('0'-'9').", "La contraseña debe tener al menos un dígito ('0'-'9').").Replace("Passwords", "La contraseña").Replace("characters", "caracteres"));
             }
         }
+        
 
         private bool HasPassword()
         {

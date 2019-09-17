@@ -19,7 +19,7 @@ namespace web.Models
         public DateTime FechaInicio { get; set; }
         [Display(Name ="Año"),Required(ErrorMessage ="El año al que pertenece el plan es requerido.")]
         public int anio { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed),Display(Name ="Porcentaje de avance")]
+        [NotMapped,Display(Name ="Porcentaje de avance")]
         public double Porcentaje { get; set; }
         public bool Eliminado { get; set; }
         public DateTime FechaCrea { get; set; }

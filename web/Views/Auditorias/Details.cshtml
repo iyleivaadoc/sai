@@ -4,67 +4,94 @@
     ViewBag.Title = "Detalles Auditoría";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div class="col-md-3"></div>
-<div class="col-md-6">
-    <h4>Detalles de auditoría</h4>
-    <hr />
-    <dl class="dl-horizontal">
-      
-        
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Auditoria)
-        </dt>
+    <div class="col-md-6">
+        <h4>Detalles de auditoría</h4>
+        <hr />
+        <dl class="dl-horizontal">
 
-        <dd>
-            @Html.DisplayFor(model => model.Auditoria)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Auditoria)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DescripcionAuditoria)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Auditoria)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.DescripcionAuditoria)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DescripcionAuditoria)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FechaInicio)
-        </dt>
+            <dd style="text-align: justify;">
+                @Html.DisplayFor(model => model.DescripcionAuditoria)
+            </dd>
 
-        <dd>
-            @Html.EditorFor(modelItem => modelItem.FechaInicio, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled" } })
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaInicio)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FechaFin)
-        </dt>
+            <dd>
+                @Html.EditorFor(modelItem => modelItem.FechaInicio, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled" } })
+            </dd>
 
-        <dd>
-            @Html.EditorFor(modelItem => modelItem.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled" } })
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaFin)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Duracion)
-        </dt>
+            <dd>
+                @Html.EditorFor(modelItem => modelItem.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled" } })
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Duracion)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Duracion)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.IdUsuarioRealiza)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Duracion)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.UsuarioRealiza.NombreCompleto)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.IdUsuarioRealiza)
+            </dt>
 
-    </dl>
-    <div class="text-center">
-        @Html.ActionLink("Edit", "Edit", new { id = Model.IdAuditoria },new { @class="btn btn-warning"}) 
-        @Html.ActionLink("Cancelar", "Index", new { idplan = Model.IdPlan, nombrePlan = Model.Plan.NombrePlan }, new { @class="btn btn-success"})
+            <dd>
+                @Html.DisplayFor(model => model.UsuarioRealiza.NombreCompleto)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Objetivo)
+            </dt>
+
+            <dd style="text-align: justify;">
+                @Html.DisplayFor(model => model.Objetivo)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Alcances)
+            </dt>
+
+            <dd style="text-align: justify;">
+                @Html.DisplayFor(model => model.Alcances)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Procedimiento)
+            </dt>
+
+            <dd style="text-align: justify;">
+                @Html.DisplayFor(model => model.Procedimiento)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Entregables)
+            </dt>
+
+            <dd style="text-align: justify;">
+                @Html.DisplayFor(model => model.Entregables)
+            </dd>
+        </dl>
+        <div class="text-center">
+            @Html.ActionLink("Edit", "Edit", new { id = Model.IdAuditoria }, new { @class = "btn btn-warning" })
+            @Html.ActionLink("Cancelar", "Index", new { idplan = Model.IdPlan, nombrePlan = Model.Plan.NombrePlan }, new { @class = "btn btn-success" })
+        </div>
     </div>
-</div>
 
-    
