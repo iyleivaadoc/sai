@@ -8,6 +8,7 @@
 
 @using (Html.BeginForm())
 {
+    int i = 0;
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
@@ -18,25 +19,35 @@
         <div class="row">
             <div class="container col-md-8 col-md-offset-2" style="max-height:350px; border:1px solid #ccc;overflow:auto;border-radius:10px; box-shadow: 2px 2px 0px grey;padding-left: 1px;padding-right: 1px;">
                 <div id="m" style="padding-left: 30px;">
-                    @Html.HiddenFor(m =>m.list)
+                   @* @Html.HiddenFor(m =>m.list)*@
                     <table class="table">
                         <tr>
                             <th>
 
                             </th>
-                            <th>@Html.DisplayNameFor(Model => Model.NombreFase)</th>
+                            @*<th>@Html.DisplayNameFor(Model => Model.list.NombreFase)</th>
                             <th>@Html.DisplayNameFor(Model => Model.Porcentaje)</th>
-                            <th style="width:20%">@Html.DisplayNameFor(Model => Model.Duracion)</th>
+                            <th style="width:20%">@Html.DisplayNameFor(Model => Model.Duracion)</th>*@
+                            <th>Nombre Fase</th>
+                            <th>Porcentaje</th>
+                            <th style="width:20%">Duración</th>
                         </tr>
+                        
                         @foreach (var item in Model.list)
                         {
+                            
                             <tr>
-                                <td>@Html.CheckBoxFor(m => item.Selected)</td>
-                                <td>@Html.DisplayFor(m => item.NombreFase)</td>
-                                <td style="text-align:center">@Html.DisplayFor(m => item.Porcentaje)</td>
-                                <td style="text-align:center">@Html.DisplayFor(m => item.Duracion)</td>
+                                <td>@Html.CheckBoxFor(m => m.list[i].Selected, new { htmlAttributes = new { @value = Model.list[i].Id_fase } })</td>
+                                @Html.HiddenFor(m => m.list[i].Id_fase)
+                                @Html.HiddenFor(m => m.list[i].NombreFase)
+                                @Html.HiddenFor(m => m.list[i].Porcentaje)
+                                @Html.HiddenFor(m => m.list[i].Duracion)
+                                @Html.HiddenFor(m => m.list[i].orden)
+                                <td>@Html.DisplayFor(m => m.list[i].NombreFase)</td>
+                                <td style="text-align:center">@Html.DisplayFor(m => m.list[i].Porcentaje)</td>
+                                <td style="text-align:center">@Html.DisplayFor(m => m.list[i].Duracion)</td>
                             </tr>
-
+                            i++;
                         }
                     </table>
                 </div>
@@ -48,7 +59,7 @@
         <div class="form-group col-md-12">
             <div class="col-md-12" style="text-align:center;">
                 <input type="submit" value="Asignar" class="btn btn-success" />
-                @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-warning" })
+                @Html.ActionLink("Cancelar", "Index", new { idAuditoria = ViewBag.idAuditoriaRet, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn btn-warning" })
             </div>
         </div>
     </div>

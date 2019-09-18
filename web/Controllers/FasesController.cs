@@ -33,28 +33,92 @@ namespace web.Controllers
         {
             ViewBag.idAuditoriaRet = idAuditoria;
             ViewBag.nombreAuditoria = nombreAuditoria;
-            List<FasesDefaultViewModel> list = new List<FasesDefaultViewModel>();
-            foreach (var a in db.FasesDefault.OrderBy(f => f.orden).ToList()){
-                FasesDefaultViewModel fase = new FasesDefaultViewModel() { NombreFase =a.NombreFase, Porcentaje=a.Porcentaje*100,Duracion=a.Duracion,orden=a.orden};
-                list.Add(fase);
+            //List<FasesDefaultViewModel> list = new List<FasesDefaultViewModel>();
+            //foreach (var a in db.FasesDefault.OrderBy(f => f.orden).ToList()){
+            //    FasesDefaultViewModel fase = new FasesDefaultViewModel() {NombreFase =a.NombreFase, Porcentaje=a.Porcentaje*100,Duracion=a.Duracion,orden=a.orden};
+            //    list.Add(fase);
+            //}
+
+            FasesDefaultViewModel fasesD = new FasesDefaultViewModel();
+           // fasesD.list = db.FasesDefault.OrderBy(f => f.orden).ToList();
+            foreach (var a in db.FasesDefault.OrderBy(f => f.orden).ToList())
+            {
+
+                FasesDefaultViewModel.FasesDefaultVMList faseList = new FasesDefaultViewModel.FasesDefaultVMList() {
+                    Id_fase=a.IdFaseDefault,
+                    NombreFase = a.NombreFase,
+                    Porcentaje = a.Porcentaje * 100,
+                    Duracion = a.Duracion, orden = a.orden };
+                //fasesD.FasesD = { fasesD.FasesD.NombreFase = a.NombreFase, fasesD.FasesD.Porcentaje = a.Porcentaje * 100, fasesD.FasesD.Duracion = a.Duracion, fasesD.FasesD.orden = a.orden };
+                fasesD.list.Add(faseList);
             }
-            FasesDefaultViewModel fases = new FasesDefaultViewModel() { list=list.OrderBy(f => f.orden).ToList() };
-            return View(fases);
+            //FasesDefaultViewModel fases = new FasesDefaultViewModel() { fasesD.list= list.OrderBy(f => f.orden).ToList() };
+            return View(fasesD);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult indexDefault(FasesDefaultViewModel lista)
+        public ActionResult indexDefault(FasesDefaultViewModel lista, Fases fases) //Aquí recibe el listado de las fases de la vista
         {
-            List<FasesDefaultViewModel> list = new List<FasesDefaultViewModel>();
+            var co = lista.list.Count;
+            var aud = db.Auditorias.Where(a => a.IdAuditoria == fases.IdAuditoria).Include(a => a.Fases).SingleOrDefault();
+            int duracion = 0, cont = 0;
 
-            var co=lista.list.Count;
-            foreach (var a in db.FasesDefault.OrderBy(f => f.orden).ToList())
+            foreach (var item in lista.list)
             {
-                FasesDefaultViewModel fase = new FasesDefaultViewModel() { NombreFase = a.NombreFase, Porcentaje = a.Porcentaje * 100, Duracion = a.Duracion, orden = a.orden };
-                list.Add(fase);
+                if (item.Selected == true)
+                {
+                    fases.Fase = item.NombreFase;
+                    fases.Porcentaje = item.Porcentaje;
+
+                    if (cont == 0)
+                    {
+                        fases.FechaInicio = aud.FechaInicio;
+                        fases.FechaFin = fases.FechaInicio.AddDays(item.Duracion);
+                    }
+                    else
+                    {
+                        fases.FechaInicio = aud.FechaInicio.AddDays(duracion + 1);
+                        fases.FechaFin = fases.FechaInicio.AddDays(item.Duracion);
+                    }
+                                 
+                    fases.FechaCrea = DateTime.Now;
+                    fases.FechaModifica = fases.FechaCrea;
+                    fases.UsuarioCrea = GetUserId(User);
+                    fases.IdEstado = 1;
+                    fases.Eliminado = false;
+                    fases.Porcentaje = fases.Porcentaje / 100;
+                    var porcent = 0.0;
+                    foreach (var item1 in aud.Fases.Where(f => f.Eliminado != true))
+                    {
+                        porcent += item1.Porcentaje;
+                    }
+                    porcent += fases.Porcentaje;
+                    duracion += item.Duracion;
+                    cont += 1;
+                    if (porcent <= 1.0)
+                    {
+                        db.Fases.Add(fases);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "La sumatoria de porcentajes sobrepasa el 100%, sumatoria actual: " + (porcent * 100) + " % ");
+                        ViewBag.IdAuditoria = new SelectList(db.Auditorias, "IdAuditoria", "Auditoria", fases.IdAuditoria);
+                        ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", fases.IdEstado);
+                        ViewBag.idAuditoriaRet = aud.IdAuditoria;
+                        ViewBag.nombreAuditoria = aud.Auditoria;
+                        fases.Porcentaje = fases.Porcentaje * 100;
+                        return View(lista);
+                    }
+
+                }       
+
             }
-            return View(list.OrderBy(f => f.orden).ToList());
+            return RedirectToAction("Index", new { idAuditoria = aud.IdAuditoria, nombreAuditoria = aud.Auditoria });
+
+            //return View(lista);
+
         }
         // GET: Fases/Details/5
         public ActionResult Details(int? id)
@@ -130,7 +194,7 @@ namespace web.Controllers
             ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", fases.IdEstado);
             ViewBag.idAuditoriaRet = aud.IdAuditoria;
             ViewBag.nombreAuditoria = aud.Auditoria;
-            //fases.Porcentaje = fases.Porcentaje * 100;
+            fases.Porcentaje = fases.Porcentaje * 100;
             return View(fases);
         }
 
