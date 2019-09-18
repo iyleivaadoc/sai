@@ -223,17 +223,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201909122111298_primeraLicAyala2.cs" />
-    <Compile Include="Migrations\201909122111298_primeraLicAyala2.Designer.cs">
-      <DependentUpon>201909122111298_primeraLicAyala2.cs</DependentUpon>
+    <Compile Include="Migrations\201909171525520_migracion1.cs" />
+    <Compile Include="Migrations\201909171525520_migracion1.Designer.cs">
+      <DependentUpon>201909171525520_migracion1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201909161424462_modificacion.cs" />
-    <Compile Include="Migrations\201909161424462_modificacion.Designer.cs">
-      <DependentUpon>201909161424462_modificacion.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909161803494_modificacion2.cs" />
-    <Compile Include="Migrations\201909161803494_modificacion2.Designer.cs">
-      <DependentUpon>201909161803494_modificacion2.cs</DependentUpon>
+    <Compile Include="Migrations\201909171534003_migracion11.cs" />
+    <Compile Include="Migrations\201909171534003_migracion11.Designer.cs">
+      <DependentUpon>201909171534003_migracion11.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accesos.cs" />
@@ -307,14 +303,11 @@
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EmbeddedResource Include="Migrations\201909122111298_primeraLicAyala2.resx">
-      <DependentUpon>201909122111298_primeraLicAyala2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909171525520_migracion1.resx">
+      <DependentUpon>201909171525520_migracion1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909161424462_modificacion.resx">
-      <DependentUpon>201909161424462_modificacion.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909161803494_modificacion2.resx">
-      <DependentUpon>201909161803494_modificacion2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909171534003_migracion11.resx">
+      <DependentUpon>201909171534003_migracion11.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resourses\Strings.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
