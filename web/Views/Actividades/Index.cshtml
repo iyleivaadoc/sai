@@ -1,0 +1,78 @@
+﻿@model IEnumerable<web.Models.Actividades>
+
+@{
+    ViewBag.Title = "Actividades de fase";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="position: relative;">
+    <div class="row col-md-12" style="position: absolute;">
+        <h2>Actividades de fase</h2>
+    </div>
+    <div style="position: absolute; top: 20px; right:0px;">
+        @Html.ActionLink("Nueva Actividad", "Create", new { idFase = ViewBag.idFase }, new { @class = "btn btn-success" })
+        <br />
+    </div>
+</div>
+
+<div class="col-md-12" style="position: relative; top: 60px; padding-right: 0px; padding-left:0px; background-color: white;">
+    <div style="overflow-x:auto;">
+        <table class="table table-bordered table-condensed table-striped table-hover table-responsive">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Actividad)
+                </th>
+                <th style="width: 10%;">
+                    @Html.DisplayNameFor(model => model.FechaInicio)
+                </th>
+                <th style="width: 10%;">
+                    @Html.DisplayNameFor(model => model.FechaFin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Duracion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Porcentaje)
+                </th>
+                <th>
+                    Encargado
+                </th>
+                <th style="width: 15%;">Opciones</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Actividad)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => item.FechaInicio, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "max-width: 125px;" } })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => item.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "max-width: 125px;" } })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Duracion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Porcentaje)%
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Encargado.UserName)
+                    </td>
+                    <td>
+                        @Html.ActionLink(" ", "Details", new { id = item.IdActividad }, new { @class = "btn btn-info btn-sm glyphicon glyphicon-info-sign", @title = "Detalles" })
+                        @Html.ActionLink(" ", "Edit", new { id = item.IdActividad}, new { @class = "btn btn-warning btn-sm glyphicon glyphicon-edit", @title = "Editar" })
+                        @Html.ActionLink(" ", "Delete", new { id = item.IdActividad }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-remove-circle", @title = "Eliminar" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+<div style="position:relative; bottom:-1em; margin-top: 2em;">
+    @Html.ActionLink(" ", "Index", "Fases", new { idAuditoria=ViewBag.idAuditoria,nombreAuditoria=ViewBag.nombreAuditoria}, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás" })
+</div>

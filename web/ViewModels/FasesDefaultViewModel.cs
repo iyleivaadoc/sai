@@ -29,6 +29,9 @@ namespace web.ViewModels
         //public List<FasesDefaultViewModel> list { get; set; }
         public List<FasesDefaultVMList> list { get; set; }
 
+        //[DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        //public DateTime fecha { get; set; }
+
         public FasesDefaultViewModel()
         {
             FasesD = new FasesDefault(); // Si no necesitas esto solo la lista, quitarlo

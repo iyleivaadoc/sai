@@ -47,7 +47,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions" style="text-align:center;">
-            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <input type="submit" value="Delete" class="btn btn-danger" /> 
             @Html.ActionLink("Cancelar", "Index", new { idAuditoria=Model.IdAuditoria,nombreAuditoria=Model.Auditoria.Auditoria},new { @class="btn btn-success"})
         </div>
     }

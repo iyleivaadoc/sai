@@ -108,4 +108,40 @@
         });
         
     })
+    $("#FechaInicio").focusout(function () {
+        var fec = $("#FechaInicio").get(0).value;
+        if (fec == "") {
+            urlget = "../Asuetos/BetweenAsueto?fecha=1990-01-01";
+        } else {
+            urlget = "../Asuetos/BetweenAsueto?fecha=" + fec;
+        }
+        $.ajax({
+            url: urlget,
+            error: function (data) {
+                alertify.error("Error al comunicarse con el servidor...")
+            }
+        }).then(function (data) {
+            if (data.existe) {
+                alertify.warning("La Fecha de inicio se encuentra en el asueto: <strong>" + data.msj + ".</strong>")
+            }
+        });
+    })
+    $("#FechaFin").focusout(function () {
+        var fec = $("#FechaFin").get(0).value;
+        if (fec == "") {
+            urlget = "../Asuetos/BetweenAsueto?fecha=1990-01-01";
+        } else {
+            urlget = "../Asuetos/BetweenAsueto?fecha=" + fec;
+        }
+        $.ajax({
+            url: urlget,
+            error: function (data) {
+                alertify.error("Error al comunicarse con el servidor...")
+            }
+        }).then(function (data) {
+            if (data.existe) {
+                alertify.warning("La Fecha de finalización se encuentra en el asueto: <strong>" + data.msj + ".</strong>")
+            }
+        });
+    })
 </script>

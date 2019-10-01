@@ -5,7 +5,8 @@
 }
 
 <h2>Fases de auditoría</h2>
-
+@Html.Raw(Session["MyAlert"])
+@{ Session["MyAlert"] = null;}
 @using (Html.BeginForm())
 {
     int i = 0;
@@ -17,17 +18,16 @@
 
 
         <div class="row">
+            @*<div class="col-md-offset-2 col-md-8">
+                @Html.EditorFor(model =>model.fecha,new { htmlAttributes = new { @class = "form-control"} })
+            </div>*@
             <div class="container col-md-8 col-md-offset-2" style="max-height:350px; border:1px solid #ccc;overflow:auto;border-radius:10px; box-shadow: 2px 2px 0px grey;padding-left: 1px;padding-right: 1px;">
                 <div id="m" style="padding-left: 30px;">
-                   @* @Html.HiddenFor(m =>m.list)*@
                     <table class="table">
                         <tr>
                             <th>
 
                             </th>
-                            @*<th>@Html.DisplayNameFor(Model => Model.list.NombreFase)</th>
-                            <th>@Html.DisplayNameFor(Model => Model.Porcentaje)</th>
-                            <th style="width:20%">@Html.DisplayNameFor(Model => Model.Duracion)</th>*@
                             <th>Nombre Fase</th>
                             <th>Porcentaje</th>
                             <th style="width:20%">Duración</th>

@@ -1,0 +1,43 @@
+﻿@model web.Models.Asuetos
+
+@{
+    ViewBag.Title = "Detalles de asueto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-md-offset-3 col-md-6">
+    <h4>detalles de asueto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DescripcionAsueto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescripcionAsueto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Inicio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Inicio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fin)
+        </dd>
+
+    </dl>
+    <div class="text-center">
+        @Html.ActionLink("Editar", "Edit", new { id = Model.IdAsueto }, new { @class = "btn btn-warning" })
+        @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-success" })
+    </div>
+</div>
+

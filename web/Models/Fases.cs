@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using web.Controllers;
 
 namespace web.Models
 {
@@ -25,7 +26,9 @@ namespace web.Models
             get
             {
                 TimeSpan dias = FechaFin - FechaInicio;
-                return dias.Days;
+                AsuetosController asueto = new AsuetosController();
+                var diasAsuetos = asueto.DaysInTimeSpan(FechaInicio, FechaFin);
+                return dias.Days - diasAsuetos + 1;
             }
         }
         [ForeignKey("Auditoria")]

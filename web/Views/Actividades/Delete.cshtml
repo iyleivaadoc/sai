@@ -1,0 +1,76 @@
+﻿@model web.Models.Actividades
+
+@{
+    ViewBag.Title = "Eliminar Actividad";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-md-6 col-md-offset-3">
+    <h4>¿Realmente desea eliminar esta actividad?</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Actividad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Actividad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DescripcionActividad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescripcionActividad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaInicio)
+        </dt>
+
+        <dd>
+            @Html.EditorFor(model => Model.FechaInicio, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "max-width: 125px;" } })
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaFin)
+        </dt>
+
+        <dd>
+            @Html.EditorFor(model => Model.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "max-width: 125px;" } })
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duracion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duracion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Porcentaje)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Porcentaje)%
+        </dd>
+
+        <dt>
+            Encargado
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Encargado.NombreCompleto)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color" style="text-align:center;">
+            <input type="submit" value="Eliminar" class="btn btn-danger" />
+            @Html.ActionLink("Cancelar", "Index",new { idfase=Model.IdFase},new { @class="btn btn-success"})
+        </div>
+    }
+</div>

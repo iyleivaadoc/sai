@@ -8,19 +8,13 @@
 
 <div style="position: relative;">
     <div class="row col-md-12" style="position: absolute;">
-        <h2 class="col-md-6">@ViewBag.nombreAuditoria</h2>
-        @*<div class="col-md-5" style="top: 10px;">
-            @using (Html.BeginForm())
-            {
-                <p>
-                    <input type="submit" value="Buscar" class="btn btn-info col-md-2" style="margin-left: 5px;" />
-                    @Html.TextBox("SearchString", null, new { @class = "form-control col-md-6", @style = "margin-left: 5px;" })
-                </p>
-            }
-        </div>*@
+        <h2 class="col-md-6">Fases de @ViewBag.nombreAuditoria</h2>
     </div>
     <div style="position: absolute; top: 20px; right:0px;">
-        @Html.ActionLink("Fases por defecto", "IndexDefault", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria}, new { @class = "btn btn-info" })
+        @if (Model.Count() <= 0)
+        {
+            @Html.ActionLink("Fases por defecto", "IndexDefault", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn btn-info" })
+        }
         @Html.ActionLink("Nueva Fase", "Create", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn btn-success" })
         <br /><br />
     </div>
@@ -68,6 +62,7 @@
                         @Html.DisplayFor(modelItem => item.Duracion)
                     </td>
                     <td>
+                        @Html.ActionLink(" ", "Index", "Actividades", new { IdFase = item.IdFase, nombreAuditoria = item.Auditoria.Auditoria }, new { @class = "btn btn-success btn-sm glyphicon glyphicon-list-alt", @title = "Inspeccionar Actividades" })
                         @Html.ActionLink(" ", "Details", new { id = item.IdFase }, new { @class = "btn btn-info btn-sm glyphicon glyphicon-info-sign", @title = "Detalles" })
                         @Html.ActionLink(" ", "Edit", new { id = item.IdFase }, new { @class = "btn btn-warning btn-sm glyphicon glyphicon-edit", @title = "Editar" })
                         @Html.ActionLink(" ", "Delete", new { id = item.IdFase }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-remove-circle", @title = "Eliminar" })
@@ -77,4 +72,7 @@
 
         </table>
     </div>
+</div>
+<div style="position:relative; bottom:-1em; margin-top: 2em;">
+    @Html.ActionLink(" ", "Index", "Auditorias", new { IdPlan= ViewBag.idPlan, nombrePlan = ViewBag.nombrePlan }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás" })
 </div>

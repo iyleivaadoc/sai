@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using web.Controllers;
 
 namespace web.Models
 {
@@ -29,7 +30,9 @@ namespace web.Models
         [NotMapped]
         public int Duracion { get {
                 TimeSpan dias = FechaFin - FechaInicio;
-                return dias.Days;
+                AsuetosController asueto = new AsuetosController();
+                var diasAsuetos = asueto.DaysInTimeSpan(FechaInicio, FechaFin);
+                return dias.Days-diasAsuetos+1;
             } }
         [Required(ErrorMessage = "La Fecha de Finalización es requerida."), Display(Name = "Finalización"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaFin { get; set; }

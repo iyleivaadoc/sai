@@ -211,6 +211,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccesosController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ActividadesController.cs" />
+    <Compile Include="Controllers\AsuetosController.cs" />
     <Compile Include="Controllers\AuditoriasController.cs" />
     <Compile Include="Controllers\CalendarioController.cs" />
     <Compile Include="Controllers\FasesController.cs" />
@@ -223,18 +225,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201909171525520_migracion1.cs" />
-    <Compile Include="Migrations\201909171525520_migracion1.Designer.cs">
-      <DependentUpon>201909171525520_migracion1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201909171534003_migracion11.cs" />
-    <Compile Include="Migrations\201909171534003_migracion11.Designer.cs">
-      <DependentUpon>201909171534003_migracion11.cs</DependentUpon>
+    <Compile Include="Migrations\201910011433418_pruebas.cs" />
+    <Compile Include="Migrations\201910011433418_pruebas.Designer.cs">
+      <DependentUpon>201910011433418_pruebas.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accesos.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Actividades.cs" />
+    <Compile Include="Models\Asuetos.cs" />
     <Compile Include="Models\Auditorias.cs" />
     <Compile Include="Models\Departamentos.cs" />
     <Compile Include="Models\Estados.cs" />
@@ -303,11 +302,8 @@
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EmbeddedResource Include="Migrations\201909171525520_migracion1.resx">
-      <DependentUpon>201909171525520_migracion1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201909171534003_migracion11.resx">
-      <DependentUpon>201909171534003_migracion11.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910011433418_pruebas.resx">
+      <DependentUpon>201910011433418_pruebas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resourses\Strings.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -405,6 +401,17 @@
     <Content Include="Views\Shared\_LayoutLockout.cshtml" />
     <Content Include="Views\Fases\indexDefault.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
+    <Content Include="Views\Actividades\Create.cshtml" />
+    <Content Include="Views\Actividades\Delete.cshtml" />
+    <Content Include="Views\Actividades\Details.cshtml" />
+    <Content Include="Views\Actividades\Edit.cshtml" />
+    <Content Include="Views\Actividades\Index.cshtml" />
+    <Content Include="Views\Shared\BadRequest.html" />
+    <Content Include="Views\Asuetos\Create.cshtml" />
+    <Content Include="Views\Asuetos\Delete.cshtml" />
+    <Content Include="Views\Asuetos\Details.cshtml" />
+    <Content Include="Views\Asuetos\Edit.cshtml" />
+    <Content Include="Views\Asuetos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
