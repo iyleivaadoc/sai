@@ -1,0 +1,115 @@
+﻿@model web.Models.Evidencias
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Evidencias</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Actividad.Actividad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Actividad.Actividad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hallazgo.Hallazgo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hallazgo.Hallazgo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlanAccion.NombrePlanAccion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlanAccion.NombrePlanAccion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Evidencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Evidencia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DescripcionEvidencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescripcionEvidencia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreDoc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreDoc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Documento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Documento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Eliminado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Eliminado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioCrea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioCrea)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioModifica)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioModifica)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaCrea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaCrea)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaModifica)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaModifica)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IdEvidencia }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

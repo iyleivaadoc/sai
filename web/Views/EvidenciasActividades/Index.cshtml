@@ -1,0 +1,100 @@
+﻿@model IEnumerable<web.Models.Evidencias>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Actividad.Actividad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Hallazgo.Hallazgo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PlanAccion.NombrePlanAccion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Evidencia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DescripcionEvidencia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NombreDoc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Documento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Eliminado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UsuarioCrea)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UsuarioModifica)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaCrea)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaModifica)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Actividad.Actividad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Hallazgo.Hallazgo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PlanAccion.NombrePlanAccion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Evidencia)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DescripcionEvidencia)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NombreDoc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Documento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Eliminado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UsuarioCrea)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UsuarioModifica)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaCrea)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaModifica)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IdEvidencia }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IdEvidencia }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IdEvidencia })
+        </td>
+    </tr>
+}
+
+</table>

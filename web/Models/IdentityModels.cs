@@ -86,5 +86,7 @@ namespace web.Models
         public DbSet<Evidencias> Evidencias { get; set; }
         public DbSet<FasesDefault> FasesDefault { get; set; }
         public DbSet<Asuetos> Asuetos { get; set; }
+
+        public System.Data.Entity.DbSet<web.Models.PlanesDeAccion> PlanesDeAccions { get; set; }
     }
 }

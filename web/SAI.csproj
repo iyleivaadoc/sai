@@ -215,6 +215,7 @@
     <Compile Include="Controllers\AsuetosController.cs" />
     <Compile Include="Controllers\AuditoriasController.cs" />
     <Compile Include="Controllers\CalendarioController.cs" />
+    <Compile Include="Controllers\EvidenciasActividadesController.cs" />
     <Compile Include="Controllers\FasesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -228,6 +229,10 @@
     <Compile Include="Migrations\201910011433418_pruebas.cs" />
     <Compile Include="Migrations\201910011433418_pruebas.Designer.cs">
       <DependentUpon>201910011433418_pruebas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910192217389_aaaa.cs" />
+    <Compile Include="Migrations\201910192217389_aaaa.Designer.cs">
+      <DependentUpon>201910192217389_aaaa.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accesos.cs" />
@@ -304,6 +309,9 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <EmbeddedResource Include="Migrations\201910011433418_pruebas.resx">
       <DependentUpon>201910011433418_pruebas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910192217389_aaaa.resx">
+      <DependentUpon>201910192217389_aaaa.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resourses\Strings.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -412,6 +420,11 @@
     <Content Include="Views\Asuetos\Details.cshtml" />
     <Content Include="Views\Asuetos\Edit.cshtml" />
     <Content Include="Views\Asuetos\Index.cshtml" />
+    <Content Include="Views\EvidenciasActividades\Create.cshtml" />
+    <Content Include="Views\EvidenciasActividades\Delete.cshtml" />
+    <Content Include="Views\EvidenciasActividades\Details.cshtml" />
+    <Content Include="Views\EvidenciasActividades\Edit.cshtml" />
+    <Content Include="Views\EvidenciasActividades\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

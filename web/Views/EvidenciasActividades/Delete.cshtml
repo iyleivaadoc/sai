@@ -1,0 +1,121 @@
+﻿@model web.Models.Evidencias
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Evidencias</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Actividad.Actividad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Actividad.Actividad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hallazgo.Hallazgo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hallazgo.Hallazgo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PlanAccion.NombrePlanAccion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlanAccion.NombrePlanAccion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Evidencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Evidencia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DescripcionEvidencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescripcionEvidencia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreDoc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreDoc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Documento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Documento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Eliminado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Eliminado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioCrea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioCrea)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioModifica)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioModifica)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaCrea)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaCrea)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaModifica)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaModifica)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
