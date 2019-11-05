@@ -7,7 +7,7 @@
 
 <div style="position: relative;">
     <div class="row col-md-12" style="position: absolute;">
-        <h2 class="col-md-6">Días no trabajables</h2>
+        <h2 class="col-md-6">Días no laborables</h2>
         <div class="col-md-5" style="top: 10px;">
             @using (Html.BeginForm())
             {
@@ -58,7 +58,7 @@
                     <td>
                         @Html.ActionLink(" ", "Details", new { id = item.IdAsueto }, new { @class = "btn btn-info btn-sm glyphicon glyphicon-info-sign", @title = "Detalles" })
                         @Html.ActionLink(" ", "Edit", new { id = item.IdAsueto },new { @class= "btn btn-warning btn-sm glyphicon glyphicon-pencil", @title = "Editar" }) 
-                        @Html.ActionLink(" ", "Delete", new { id = item.IdAsueto }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-remove-circle", @title = "Eliminar" })
+                        @Html.ActionLink(" ", "Delete", new { id = item.IdAsueto }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash", @title = "Eliminar" })
                     </td>
                 </tr>
                             }

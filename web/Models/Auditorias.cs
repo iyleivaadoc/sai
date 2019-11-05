@@ -48,6 +48,9 @@ namespace web.Models
         public int IdPlan { get; set; }
         [ForeignKey("Estado")]
         public int IdEstado { get; set; }
+        [ForeignKey("DepartamentoRealizar"), Display(Name ="Lugar")]
+        public int IdDepartamentoRealizar { get; set; }
+        public virtual Departamentos DepartamentoRealizar { get; set; }
         public virtual ApplicationUser UsuarioRealiza { get; set; }
         public virtual Planes Plan { get; set; }
         public virtual Estados Estado { get; set; }

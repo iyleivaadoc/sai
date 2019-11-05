@@ -59,7 +59,7 @@
                 <td>@Html.ActionLink(" ", "Index", "Auditorias", new { IdPlan = item.IdPlan, nombrePlan = item.NombrePlan }, new { @class = "btn btn-success btn-sm glyphicon glyphicon-list-alt", @title = "Inspeccionar auditorías" })
                     @Html.ActionLink(" ", "Details", new { id = item.IdPlan }, new { @class = "btn btn-info btn-sm glyphicon glyphicon-info-sign", @title = "Detalles" })
                     @Html.ActionLink(" ", "Edit", new { id = item.IdPlan }, new { @class = "btn btn-warning btn-sm glyphicon glyphicon-edit", @title = "Editar" })
-                    @Html.ActionLink(" ", "Delete", new { id = item.IdPlan }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-remove-circle", @title = "Eliminar" })
+                    @Html.ActionLink(" ", "Delete", new { id = item.IdPlan }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash", @title = "Eliminar" })
                 </td>
             </tr>
         }

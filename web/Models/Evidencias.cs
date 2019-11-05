@@ -9,13 +9,13 @@ namespace web.Models
 {
     public class Evidencias
     {
-        [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdEvidencia { get; set; }
-        [StringLength(128),Display(Name ="Evidencia"),Required(ErrorMessage ="Debe proporcionar nombre a la evidencia")]
+        [StringLength(128), Display(Name = "Evidencia"), Required(ErrorMessage = "Debe proporcionar nombre a la evidencia")]
         public string Evidencia { get; set; }
         [StringLength(128), Display(Name = "Descripción"), Required(ErrorMessage = "Debe proporcionar una descripción a la evidencia")]
         public string DescripcionEvidencia { get; set; }
-        [StringLength(128)]
+        [StringLength(128), Display(Name ="Nombre Documento")]
         public string NombreDoc { get; set; }
         public byte[] Documento { get; set; }
         [ForeignKey("Hallazgo")]

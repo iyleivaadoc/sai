@@ -14,8 +14,9 @@ namespace web.Models
         [StringLength(128),Required(ErrorMessage ="Debe proporcionar un nombre al hallazgo")]
         public string Hallazgo { get; set; }
         [StringLength(128), Required(ErrorMessage = "Debe proporcionar una descripción al hallazgo")]
+        [Display(Name ="Descripción")]
         public string DescripcionHallazgo { get; set; }
-        [Required(ErrorMessage = "Debe proporcionar una fecha al hallazgo")]
+        [Required(ErrorMessage = "Debe proporcionar una fecha al hallazgo"), Display(Name ="Fecha del hallazgo"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaHallazgo { get; set; }
         [ForeignKey("Actividad")]
         public int IdActividad { get; set; }

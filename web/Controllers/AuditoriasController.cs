@@ -82,9 +82,9 @@ namespace web.Controllers
             auditoria.FechaInicio = plan.FechaInicio;
             auditoria.FechaFin =auditoria.FechaInicio.AddDays(60);
             auditoria.IdPlan = idplan;
-            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78"));
+            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
             ViewBag.IdUsuarioRealiza=new SelectList(usuarios, "Id", "NombreCompleto", auditoria.IdUsuarioRealiza);
-
+            ViewBag.IdDepartamentoRealizar = new SelectList(db.Departamentos.Where(d=>d.Eliminado!=true), "IdDepartamento", "NombreDepartamento", auditoria.IdDepartamentoRealizar);
             return View(auditoria);
         }
 
@@ -107,8 +107,9 @@ namespace web.Controllers
                 return RedirectToAction("Index",new { idplan=auditorias.IdPlan, nombrePlan=ViewBag.nombrePlan});
             }
 
-            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78"));
+            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
             ViewBag.IdUsuarioRealiza = new SelectList(usuarios, "Id", "NombreCompleto", auditorias.IdUsuarioRealiza);
+            ViewBag.IdDepartamentoRealizar = new SelectList(db.Departamentos.Where(d => d.Eliminado != true), "IdDepartamento", "NombreDepartamento", auditorias.IdDepartamentoRealizar);
             var planAux = db.Planes.Where(p => p.IdPlan == auditorias.IdPlan).First();
             ViewBag.idPlan = auditorias.IdPlan;
             ViewBag.nombrePlan = planAux.NombrePlan;
@@ -128,9 +129,9 @@ namespace web.Controllers
             {
                 return HttpNotFound();
             }
-            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78"));
+            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
             ViewBag.IdUsuarioRealiza = new SelectList(usuarios, "Id", "NombreCompleto", auditorias.IdUsuarioRealiza);
-            
+            ViewBag.IdDepartamentoRealizar = new SelectList(db.Departamentos.Where(d => d.Eliminado != true), "IdDepartamento", "NombreDepartamento", auditorias.IdDepartamentoRealizar);
             return View(auditorias);
         }
 
@@ -153,8 +154,9 @@ namespace web.Controllers
                 return RedirectToAction("Index",new { idPlan=auditorias.IdPlan,nombrePlan=aux.NombrePlan});
             }
 
-            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78"));
+            var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
             ViewBag.IdUsuarioRealiza = new SelectList(usuarios, "Id", "NombreCompleto", auditorias.IdUsuarioRealiza);
+            ViewBag.IdDepartamentoRealizar = new SelectList(db.Departamentos.Where(d => d.Eliminado != true), "IdDepartamento", "NombreDepartamento", auditorias.IdDepartamentoRealizar);
             var planAux = db.Planes.Where(p => p.IdPlan == auditorias.IdPlan).First();
             ViewBag.idPlan = auditorias.IdPlan;
             auditorias.Plan = planAux;

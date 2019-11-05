@@ -1,0 +1,66 @@
+﻿@model web.Models.Departamentos
+
+@{
+    ViewBag.Title = "Editar departamento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal col-md-offset-3 col-md-6">
+        <h4>Editar departamento</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IdDepartamento)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NombreDepartamento, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.NombreDepartamento, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NombreDepartamento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DescripcionDepartamento, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.TextAreaFor(model => model.DescripcionDepartamento, new { @class = "form-control", @style = "height:100px" } )
+                @Html.ValidationMessageFor(model => model.DescripcionDepartamento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdPersonaACargo, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @*@Html.EditorFor(model => model.IdPersonaACargo, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.DropDownList("IdPersonaACargo", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IdPersonaACargo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdDireccion, "IdDireccion", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("IdDireccion", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IdDireccion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.Eliminado)
+        @Html.HiddenFor(model => model.UsuarioCrea)
+        @Html.HiddenFor(model => model.UsuarioModifica)
+        @Html.HiddenFor(model => model.FechaCrea)
+        @Html.HiddenFor(model => model.FechaModifica)
+        
+
+        <div class="form-group">
+            <div class="col-md-12 text-center">
+                <input type="submit" value="Guardar" class="btn btn-warning" />
+                @Html.ActionLink("Cancelar", "Index", null, new { @class="btn btn-success"})
+            </div>
+        </div>
+    </div>
+}
+

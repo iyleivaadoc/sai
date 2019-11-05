@@ -1,100 +1,59 @@
 ﻿@model IEnumerable<web.Models.Evidencias>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Evidencias";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Actividad.Actividad)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Hallazgo.Hallazgo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PlanAccion.NombrePlanAccion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Evidencia)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DescripcionEvidencia)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NombreDoc)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Documento)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Eliminado)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UsuarioCrea)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UsuarioModifica)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaCrea)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaModifica)
-        </th>
-        <th></th>
-    </tr>
+<div style="position: relative;">
+    <div class="row col-md-12" style="position: absolute;">
+        <h2 class="col-md-6">@ViewBag.nombreActividad</h2>
+    </div>
+    <div style="position: absolute; top: 20px; right:0px;">
+        @Html.ActionLink("Registrar evidencia", "Create", new { idActividad = ViewBag.idActividad}, new { @class = "btn btn-success" })
+        <br /><br />
+    </div>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Actividad.Actividad)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Hallazgo.Hallazgo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PlanAccion.NombrePlanAccion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Evidencia)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DescripcionEvidencia)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NombreDoc)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Documento)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Eliminado)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UsuarioCrea)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UsuarioModifica)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaCrea)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaModifica)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.IdEvidencia }) |
-            @Html.ActionLink("Details", "Details", new { id=item.IdEvidencia }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.IdEvidencia })
-        </td>
-    </tr>
-}
+<div class="col-md-12" style="position: relative; top: 60px; padding-right: 0px; background-color: white;">
+    <div style="overflow-x:auto;">
+        <table class="table table-bordered table-condensed table-responsive table-striped table-hover">
+            <tr>
+                <th style="width: 25%;">
+                    @Html.DisplayNameFor(model => model.Evidencia)
+                </th>
+                <th style="width: 30%;">
+                    @Html.DisplayNameFor(model => model.DescripcionEvidencia)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NombreDoc)
+                </th>
+                <th style="width: 15%;">Opciones</th>
+            </tr>
 
-</table>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Evidencia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescripcionEvidencia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreDoc)
+                </td>
+                <td>
+                    @Html.ActionLink(" ", "Download", new { id = item.IdEvidencia },new { @class = "btn btn-success btn-sm glyphicon glyphicon-cloud-download", @title = "Descargar evidencia" })
+                    @Html.ActionLink(" ", "Delete", new { id = item.IdEvidencia }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash", @title = "Eliminar evidencia" }) 
+                </td>
+            </tr>
+            }
+
+        </table>
+    </div>
+</div>
+<div style="position:relative; bottom:-1em; margin-top: 2em;">
+    @Html.ActionLink(" ", "Index", "Actividades", new { IdFase = ViewBag.idFase, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás" })
+</div>

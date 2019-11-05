@@ -1,0 +1,77 @@
+﻿@model IEnumerable<web.Models.Prueba>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a href="#" type="button" class="btn btn-info btn-sm " data-toggle="modal" data-target="#myModal" onclick="Crear()">
+
+    <h2>Index</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Campo1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Campo2)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Campo1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Campo2)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.IdPrueba }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.IdPrueba }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.IdPrueba })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+
+    <div id="myModal" class="modal fade modal-lg" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">@ViewBag.tituloModal</h4>
+                </div>
+                <div class="modal-body" id="modalBody">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+    function Crear() {
+        $("#modalBody").html('');
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("Create", "Pruebas")',
+            success: function (view) {
+                $("#modalBody").html(view);
+            },
+
+        });
+    }
+    </script>

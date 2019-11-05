@@ -11,7 +11,6 @@ using web.Models;
 
 namespace web.Controllers
 {
-    [Authorize(Roles ="Administrador")]
     public class AccesosController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

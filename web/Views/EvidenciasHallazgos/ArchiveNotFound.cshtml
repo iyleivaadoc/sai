@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Archivo No Encontrado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-danger">Archivo no encontrado</h1>
+<img src="~/Content/noDocument.png" style="width: 20%;" />
+<p class="text-danger">Favor notifica esto al administrador.</p>
+<input type="button" value="regresar" class="btn btn-success" onclick="goBack()" />
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<web.Models.PlanesDeAccion>
+
+@{
+    ViewBag.Title = "planes de Acción";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="position: relative;">
+    <div class="row col-md-12" style="position: absolute;">
+        <h2 class="col-md-6">@ViewBag.nombreHallazgo</h2>
+    </div>
+    <div style="position: absolute; top: 20px; right:0px;">
+        @Html.ActionLink("Registrar evidencia", "Create", new { id = ViewBag.idHallazgo }, new { @class = "btn btn-success" })
+        <br /><br />
+    </div>
+</div>
+<div class="col-md-12" style="position: relative; top: 60px; padding-right: 0px; background-color: white;">
+    <div style="overflow-x:auto;">
+        <table class="table table-bordered table-condensed table-responsive table-striped table-hover">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.NombrePlanAccion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DescripcionPlanAccion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdEncargado)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdDirectorValidador)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaVencimiento)
+                </th>
+                <th>Opciones</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NombrePlanAccion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DescripcionPlanAccion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Encargado.NombreCompleto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Validador.NombreCompleto)
+                    </td>
+                    <td>
+                        @{ var fecha = item.FechaVencimiento.ToShortDateString();}
+                        @Html.DisplayFor(modelItem => fecha)
+                    </td>
+                    <td>
+                        @Html.ActionLink(" ", "Index","EvidenciasPlanes", new { id = item.IdPlanAccion }, new { @class = "btn btn-success glyphicon glyphicon-list-alt", @Title = "Evidencias" })
+                        @Html.ActionLink(" ", "Details", new { id = item.IdPlanAccion }, new { @class="btn btn-info glyphicon glyphicon-info-sign", @Title="Detalles"}) 
+                        @Html.ActionLink(" ", "Edit", new { id = item.IdPlanAccion }, new { @class = "btn btn-warning glyphicon glyphicon-edit", @title="Editar" })
+                        @Html.ActionLink(" ", "Delete", new { id = item.IdPlanAccion },new { @class= "btn btn-danger glyphicon glyphicon-trash", @title = "Eliminar" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+<div style="position:relative; bottom:-1em; margin-top: 2em;">
+    @Html.ActionLink(" ", "Index", "Hallazgos", new { id = ViewBag.idActividad }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás" })
+</div>

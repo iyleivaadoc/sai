@@ -1,0 +1,51 @@
+﻿@model web.Models.Hallazgos
+
+@{
+    ViewBag.Title = "Nuevo hallazgo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal col-md-offset-3 col-md-6">
+        <h3>Registrar Hallazgo</h3>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Hallazgo, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Hallazgo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Hallazgo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DescripcionHallazgo, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.TextAreaFor(model => model.DescripcionHallazgo,new { @class = "form-control", @style="height:100px;" } )
+                @Html.ValidationMessageFor(model => model.DescripcionHallazgo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaHallazgo, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.FechaHallazgo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaHallazgo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.IdActividad)
+        
+
+        <div class="form-group">
+            <div class="col-md-12 text-center">
+                <input type="submit" value="Registrar" class="btn btn-success" />
+                @Html.ActionLink("Cancelar", "Index",new {id=Model.IdActividad },new { @class="btn btn-warning"})
+            </div>
+        </div>
+    </div>
+}
+

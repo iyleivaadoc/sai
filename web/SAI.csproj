@@ -144,6 +144,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="VortexSoft.Bootstrap, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VortexSoft.Bootstrap.1.0.0\lib\VortexSoft.Bootstrap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -215,24 +219,31 @@
     <Compile Include="Controllers\AsuetosController.cs" />
     <Compile Include="Controllers\AuditoriasController.cs" />
     <Compile Include="Controllers\CalendarioController.cs" />
+    <Compile Include="Controllers\DepartamentosController.cs" />
+    <Compile Include="Controllers\DireccionsController.cs" />
     <Compile Include="Controllers\EvidenciasActividadesController.cs" />
+    <Compile Include="Controllers\EvidenciasHallazgosController.cs" />
+    <Compile Include="Controllers\EvidenciasPlanesController.cs" />
     <Compile Include="Controllers\FasesController.cs" />
+    <Compile Include="Controllers\HallazgosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OwnController.cs" />
     <Compile Include="Controllers\PlanesController.cs" />
+    <Compile Include="Controllers\PlanesDeAccionController.cs" />
+    <Compile Include="Controllers\PruebasController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910011433418_pruebas.cs" />
-    <Compile Include="Migrations\201910011433418_pruebas.Designer.cs">
-      <DependentUpon>201910011433418_pruebas.cs</DependentUpon>
+    <Compile Include="Migrations\201911042008460_bff.cs" />
+    <Compile Include="Migrations\201911042008460_bff.Designer.cs">
+      <DependentUpon>201911042008460_bff.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910192217389_aaaa.cs" />
-    <Compile Include="Migrations\201910192217389_aaaa.Designer.cs">
-      <DependentUpon>201910192217389_aaaa.cs</DependentUpon>
+    <Compile Include="Migrations\201911051659239_ks.cs" />
+    <Compile Include="Migrations\201911051659239_ks.Designer.cs">
+      <DependentUpon>201911051659239_ks.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accesos.cs" />
@@ -241,17 +252,20 @@
     <Compile Include="Models\Asuetos.cs" />
     <Compile Include="Models\Auditorias.cs" />
     <Compile Include="Models\Departamentos.cs" />
+    <Compile Include="Models\Direccion.cs" />
     <Compile Include="Models\Estados.cs" />
     <Compile Include="Models\Evidencias.cs" />
     <Compile Include="Models\Fases.cs" />
     <Compile Include="Models\FasesDefault.cs" />
     <Compile Include="Models\Hallazgos.cs" />
+    <Compile Include="Models\HuellaAuditoria.cs" />
     <Compile Include="Models\Periodos.cs" />
     <Compile Include="Models\Permisos.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Planes.cs" />
     <Compile Include="Models\PlanesDeAccion.cs" />
+    <Compile Include="Models\Prueba.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\Sociedades.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -296,8 +310,10 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fondo1.jpg" />
+    <Content Include="Content\noDocument.png" />
     <Content Include="Content\ShowContra.js" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\spinner.css" />
     <Content Include="Content\Styles.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -307,11 +323,11 @@
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EmbeddedResource Include="Migrations\201910011433418_pruebas.resx">
-      <DependentUpon>201910011433418_pruebas.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911042008460_bff.resx">
+      <DependentUpon>201911042008460_bff.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201910192217389_aaaa.resx">
-      <DependentUpon>201910192217389_aaaa.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201911051659239_ks.resx">
+      <DependentUpon>201911051659239_ks.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resourses\Strings.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -425,6 +441,45 @@
     <Content Include="Views\EvidenciasActividades\Details.cshtml" />
     <Content Include="Views\EvidenciasActividades\Edit.cshtml" />
     <Content Include="Views\EvidenciasActividades\Index.cshtml" />
+    <Content Include="Views\EvidenciasActividades\ArchiveNotFound.cshtml" />
+    <Content Include="Views\Hallazgos\Create.cshtml" />
+    <Content Include="Views\Hallazgos\Delete.cshtml" />
+    <Content Include="Views\Hallazgos\Details.cshtml" />
+    <Content Include="Views\Hallazgos\Edit.cshtml" />
+    <Content Include="Views\Hallazgos\Index.cshtml" />
+    <Content Include="Views\EvidenciasHallazgos\Create.cshtml" />
+    <Content Include="Views\EvidenciasHallazgos\Delete.cshtml" />
+    <Content Include="Views\EvidenciasHallazgos\Details.cshtml" />
+    <Content Include="Views\EvidenciasHallazgos\Edit.cshtml" />
+    <Content Include="Views\EvidenciasHallazgos\Index.cshtml" />
+    <Content Include="Views\EvidenciasHallazgos\ArchiveNotFound.cshtml" />
+    <Content Include="Views\Direccions\Create.cshtml" />
+    <Content Include="Views\Direccions\Delete.cshtml" />
+    <Content Include="Views\Direccions\Details.cshtml" />
+    <Content Include="Views\Direccions\Edit.cshtml" />
+    <Content Include="Views\Direccions\Index.cshtml" />
+    <Content Include="Views\Departamentos\Create.cshtml" />
+    <Content Include="Views\Departamentos\Delete.cshtml" />
+    <Content Include="Views\Departamentos\Details.cshtml" />
+    <Content Include="Views\Departamentos\Edit.cshtml" />
+    <Content Include="Views\Departamentos\Index.cshtml" />
+    <Content Include="Views\PlanesDeAccion\Create.cshtml" />
+    <Content Include="Views\PlanesDeAccion\Delete.cshtml" />
+    <Content Include="Views\PlanesDeAccion\Details.cshtml" />
+    <Content Include="Views\PlanesDeAccion\Edit.cshtml" />
+    <Content Include="Views\PlanesDeAccion\Index.cshtml" />
+    <Content Include="Views\EvidenciasPlanes\Create.cshtml" />
+    <Content Include="Views\EvidenciasPlanes\Delete.cshtml" />
+    <Content Include="Views\EvidenciasPlanes\Details.cshtml" />
+    <Content Include="Views\EvidenciasPlanes\Edit.cshtml" />
+    <Content Include="Views\EvidenciasPlanes\Index.cshtml" />
+    <Content Include="Views\EvidenciasPlanes\ArchiveNotFound.cshtml" />
+    <Content Include="Views\Pruebas\Create.cshtml" />
+    <Content Include="Views\Pruebas\Partials\Delete.cshtml" />
+    <Content Include="Views\Pruebas\Partials\Details.cshtml" />
+    <Content Include="Views\Pruebas\Partials\Edit.cshtml" />
+    <Content Include="Views\Pruebas\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutModals.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

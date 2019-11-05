@@ -58,7 +58,7 @@ namespace web.Controllers
             act.FechaInicio = fase.FechaInicio;
             act.FechaFin = act.FechaInicio.AddDays(2);
             ViewBag.idFace = idFase;
-            var users = db.Users.Where(u => u.Nombres != "Administrador" && u.Apellidos!= "Administrador");
+            var users = db.Users.Where(u =>u.Eliminado!=true && u.Nombres != "Administrador" && u.Apellidos!= "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
             ViewBag.IdEncargado = new SelectList(users, "Id", "NombreCompleto",act.IdEncargado);
             return View(act);
         }
@@ -85,7 +85,7 @@ namespace web.Controllers
                 if ((porcent + actividades.Porcentaje) > 100)
                 {
                     Session["MyAlert"] = "<script type='text/javascript'>alertify.error('El Porcentaje acumulado sobrepasa el 100%, sumatoria actual: "+(porcent+actividades.Porcentaje)+"%.');</script>";
-                    ViewBag.IdEncargado = new SelectList(db.Users, "Id", "NombreCompleto", actividades.IdEncargado);
+                    ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
                     return View(actividades);
                 }
                 db.Actividades.Add(actividades);
@@ -93,7 +93,7 @@ namespace web.Controllers
                 return RedirectToAction("Index",new { IdFase =actividades.IdFase});
             }
 
-            ViewBag.IdEncargado = new SelectList(db.Users, "Id", "NombreCompleto", actividades.IdEncargado);
+            ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
             ViewBag.IdEstado = new SelectList(db.Estados, "IdEstado", "Estado", actividades.IdEstado);
             ViewBag.IdFase = new SelectList(db.Fases, "IdFase", "Fase", actividades.IdFase);
             return View(actividades);
@@ -111,7 +111,7 @@ namespace web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.IdEncargado = new SelectList(db.Users, "Id", "NombreCompleto", actividades.IdEncargado);
+            ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
             return View(actividades);
         }
 
@@ -130,7 +130,7 @@ namespace web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index",new { idFase=actividades.IdFase});
             }
-            ViewBag.IdEncargado = new SelectList(db.Users, "Id", "NombreCompleto", actividades.IdEncargado);
+            ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
             return View(actividades);
         }
 

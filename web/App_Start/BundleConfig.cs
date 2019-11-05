@@ -29,9 +29,7 @@ namespace web
                       "~/Content/site.css",
                       "~/Content/Styles.css",
                       "~/Content/PagedList.css"));
-
-           
-
+            
         }
     }
 }

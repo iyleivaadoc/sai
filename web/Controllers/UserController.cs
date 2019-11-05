@@ -14,7 +14,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace web.Controllers
 {
-    [Authorize(Roles ="Administrador")]
+
     public class UserController : Controller
     {
         private ApplicationUserManager _userManager;

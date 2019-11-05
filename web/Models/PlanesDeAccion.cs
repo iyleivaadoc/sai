@@ -15,13 +15,15 @@ namespace web.Models
         public string NombrePlanAccion { get; set; }
         [StringLength(256), Required(ErrorMessage = "Debe proporcionar una descripción para el plan de acción"), Display(Name = "Descripción")]
         public string DescripcionPlanAccion { get; set; }
-        [Required(ErrorMessage = "Debe proporcionar una fecha de cumplimiento"), Display(Name = "Fecha de cumplimiento")]
+        [Required(ErrorMessage = "Debe proporcionar una fecha de cumplimiento"), Display(Name = "Fecha de límite"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaVencimiento { get; set; }
         public bool Eliminado { get; set; }
         [ForeignKey("Hallazgo")]
         public int IdHallazgo { get; set; }
-        [ForeignKey("Encargado")]
+        [ForeignKey("Encargado"),Display(Name ="Responsable")]
         public string IdEncargado { get; set; }
+        [ForeignKey("Validador"), Display(Name = "Director Valida")]
+        public string IdDirectorValidador { get; set; }
         [ForeignKey("Estado")]
         public int IdEstado { get; set; }
         //[ForeignKey("Evidencia")]
@@ -34,6 +36,7 @@ namespace web.Models
         public DateTime? FechaModifica { get; set; }
         public virtual Hallazgos Hallazgo { get; set; }
         public virtual ApplicationUser Encargado { get; set; }
+        public virtual ApplicationUser Validador { get; set; }
         public virtual Estados Estado { get; set; }
         //public virtual Evidencias Evidencia { get; set; }
     }

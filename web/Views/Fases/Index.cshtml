@@ -65,7 +65,7 @@
                         @Html.ActionLink(" ", "Index", "Actividades", new { IdFase = item.IdFase, nombreAuditoria = item.Auditoria.Auditoria }, new { @class = "btn btn-success btn-sm glyphicon glyphicon-list-alt", @title = "Inspeccionar Actividades" })
                         @Html.ActionLink(" ", "Details", new { id = item.IdFase }, new { @class = "btn btn-info btn-sm glyphicon glyphicon-info-sign", @title = "Detalles" })
                         @Html.ActionLink(" ", "Edit", new { id = item.IdFase }, new { @class = "btn btn-warning btn-sm glyphicon glyphicon-edit", @title = "Editar" })
-                        @Html.ActionLink(" ", "Delete", new { id = item.IdFase }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-remove-circle", @title = "Eliminar" })
+                        @Html.ActionLink(" ", "Delete", new { id = item.IdFase }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash", @title = "Eliminar" })
                     </td>
                 </tr>
             }

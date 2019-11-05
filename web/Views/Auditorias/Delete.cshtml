@@ -48,7 +48,13 @@
         <dd>
             @Html.EditorFor(modelItem => modelItem.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled" } })
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IdDepartamentoRealizar)
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.DepartamentoRealizar.NombreDepartamento)
+        </dd>
         
     </dl>
 

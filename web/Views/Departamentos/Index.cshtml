@@ -1,0 +1,62 @@
+﻿@model IEnumerable<web.Models.Departamentos>
+
+@{
+    ViewBag.Title = "Departamentos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="position: relative;">
+    <div class="row col-md-12" style="position: absolute;">
+        <h2>Departamentos</h2>
+    </div>
+    <div style="position: absolute; top: 20px; right:0px;">
+        @Html.ActionLink("Registrar Departamento", "Create", new { }, new { @class = "btn btn-success" })
+        <br />
+    </div>
+</div>
+
+<div class="col-md-12" style="position: relative; top: 60px; padding-right: 0px; padding-left:0px; background-color: white;">
+    <div>
+        <table class="table table-bordered table-condensed table-striped table-hover table-responsive">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Direccion.DireccionNombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NombreDepartamento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DescripcionDepartamento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdPersonaACargo)
+                </th>
+                <th>Opciones</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Direccion.DireccionNombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NombreDepartamento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DescripcionDepartamento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PersonaACargo.NombreCompleto)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Editar", "Edit", new { id = item.IdDepartamento },new { @class="btn btn-warning"}) 
+                        @Html.ActionLink("Eliminar", "Delete", new { id = item.IdDepartamento }, new { @class="btn btn-danger"})
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

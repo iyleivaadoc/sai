@@ -16,7 +16,7 @@
 </div>
 
 <div class="col-md-12" style="position: relative; top: 60px; padding-right: 0px; padding-left:0px; background-color: white;">
-    <div style="overflow-x:auto;">
+    <div>
         <table class="table table-bordered table-condensed table-striped table-hover table-responsive">
             <tr>
                 <th>
@@ -62,9 +62,33 @@
                         @Html.DisplayFor(modelItem => item.Encargado.UserName)
                     </td>
                     <td>
-                        @Html.ActionLink(" ", "Details", new { id = item.IdActividad }, new { @class = "btn btn-info btn-sm glyphicon glyphicon-info-sign", @title = "Detalles" })
-                        @Html.ActionLink(" ", "Edit", new { id = item.IdActividad}, new { @class = "btn btn-warning btn-sm glyphicon glyphicon-edit", @title = "Editar" })
-                        @Html.ActionLink(" ", "Delete", new { id = item.IdActividad }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-remove-circle", @title = "Eliminar" })
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="btn btn-sm btn-default" style="padding:5px;" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opciones...<i class="glyphicon glyphicon-chevron-down" style="font-size: 9px;"></i></a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdown1">
+                                    <li>
+                                        @Html.ActionLink("Registrar Hallazgo", "Index", "Hallazgos", new { id = item.IdActividad.ToString() },null)
+                                    </li>
+                                    <li>
+                                       @Html.ActionLink("Registrar Evidencias", "Index", "EvidenciasActividades", new { id = item.IdActividad, nombreActividad = item.Actividad }, null)
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Detalles", "Details", new { id = item.IdActividad }, null)
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Editar", "Edit", new { id = item.IdActividad }, null)
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Eliminar", "Delete", new { id = item.IdActividad }, null)
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        @*@Html.ActionLink(" ", "Index", "Hallazgos", new { id = item.IdActividad }, new { @class = "btn btn-default btn-sm glyphicon glyphicon-info-sign", @title = "Hallazgos" })
+                            @Html.ActionLink(" ", "Index", "EvidenciasActividades", new { id = item.IdActividad, nombreActividad=item.Actividad }, new { @class = "btn btn-success btn-sm glyphicon glyphicon-list-alt", @title = "Evidencias de actividad" })
+                            @Html.ActionLink(" ", "Details", new { id = item.IdActividad }, new { @class = "btn btn-info btn-sm glyphicon glyphicon-info-sign", @title = "Detalles" })
+                            @Html.ActionLink(" ", "Edit", new { id = item.IdActividad}, new { @class = "btn btn-warning btn-sm glyphicon glyphicon-edit", @title = "Editar" })
+                            @Html.ActionLink(" ", "Delete", new { id = item.IdActividad }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-remove-circle", @title = "Eliminar" })*@
                     </td>
                 </tr>
             }
@@ -73,6 +97,6 @@
     </div>
 </div>
 
-<div style="position:relative; bottom:-1em; margin-top: 2em;">
-    @Html.ActionLink(" ", "Index", "Fases", new { idAuditoria=ViewBag.idAuditoria,nombreAuditoria=ViewBag.nombreAuditoria}, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás" })
+<div style="position:relative; bottom:-2em; margin-top: 2em;">
+    @Html.ActionLink(" ", "Index", "Fases", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás" })
 </div>
