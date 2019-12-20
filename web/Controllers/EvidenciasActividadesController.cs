@@ -25,10 +25,11 @@ namespace web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var act = db.Actividades.Where(a => a.IdActividad == id && a.Eliminado!=true).Include(a => a.Fase.Auditoria).SingleOrDefault();
-            ViewBag.nombreActividad = act.Actividad;
+            ViewBag.nombreActividad = act.Fase.Auditoria.Auditoria + "/" + act.Fase.Fase + "/" + act.Actividad + "/" + act.Fase.Auditoria.UsuarioRealiza.UserName;
             ViewBag.idActividad = id;
             ViewBag.idFase = act.Fase.IdFase;
             ViewBag.nombreAuditoria = act.Fase.Auditoria.Auditoria;
+            ViewBag.activate = act.IdEstado;
 
             var evidencias = db.Evidencias.Where(e => e.IdActividad == id && e.Eliminado!=true).Include(e => e.Actividad).Include(e => e.Hallazgo).Include(e => e.PlanAccion);
             //var openFileDialog = 
@@ -57,6 +58,8 @@ namespace web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            var act = db.Actividades.Where(a => a.IdActividad == idActividad && a.Eliminado != true).Include(a => a.Fase.Auditoria).SingleOrDefault();
+            ViewBag.nombreActividad = act.Fase.Auditoria.Auditoria + "/" + act.Fase.Fase + "/" + act.Actividad + "/" + act.Fase.Auditoria.UsuarioRealiza.UserName;
             Evidencias ev = new Evidencias();
             ev.IdActividad = idActividad;
             return View(ev);
@@ -74,7 +77,8 @@ namespace web.Controllers
             bool exito = true;
             try
             {
-                string path = Server.MapPath("~/Content/Evidencias");
+                //string path = Server.MapPath("~/Content/Evidencias");
+                string path = "E:/SAI/Evidencias";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -124,7 +128,8 @@ namespace web.Controllers
             {
                 return HttpNotFound(); ;
             }
-            string path = Server.MapPath("~/Content/Evidencias");
+            //string path = Server.MapPath("~/Content/Evidencias");
+            string path = "E:/SAI/Evidencias";
             string archivo = path + "\\" + evidencias.IdActividad + "-" + evidencias.NombreDoc;
             if (!System.IO.File.Exists(archivo))
             {

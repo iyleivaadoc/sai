@@ -48,6 +48,18 @@
       <HintPath>..\packages\BeginCollectionItem.1.2.1.0\lib\net35\BeginCollectionItem.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.6.0\lib\net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation.Mvc, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.Mvc5.8.6.0\lib\net45\FluentValidation.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation.ValidatorAttribute, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.ValidatorAttribute.8.6.0\lib\net45\FluentValidation.ValidatorAttribute.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -221,29 +233,32 @@
     <Compile Include="Controllers\CalendarioController.cs" />
     <Compile Include="Controllers\DepartamentosController.cs" />
     <Compile Include="Controllers\DireccionsController.cs" />
+    <Compile Include="Controllers\EvidenciasActividadesAuditorController.cs" />
     <Compile Include="Controllers\EvidenciasActividadesController.cs" />
+    <Compile Include="Controllers\EvidenciasHallazgosAuditorController.cs" />
     <Compile Include="Controllers\EvidenciasHallazgosController.cs" />
+    <Compile Include="Controllers\EvidenciasPlanesAuditoresController.cs" />
     <Compile Include="Controllers\EvidenciasPlanesController.cs" />
     <Compile Include="Controllers\FasesController.cs" />
+    <Compile Include="Controllers\HallazgosAuditorController.cs" />
     <Compile Include="Controllers\HallazgosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OwnController.cs" />
     <Compile Include="Controllers\PlanesController.cs" />
+    <Compile Include="Controllers\PlanesDeAccionAuditorController.cs" />
     <Compile Include="Controllers\PlanesDeAccionController.cs" />
     <Compile Include="Controllers\PruebasController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\ValidadorActividades.cs" />
+    <Compile Include="Controllers\ValidatorDate.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201911042008460_bff.cs" />
-    <Compile Include="Migrations\201911042008460_bff.Designer.cs">
-      <DependentUpon>201911042008460_bff.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201911051659239_ks.cs" />
-    <Compile Include="Migrations\201911051659239_ks.Designer.cs">
-      <DependentUpon>201911051659239_ks.cs</DependentUpon>
+    <Compile Include="Migrations\201912171555432_rpt.cs" />
+    <Compile Include="Migrations\201912171555432_rpt.Designer.cs">
+      <DependentUpon>201912171555432_rpt.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accesos.cs" />
@@ -251,8 +266,10 @@
     <Compile Include="Models\Actividades.cs" />
     <Compile Include="Models\Asuetos.cs" />
     <Compile Include="Models\Auditorias.cs" />
+    <Compile Include="Models\BitacoraLogueo.cs" />
     <Compile Include="Models\Departamentos.cs" />
     <Compile Include="Models\Direccion.cs" />
+    <Compile Include="Models\enums.cs" />
     <Compile Include="Models\Estados.cs" />
     <Compile Include="Models\Evidencias.cs" />
     <Compile Include="Models\Fases.cs" />
@@ -323,11 +340,8 @@
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EmbeddedResource Include="Migrations\201911042008460_bff.resx">
-      <DependentUpon>201911042008460_bff.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201911051659239_ks.resx">
-      <DependentUpon>201911051659239_ks.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912171555432_rpt.resx">
+      <DependentUpon>201912171555432_rpt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resourses\Strings.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -480,6 +494,40 @@
     <Content Include="Views\Pruebas\Partials\Edit.cshtml" />
     <Content Include="Views\Pruebas\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutModals.cshtml" />
+    <Content Include="Views\Auditorias\Details2.cshtml" />
+    <Content Include="Views\Fases\Index2.cshtml" />
+    <Content Include="Views\Fases\Details2.cshtml" />
+    <Content Include="Views\Actividades\Index2.cshtml" />
+    <Content Include="Views\Actividades\Details2.cshtml" />
+    <Content Include="Views\Actividades\Create2.cshtml" />
+    <Content Include="Views\HallazgosAuditor\Create.cshtml" />
+    <Content Include="Views\HallazgosAuditor\Delete.cshtml" />
+    <Content Include="Views\HallazgosAuditor\Details.cshtml" />
+    <Content Include="Views\HallazgosAuditor\Edit.cshtml" />
+    <Content Include="Views\HallazgosAuditor\Index.cshtml" />
+    <Content Include="Views\PlanesDeAccionAuditor\Create.cshtml" />
+    <Content Include="Views\PlanesDeAccionAuditor\Delete.cshtml" />
+    <Content Include="Views\PlanesDeAccionAuditor\Details.cshtml" />
+    <Content Include="Views\PlanesDeAccionAuditor\Edit.cshtml" />
+    <Content Include="Views\PlanesDeAccionAuditor\Index.cshtml" />
+    <Content Include="Views\EvidenciasPlanesAuditores\ArchiveNotFound.cshtml" />
+    <Content Include="Views\EvidenciasPlanesAuditores\Create.cshtml" />
+    <Content Include="Views\EvidenciasPlanesAuditores\Delete.cshtml" />
+    <Content Include="Views\EvidenciasPlanesAuditores\Details.cshtml" />
+    <Content Include="Views\EvidenciasPlanesAuditores\Edit.cshtml" />
+    <Content Include="Views\EvidenciasPlanesAuditores\Index.cshtml" />
+    <Content Include="Views\EvidenciasHallazgosAuditor\ArchiveNotFound.cshtml" />
+    <Content Include="Views\EvidenciasHallazgosAuditor\Create.cshtml" />
+    <Content Include="Views\EvidenciasHallazgosAuditor\Delete.cshtml" />
+    <Content Include="Views\EvidenciasHallazgosAuditor\Details.cshtml" />
+    <Content Include="Views\EvidenciasHallazgosAuditor\Edit.cshtml" />
+    <Content Include="Views\EvidenciasHallazgosAuditor\Index.cshtml" />
+    <Content Include="Views\EvidenciasActividadesAuditor\ArchiveNotFound.cshtml" />
+    <Content Include="Views\EvidenciasActividadesAuditor\Create.cshtml" />
+    <Content Include="Views\EvidenciasActividadesAuditor\Delete.cshtml" />
+    <Content Include="Views\EvidenciasActividadesAuditor\Details.cshtml" />
+    <Content Include="Views\EvidenciasActividadesAuditor\Edit.cshtml" />
+    <Content Include="Views\EvidenciasActividadesAuditor\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -499,6 +547,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

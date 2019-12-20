@@ -5,12 +5,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@{
+    var encabezado = ViewBag.nombreHallazgo;
+    if (ViewBag.nombreHallazgo.Length > 60)
+    {
+        encabezado = String.Concat(ViewBag.nombreHallazgo.Substring(0, 60), "...");
+    }
+}
 <div style="position: relative;">
     <div class="row col-md-12" style="position: absolute;">
-        <h2 class="col-md-6">@ViewBag.nombreHallazgo</h2>
+        <h3 title="@ViewBag.nombreHallazgo">Evidencias, @encabezado</h3>
     </div>
     <div style="position: absolute; top: 20px; right:0px;">
-        @Html.ActionLink("Registrar evidencia", "Create", new { idHallazgo = ViewBag.idHallazgo }, new { @class = "btn btn-success" })
+        @if (ViewBag.activate != 2)
+        {
+            @Html.ActionLink("Registrar evidencia", "Create", new { idHallazgo = ViewBag.idHallazgo }, new { @class = "btn btn-success" })
+        }
         <br /><br />
     </div>
 </div>
@@ -45,7 +55,10 @@
 
                     <td>
                         @Html.ActionLink(" ", "Download", new { id = item.IdEvidencia }, new { @class = "btn btn-success btn-sm glyphicon glyphicon-cloud-download", @title = "Descargar evidencia" })
-                        @Html.ActionLink(" ", "Delete", new { id = item.IdEvidencia }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash", @title = "Eliminar evidencia" })
+                        @if (ViewBag.activate != 2)
+                        {
+                            @Html.ActionLink(" ", "Delete", new { id = item.IdEvidencia }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash", @title = "Eliminar evidencia" })
+                        }
                     </td>
                 </tr>
             }
@@ -53,6 +66,6 @@
         </table>
     </div>
 </div>
-<div style="position:relative; bottom:-1em; margin-top: 2em;">
-    @Html.ActionLink(" ", "Index", "Hallazgos", new { id = ViewBag.idActividad }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás" })
+<div style="position:relative; bottom:-1em; margin-top: 2em; text-align:center;">
+    @Html.ActionLink(" ", "Index", "Hallazgos", new { id = ViewBag.idActividad }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás", @style = "font-size: 35px;" })
 </div>

@@ -3,7 +3,12 @@
     ViewBag.Title = "Usuarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@Html.Raw(Session["MyAlert"])
+@{ Session["MyAlert"] = null;}
+
 <p class="text-success" style="margin-top:10px;">@ViewBag.StatusMessage</p>
+@Html.AntiForgeryToken()
 <div class="col-md-12">
     <div style="position: relative;">
         <div style="position: absolute;">
@@ -56,7 +61,7 @@
                         @Html.ActionLink("Borrar", "Delete", new { id = item.Id }, new { @class = "btn btn-xs btn-danger" })
                         @if (item.LockoutEndDateUtc > DateTime.Now)
                         {
-                            @Html.ActionLink("Desbloquear", "Unlock", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })
+                            @Html.ActionLink("Desbloquear", "Unlock", new { id = item.Id,token="" }, new { @class = "btn btn-xs btn-default" })
                         }
                     </td>
                 </tr>

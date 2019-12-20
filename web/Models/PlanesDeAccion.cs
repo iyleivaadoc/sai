@@ -11,12 +11,13 @@ namespace web.Models
     {
         [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPlanAccion { get; set; }
-        [StringLength(128),Required(ErrorMessage ="Debe proporcionar un nombre al plan de acción"),Display(Name ="Plan de acción")]
+        [StringLength(128),Required(ErrorMessage ="Debe proporcionar el nombre del hallazgo"),Display(Name ="Hallazgo")]
         public string NombrePlanAccion { get; set; }
-        [StringLength(256), Required(ErrorMessage = "Debe proporcionar una descripción para el plan de acción"), Display(Name = "Descripción")]
+        [StringLength(256), Required(ErrorMessage = "Debe proporcionar un plan de acción"), Display(Name = "Plan de acción")]
         public string DescripcionPlanAccion { get; set; }
         [Required(ErrorMessage = "Debe proporcionar una fecha de cumplimiento"), Display(Name = "Fecha de límite"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaVencimiento { get; set; }
+        public DateTime? FechaCierre { get; set; }
         public bool Eliminado { get; set; }
         [ForeignKey("Hallazgo")]
         public int IdHallazgo { get; set; }

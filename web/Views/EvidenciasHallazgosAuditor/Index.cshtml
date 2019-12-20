@@ -1,0 +1,71 @@
+﻿@model IEnumerable<web.Models.Evidencias>
+
+@{
+    ViewBag.Title = "Evidencias de hallazgo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var encabezado = ViewBag.nombreHallazgo;
+    if (ViewBag.nombreHallazgo.Length > 60)
+    {
+        encabezado = String.Concat(ViewBag.nombreHallazgo.Substring(0, 60), "...");
+    }
+}
+<div style="position: relative;">
+    <div class="row col-md-12" style="position: absolute;">
+        <h3 title="@ViewBag.nombreHallazgo">Evidencias, @encabezado</h3>
+    </div>
+    <div style="position: absolute; top: 20px; right:0px;">
+        @if (ViewBag.activate != 2)
+        {
+            @Html.ActionLink("Registrar evidencia", "Create", new { idHallazgo = ViewBag.idHallazgo }, new { @class = "btn btn-success" })
+        }
+        <br /><br />
+    </div>
+</div>
+<div class="col-md-12" style="position: relative; top: 60px; padding-right: 0px; background-color: white;">
+    <div style="overflow-x:auto;">
+        <table class="table table-bordered table-condensed table-responsive table-striped table-hover">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Evidencia)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DescripcionEvidencia)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NombreDoc)
+                </th>
+                <th style="width:15%;">Opciones</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Evidencia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DescripcionEvidencia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NombreDoc)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink(" ", "Download", new { id = item.IdEvidencia }, new { @class = "btn btn-success btn-sm glyphicon glyphicon-cloud-download", @title = "Descargar evidencia" })
+                        @if (ViewBag.activate != 2)
+                        {
+                            @Html.ActionLink(" ", "Delete", new { id = item.IdEvidencia }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash", @title = "Eliminar evidencia" })
+                        }
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+<div style="position:relative; bottom:-1em; margin-top: 2em; text-align:center;">
+    @Html.ActionLink(" ", "Index", "HallazgosAuditor", new { id = ViewBag.idActividad }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás", @style = "font-size: 35px;" })
+</div>

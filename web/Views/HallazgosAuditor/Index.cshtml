@@ -1,0 +1,97 @@
+﻿@model IEnumerable<web.Models.Hallazgos>
+
+@{
+    ViewBag.Title = "Hallazgos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Raw(Session["MyAlert"])
+@{ Session["MyAlert"] = null;}
+
+@{
+    var encabezado = ViewBag.nombreActividad;
+    if (ViewBag.nombreActividad.Length > 60)
+    {
+        encabezado = String.Concat(ViewBag.nombreActividad.Substring(0, 60), "...");
+    }
+}
+
+<div style="position: relative;">
+    <div class="row col-md-12" style="position: absolute;">
+        <h3 title="@ViewBag.nombreActividad">Hallazgos, @encabezado</h3>
+    </div>
+    <div style="position: absolute; top: 20px; right:0px;">
+        @if (ViewBag.active != 2)
+        {
+            @Html.ActionLink("Registrar Hallazgo", "Create", new { idActividad = ViewBag.idActividad }, new { @class = "btn btn-success" })
+        }
+        <br /><br />
+    </div>
+</div>
+
+<div class="col-md-12" style="position: relative; top: 60px; padding-right: 0px; padding-left:0px; background-color: white;">
+    <div>
+        <table class="table table-bordered table-condensed table-striped table-hover table-responsive">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Hallazgo)
+                </th>
+                <th>
+                    @Html.DisplayName("Descripción")
+                </th>
+                <th>
+                    @Html.DisplayName("Fecha")
+                </th>
+                <th>Opciones</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Hallazgo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DescripcionHallazgo)
+                    </td>
+                    <td>
+                        @{ var a = item.FechaHallazgo.ToShortDateString(); }
+                        @Html.DisplayFor(modelItem => a)
+                    </td>
+                    <td>
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="btn btn-sm btn-default" style="padding:5px;" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opciones . . . <i class="glyphicon glyphicon-chevron-down" style="font-size: 9px;"></i></a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdown1">
+                                    <li>
+                                        @Html.ActionLink("Evidencias", "Index", "EvidenciasHallazgosAuditor", new { id = item.IdHallazgo }, null)
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Planes de Acción", "Index", "PlanesDeAccionAuditor", new { id = item.IdHallazgo }, null)
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Detalles", "Details", new { id = item.IdHallazgo }, null)
+                                    </li>
+                                    @if (ViewBag.active != 2)
+                                    {
+                                        <li>
+                                            @Html.ActionLink("Editar", "Edit", new { id = item.IdHallazgo }, null)
+                                        </li>
+                                        <li>
+                                            @Html.ActionLink("Eliminar", "Delete", new { id = item.IdHallazgo }, null)
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                            }
+
+        </table>
+    </div>
+</div>
+
+<div style="position:relative; bottom:-2em; margin-top: 2em; text-align:center;">
+    @Html.ActionLink(" ", "Index2", "Actividades", new { IdFase = ViewBag.idFase, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás", @style = "font-size: 35px;" })
+</div>

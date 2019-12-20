@@ -1,16 +1,30 @@
 ﻿@model IEnumerable<web.Models.Actividades>
 
 @{
-    ViewBag.Title = "Actividades de fase";
+    ViewBag.Title = "Actividades";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Raw(Session["MyAlert"])
+@{ Session["MyAlert"] = null;}
+
+@{
+    var encabezado = ViewBag.fase;
+    if (ViewBag.fase.Length > 60)
+    {
+        encabezado = String.Concat(ViewBag.fase.Substring(0, 60), "...");
+    }
 }
 
 <div style="position: relative;">
     <div class="row col-md-12" style="position: absolute;">
-        <h2>Actividades de fase</h2>
+        <h3 title="@ViewBag.fase">Actividades, @encabezado</h3>
     </div>
     <div style="position: absolute; top: 20px; right:0px;">
-        @Html.ActionLink("Nueva Actividad", "Create", new { idFase = ViewBag.idFase }, new { @class = "btn btn-success" })
+        @if (ViewBag.enable)
+        {
+            @Html.ActionLink("Nueva Actividad", "Create", new { idFase = ViewBag.idFase }, new { @class = "btn btn-success" })
+        }
         <br />
     </div>
 </div>
@@ -19,6 +33,9 @@
     <div>
         <table class="table table-bordered table-condensed table-striped table-hover table-responsive">
             <tr>
+                <th>
+                    Estatus
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Actividad)
                 </th>
@@ -43,6 +60,23 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td style="text-align:center;">
+                        @if (item.IdEstado == 2)
+                        {
+                            @*<div style="background-color:green; height:100%; text-align:center;">Finalizada</div>*@
+                            <i title="Finalizada" class="glyphicon glyphicon-stop" style="color:green; font-size:20px;"></i>
+                        }
+                        else if (item.FechaFin.AddHours(23).AddMinutes(59) < DateTime.Now)
+                        {
+                            @*<div style="background-color:red; height:100%; text-align:center;">Retrasada</div>*@
+                            <i title="Retrasada" class="glyphicon glyphicon-stop" style="color:red; font-size:20px;"></i>
+                        }
+                        else
+                        {
+                            @*<div style="background-color:#fee18f; height:100%; text-align:center;">En tiempo</div>*@
+                            <i title="En tiempo" class="glyphicon glyphicon-stop" style="color:#FECA2B; font-size:20px;"></i>
+                        }
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Actividad)
                     </td>
@@ -53,13 +87,28 @@
                         @Html.EditorFor(model => item.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "max-width: 125px;" } })
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Duracion)
+                        @{var duraci = "";}
+                        @if (item.FechaFin.AddHours(23).AddMinutes(59) < DateTime.Now && item.IdEstado != 2)
+                        {
+                            var dif = DateTime.Now - item.FechaFin;
+                            duraci = "" + item.Duracion + " (" + dif.Days + " Retraso)";
+                        }
+                        else if (item.FechaFin.AddHours(23).AddMinutes(59) < item.FechaCierre)
+                        {
+                            var dif = (DateTime)item.FechaCierre - item.FechaFin;
+                            duraci = "" + item.Duracion + " (" + dif.Days + " Retraso)";
+                        }
+                        else
+                        {
+                            duraci = "" + item.Duracion;
+                        }
+                        @Html.DisplayFor(modelItem => duraci)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Porcentaje)%
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Encargado.UserName)
+                        @Html.DisplayFor(modelItem => item.Encargado.NombreCompleto)
                     </td>
                     <td>
                         <ul class="nav navbar-nav">
@@ -67,20 +116,32 @@
                                 <a class="btn btn-sm btn-default" style="padding:5px;" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opciones...<i class="glyphicon glyphicon-chevron-down" style="font-size: 9px;"></i></a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdown1">
                                     <li>
-                                        @Html.ActionLink("Registrar Hallazgo", "Index", "Hallazgos", new { id = item.IdActividad.ToString() },null)
+                                        @Html.ActionLink("Hallazgo", "Index", "Hallazgos", new { id = item.IdActividad.ToString() }, null)
                                     </li>
                                     <li>
-                                       @Html.ActionLink("Registrar Evidencias", "Index", "EvidenciasActividades", new { id = item.IdActividad, nombreActividad = item.Actividad }, null)
+                                        @Html.ActionLink("Evidencias", "Index", "EvidenciasActividades", new { id = item.IdActividad, nombreActividad = item.Actividad }, null)
                                     </li>
                                     <li>
                                         @Html.ActionLink("Detalles", "Details", new { id = item.IdActividad }, null)
                                     </li>
-                                    <li>
-                                        @Html.ActionLink("Editar", "Edit", new { id = item.IdActividad }, null)
-                                    </li>
-                                    <li>
-                                        @Html.ActionLink("Eliminar", "Delete", new { id = item.IdActividad }, null)
-                                    </li>
+                                    @if (item.IdEstado == 2)
+                                    {
+                                        <li>
+                                            @Html.ActionLink("Reactivar Actividad", "ReactivarActividad", new { IdActividad = item.IdActividad }, null)
+                                        </li>
+                                    }
+                                    @if (item.IdEstado != 2)
+                                    {
+                                        <li>
+                                            @Html.ActionLink("Editar", "Edit", new { id = item.IdActividad }, null)
+                                        </li>
+                                        <li>
+                                            @Html.ActionLink("Eliminar", "Delete", new { id = item.IdActividad }, null)
+                                        </li>
+                                        <li>
+                                            @Html.ActionLink("Finalizar Actividad", "FinalizarActividad", new { IdActividad = item.IdActividad }, null)
+                                        </li>
+                                    }
                                 </ul>
                             </li>
                         </ul>
@@ -91,12 +152,12 @@
                             @Html.ActionLink(" ", "Delete", new { id = item.IdActividad }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-remove-circle", @title = "Eliminar" })*@
                     </td>
                 </tr>
-            }
+                            }
 
         </table>
     </div>
 </div>
 
-<div style="position:relative; bottom:-2em; margin-top: 2em;">
-    @Html.ActionLink(" ", "Index", "Fases", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás" })
+<div style="position:relative; bottom:-2em; margin-top: 2em; text-align:center;">
+    @Html.ActionLink(" ", "Index", "Fases", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás", @style = "font-size: 35px;" })
 </div>

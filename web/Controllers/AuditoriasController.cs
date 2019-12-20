@@ -14,7 +14,7 @@ using System.Security.Claims;
 
 namespace web.Controllers
 {
-    public class AuditoriasController : Controller
+    public class AuditoriasController : OwnController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -44,13 +44,13 @@ namespace web.Controllers
             ViewBag.nombrePlan = nombreplan;
             ViewBag.CurrentFilter = searchString;
             var idUsuario = GetUserId(User);
-            var auditorias = db.Auditorias.Where(a => a.Elimanado != true && a.IdUsuarioRealiza==idUsuario).Include(a => a.Estado).Include(a => a.Plan).Include(a => a.UsuarioRealiza);
+            var auditorias = db.Auditorias.Where(a => a.Elimanado != true && a.IdUsuarioRealiza == idUsuario).Include(a => a.Estado).Include(a => a.Plan).Include(a => a.UsuarioRealiza);
             if (!String.IsNullOrEmpty(searchString))
             {
                 auditorias = auditorias.Where(s => s.Auditoria.Contains(searchString)
                                        || s.DescripcionAuditoria.Contains(searchString));
             }
-            auditorias = auditorias.OrderBy(a => a.FechaInicio);
+            auditorias = auditorias.OrderByDescending(a => a.FechaInicio);
             int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(auditorias.ToPagedList(pageNumber, pageSize));
@@ -64,7 +64,23 @@ namespace web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             //Auditorias auditorias = await db.Auditorias.FindAsync(id);
-            Auditorias auditorias = await db.Auditorias.Where(a=>a.IdAuditoria==id).Include(a => a.Fases).FirstOrDefaultAsync();
+            Auditorias auditorias = await db.Auditorias.Where(a => a.IdAuditoria == id).Include(a => a.Fases).FirstOrDefaultAsync();
+            if (auditorias == null)
+            {
+                return HttpNotFound();
+            }
+            return View(auditorias);
+        }
+
+        // GET: Auditorias/Details/5
+        public async Task<ActionResult> Details2(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            //Auditorias auditorias = await db.Auditorias.FindAsync(id);
+            Auditorias auditorias = await db.Auditorias.Where(a => a.IdAuditoria == id).Include(a => a.Fases).FirstOrDefaultAsync();
             if (auditorias == null)
             {
                 return HttpNotFound();
@@ -73,18 +89,18 @@ namespace web.Controllers
         }
 
         // GET: Auditorias/Create
-        public ActionResult Create(int idplan,string nombrePlan)
+        public ActionResult Create(int idplan, string nombrePlan)
         {
             ViewBag.idPlan = idplan;
             ViewBag.nombrePlan = nombrePlan;
             Auditorias auditoria = new Auditorias();
             var plan = db.Planes.Find(idplan);
             auditoria.FechaInicio = plan.FechaInicio;
-            auditoria.FechaFin =auditoria.FechaInicio.AddDays(60);
+            auditoria.FechaFin = auditoria.FechaInicio.AddDays(38);
             auditoria.IdPlan = idplan;
             var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
-            ViewBag.IdUsuarioRealiza=new SelectList(usuarios, "Id", "NombreCompleto", auditoria.IdUsuarioRealiza);
-            ViewBag.IdDepartamentoRealizar = new SelectList(db.Departamentos.Where(d=>d.Eliminado!=true), "IdDepartamento", "NombreDepartamento", auditoria.IdDepartamentoRealizar);
+            ViewBag.IdUsuarioRealiza = new SelectList(usuarios, "Id", "NombreCompleto", auditoria.IdUsuarioRealiza);
+            ViewBag.IdDepartamentoRealizar = new SelectList(db.Departamentos.Where(d => d.Eliminado != true), "IdDepartamento", "NombreDepartamento", auditoria.IdDepartamentoRealizar);
             return View(auditoria);
         }
 
@@ -98,13 +114,22 @@ namespace web.Controllers
             auditorias.FechaCrea = DateTime.Now;
             auditorias.UsuarioCrea = this.GetUserId(User);
             auditorias.IdEstado = 1;
-            auditorias.Planificada = true;
+            var plan = db.Planes.Find(auditorias.IdPlan);
+            if (plan.FechaInicio < DateTime.Now)
+            {
+                auditorias.Planificada = false;
+            }
+            else
+            {
+                auditorias.Planificada = true;
+            }
+
             if (ModelState.IsValid)
             {
 
                 db.Auditorias.Add(auditorias);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index",new { idplan=auditorias.IdPlan, nombrePlan=ViewBag.nombrePlan});
+                return RedirectToAction("Index", new { idplan = auditorias.IdPlan, nombrePlan = plan.NombrePlan });
             }
 
             var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
@@ -114,7 +139,7 @@ namespace web.Controllers
             ViewBag.idPlan = auditorias.IdPlan;
             ViewBag.nombrePlan = planAux.NombrePlan;
             return View(auditorias);
-           
+
         }
 
         // GET: Auditorias/Edit/5
@@ -151,7 +176,7 @@ namespace web.Controllers
                 db.Entry(auditorias).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 var aux = db.Planes.Where(p => p.IdPlan == auditorias.IdPlan).First();
-                return RedirectToAction("Index",new { idPlan=auditorias.IdPlan,nombrePlan=aux.NombrePlan});
+                return RedirectToAction("Index", new { idPlan = auditorias.IdPlan, nombrePlan = aux.NombrePlan });
             }
 
             var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
@@ -186,9 +211,9 @@ namespace web.Controllers
         {
             Auditorias auditorias = await db.Auditorias.FindAsync(id);
             auditorias.Elimanado = true;
-            db.Entry(auditorias).State=EntityState.Modified;
+            db.Entry(auditorias).State = EntityState.Modified;
             await db.SaveChangesAsync();
-            return RedirectToAction("Index",new { idplan=auditorias.IdPlan, nombrePlan = auditorias.Plan.NombrePlan });
+            return RedirectToAction("Index", new { idplan = auditorias.IdPlan, nombrePlan = auditorias.Plan.NombrePlan });
         }
 
         protected override void Dispose(bool disposing)
@@ -200,15 +225,54 @@ namespace web.Controllers
             base.Dispose(disposing);
         }
 
-        public string GetUserId(IPrincipal principal)
+        public ActionResult FinalizarAuditoria(int id)
         {
-            var claimsIdentity = (ClaimsIdentity)principal.Identity;
-            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            return claim.Value;
+            Auditorias auditoria = db.Auditorias.Find(id);
+            if (auditoria == null)
+            {
+                return HttpNotFound();
+            }
+            if ((int)auditoria.PorcentajeAvance == 100)
+            {
+                var fases = db.Fases.Where(f => f.IdAuditoria == auditoria.IdAuditoria && f.IdEstado == 1 && f.Eliminado != true).ToList();
+                if (fases.Count() != 0)
+                {
+                    Session["MyAlert"] = "<script type='text/javascript'>alertify.error('No se puede finalizar la auditoría ya que hay fases sin cerrar.');</script>";
+                }
+                else
+                {
+                    auditoria.IdEstado = 2;
+                    auditoria.UsuarioMod = GetUserId();
+                    auditoria.FechaCierre = DateTime.Now;
+                    auditoria.FechaMod = DateTime.Now;
+                    db.Entry(auditoria).State = EntityState.Modified;
+                    db.SaveChanges();
+                    Session["MyAlert"] = "<script type='text/javascript'>alertify.success('La auditoría se finalizo con éxito.');</script>";
+                }
+            }
+            else
+            {
+                Session["MyAlert"] = "<script type='text/javascript'>alertify.error('No se puede finalizar la auditoría ya que no alcanza el 100% de avance.');</script>";
+            }
+            return RedirectToAction("Index", new { IdPlan = auditoria.IdPlan, nombrePlan = auditoria.Plan.NombrePlan });
         }
 
-        public int asignado(int idPlan,string idUser) {
-            var auditorias=db.Auditorias.Where(a => a.Elimanado != true && a.IdPlan==idPlan && a.IdUsuarioRealiza==idUser).ToList();
+        public ActionResult ReactivarAuditoria(int id)
+        {
+            Auditorias auditoria = db.Auditorias.Find(id);
+            auditoria.IdEstado = 1;
+            auditoria.UsuarioMod = GetUserId();
+            auditoria.FechaMod = DateTime.Now;
+            db.Entry(auditoria).State = EntityState.Modified;
+            db.SaveChanges();
+            Session["MyAlert"] = "<script type='text/javascript'>alertify.success('La auditoría se reactivó con éxito.');</script>";
+            return RedirectToAction("Index", new { IdPlan = auditoria.IdPlan, nombrePlan = auditoria.Plan.NombrePlan });
+        }
+
+
+        public int asignado(int idPlan, string idUser)
+        {
+            var auditorias = db.Auditorias.Where(a => a.Elimanado != true && a.IdPlan == idPlan && a.IdUsuarioRealiza == idUser).ToList();
             return auditorias.Count;
         }
     }

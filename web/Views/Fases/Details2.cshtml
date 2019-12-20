@@ -1,0 +1,54 @@
+﻿@model web.Models.Fases
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-3"></div>
+
+<div class="col-md-6">
+    <h4>Detalles Fase, Auditoría @ViewBag.navegabilidad</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Fase)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fase)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Porcentaje)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Porcentaje)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaInicio)
+        </dt>
+
+        <dd>
+            @*@Html.DisplayFor(model => model.FechaInicio)*@
+            @Html.EditorFor(modelItem => modelItem.FechaInicio, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "" } })
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaFin)
+        </dt>
+
+        <dd>
+            @*@Html.DisplayFor(model => model.FechaFin)*@
+            @Html.EditorFor(modelItem => modelItem.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "" } })
+        </dd>
+
+
+    </dl>
+    <div style="text-align:center;">
+        @Html.ActionLink("Cancelar", "Index2", new { idAuditoria = Model.IdAuditoria, nombreAuditoria = Model.Auditoria.Auditoria }, new { @class = "btn btn-success" })
+    </div>
+</div>
+

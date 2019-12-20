@@ -1,0 +1,81 @@
+﻿
+@model web.Models.Actividades
+
+@{
+    ViewBag.Title = "Detalles de la actividad";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-md-12 row">
+    <div class="col-md-6 col-md-offset-3 row">
+        <h4>Detalles Actividad, @ViewBag.fase</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Fase.Fase)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Fase.Fase)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Actividad)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Actividad)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DescripcionActividad)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DescripcionActividad)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaInicio)
+            </dt>
+
+            <dd>
+                @Html.EditorFor(model => Model.FechaInicio, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "max-width: 125px;" } })
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaFin)
+            </dt>
+
+            <dd>
+                @Html.EditorFor(model => Model.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "max-width: 125px;" } })
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Duracion)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Duracion)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Porcentaje)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Porcentaje)%
+            </dd>
+
+            <dt>
+                Encargado
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Encargado.NombreCompleto)
+            </dd>
+        </dl>
+    </div>
+</div>
+<div class="col-md-12 text-center">
+    @Html.ActionLink("Cancelar", "Index2", new { idFase = Model.IdFase }, new { @class = "btn btn-success" })
+</div>

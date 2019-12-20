@@ -5,13 +5,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@{
+    var encabezado = ViewBag.nombreActividad;
+    if (ViewBag.nombreActividad.Length > 60)
+    {
+        encabezado = String.Concat(ViewBag.nombreActividad.Substring(0, 60), "...");
+    }
+}
 
 <div style="position: relative;">
     <div class="row col-md-12" style="position: absolute;">
-        <h2 class="col-md-6">@ViewBag.nombreActividad</h2>
+        <h3 title="@ViewBag.nombreActividad">Evidencias, @encabezado</h3>
     </div>
     <div style="position: absolute; top: 20px; right:0px;">
-        @Html.ActionLink("Registrar evidencia", "Create", new { idActividad = ViewBag.idActividad}, new { @class = "btn btn-success" })
+        @if (ViewBag.activate != 2)
+        {
+            @Html.ActionLink("Registrar evidencia", "Create", new { idActividad = ViewBag.idActividad }, new { @class = "btn btn-success" })
+        }
         <br /><br />
     </div>
 </div>
@@ -34,26 +44,29 @@
 
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Evidencia)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DescripcionEvidencia)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NombreDoc)
-                </td>
-                <td>
-                    @Html.ActionLink(" ", "Download", new { id = item.IdEvidencia },new { @class = "btn btn-success btn-sm glyphicon glyphicon-cloud-download", @title = "Descargar evidencia" })
-                    @Html.ActionLink(" ", "Delete", new { id = item.IdEvidencia }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash", @title = "Eliminar evidencia" }) 
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Evidencia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DescripcionEvidencia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NombreDoc)
+                    </td>
+                    <td>
+                        @Html.ActionLink(" ", "Download", new { id = item.IdEvidencia }, new { @class = "btn btn-success btn-sm glyphicon glyphicon-cloud-download", @title = "Descargar evidencia" })
+                        @if (ViewBag.activate != 2)
+                        {
+                            @Html.ActionLink(" ", "Delete", new { id = item.IdEvidencia }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash", @title = "Eliminar evidencia" })
+                        }
+                    </td>
+                </tr>
             }
 
         </table>
     </div>
 </div>
-<div style="position:relative; bottom:-1em; margin-top: 2em;">
-    @Html.ActionLink(" ", "Index", "Actividades", new { IdFase = ViewBag.idFase, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás" })
+<div style="position:relative; bottom:-1em; margin-top: 2em; text-align:center;">
+    @Html.ActionLink(" ", "Index", "Actividades", new { IdFase = ViewBag.idFase, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás", @style = "font-size: 35px;" })
 </div>

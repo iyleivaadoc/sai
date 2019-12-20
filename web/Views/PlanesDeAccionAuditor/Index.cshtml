@@ -1,0 +1,145 @@
+﻿@model IEnumerable<web.Models.PlanesDeAccion>
+
+@{
+    ViewBag.Title = "planes de Acción";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Raw(Session["MyAlert"])
+@{ Session["MyAlert"] = null;}
+@{
+    var encabezado = ViewBag.nombreHallazgo;
+    if (ViewBag.nombreHallazgo.Length > 60)
+    {
+        encabezado = String.Concat(ViewBag.nombreHallazgo.Substring(0, 60), "...");
+    }
+}
+<div style="position: relative;">
+    <div class="row col-md-12" style="position: absolute;">
+        <h3 title="@ViewBag.nombreHallazgo">Planes de acción, @encabezado</h3>
+    </div>
+    <div style="position: absolute; top: 20px; right:0px;">
+        @if (ViewBag.activate != 2)
+        {
+            @Html.ActionLink("Nuevo Plan de Acción", "Create", new { id = ViewBag.idHallazgo }, new { @class = "btn btn-success" })
+        }
+        <br /><br />
+    </div>
+</div>
+<div class="col-md-12" style="position: relative; top: 58px; padding-right: 0px; background-color: white;">
+    <div>
+        <table class="table table-bordered table-condensed table-responsive table-striped table-hover">
+            <tr>
+                <th>
+                    Estatus
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NombrePlanAccion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DescripcionPlanAccion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdEncargado)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.IdDirectorValidador)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaVencimiento)
+                </th>
+                <th>Días retraso</th>
+                <th>Opciones</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr style="vertical-align:middle;">
+                    <td style="text-align:center;">
+                        @if (item.IdEstado == 2)
+                        {
+                            @*<div style="background-color:green; height:100%; text-align:center;">Finalizada</div>*@
+                            <i title="Finalizada" class="glyphicon glyphicon-stop" style="color:green; font-size:20px;"></i>
+                        }
+                        else if (item.FechaVencimiento.AddHours(23).AddMinutes(59) < DateTime.Now)
+                        {
+                            @*<div style="background-color:red; height:100%; text-align:center;">Retrasada</div>*@
+                            <i title="Retrasada" class="glyphicon glyphicon-stop" style="color:red; font-size:20px;"></i>
+                        }
+                        else
+                        {
+                            @*<div style="background-color:#fee18f; height:100%; text-align:center;">En tiempo</div>*@
+                            <i title="En tiempo" class="glyphicon glyphicon-stop" style="color:#FECA2B; font-size:20px;"></i>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NombrePlanAccion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DescripcionPlanAccion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Encargado.NombreCompleto)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Validador.NombreCompleto)
+                    </td>*@
+                    <td>
+                        @{ var fecha = item.FechaVencimiento.ToShortDateString();}
+                        @Html.DisplayFor(modelItem => fecha)
+                    </td>
+                    <td style="text-align:center;">
+                        @{var duraci = "";}
+                        @if (item.FechaVencimiento.AddHours(23).AddMinutes(59) < DateTime.Now && item.IdEstado != 2)
+                        {
+                            var dif = DateTime.Now - item.FechaVencimiento;
+                            duraci = "" + dif.Days;
+                        }
+                        else if (item.FechaVencimiento.AddHours(23).AddMinutes(59) < item.FechaCierre)
+                        {
+                            var dif = (DateTime)item.FechaCierre - item.FechaVencimiento;
+                            duraci = "" + dif.Days;
+                        }
+                        else
+                        {
+                            duraci = "0";
+                        }
+                        @Html.DisplayFor(modelItem => duraci)
+                    </td>
+                    <td>
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="btn btn-sm btn-default" style="padding:5px;" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opciones...<i class="glyphicon glyphicon-chevron-down" style="font-size: 9px;"></i></a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdown1">
+                                    <li>
+                                        @Html.ActionLink("Evidencias", "Index", "EvidenciasPlanesAuditores", new { id = item.IdPlanAccion }, new { @Title = "Evidencias" })
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Detalles", "Details", new { id = item.IdPlanAccion }, new { @Title = "Detalles" })
+                                    </li>
+                                    @if (item.IdEstado != 2)
+                                    {
+                                        <li>
+                                            @Html.ActionLink("Editar", "Edit", new { id = item.IdPlanAccion }, new { @title = "Editar" })
+                                        </li>
+                                        if (ViewBag.activate != 2)
+                                        {
+                                            <li>
+                                                @Html.ActionLink("Eliminar", "Delete", new { id = item.IdPlanAccion }, new { @title = "Eliminar" })
+                                            </li>
+                                        }
+                                        <li>
+                                            @Html.ActionLink("Finalizar Plan de Acción", "FinalizarPlanAccion", new { id = item.IdPlanAccion }, null)
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                            }
+        </table>
+    </div>
+</div>
+<div style="position:relative; bottom:-3em; text-align:center;">
+    @Html.ActionLink(" ", "Index", "HallazgosAuditor", new { id = ViewBag.idActividad }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás", @style = "font-size: 35px;" })
+</div>

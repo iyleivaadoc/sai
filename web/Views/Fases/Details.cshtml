@@ -8,7 +8,7 @@
 <div class="col-md-3"></div>
 
 <div class="col-md-6">
-    <h4>Detalles Fase</h4>
+    <h4>Detalles Fase, Auditoría @ViewBag.navegabilidad</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -45,10 +45,13 @@
             @Html.EditorFor(modelItem => modelItem.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "" } })
         </dd>
 
-        
+
     </dl>
     <div style="text-align:center;">
-        @Html.ActionLink("Edit", "Edit", new { id = Model.IdFase },new { @class="btn btn-warning"})
+        @if (Model.Auditoria.IdEstado != 2)
+        {
+            @Html.ActionLink("Editar", "Edit", new { id = Model.IdFase }, new { @class = "btn btn-warning" })
+        }
         @Html.ActionLink("Cancelar", "Index", new { idAuditoria = Model.IdAuditoria, nombreAuditoria = Model.Auditoria.Auditoria }, new { @class = "btn btn-success" })
     </div>
 </div>

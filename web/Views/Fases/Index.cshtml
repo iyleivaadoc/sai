@@ -1,30 +1,45 @@
 ﻿@model IEnumerable<web.Models.Fases>
 
 @{
-    ViewBag.Title = ViewBag.nombreAuditoria;
+    ViewBag.Title = "Fases";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Raw(Session["MyAlert"])
+@{ Session["MyAlert"] = null;}
+
+@{
+    var encabezado = ViewBag.navegabilidad;
+    if (ViewBag.navegabilidad.Length > 60)
+    {
+        encabezado = String.Concat(ViewBag.navegabilidad.Substring(0, 60), "...");
+    }
 }
 
 
 <div style="position: relative;">
     <div class="row col-md-12" style="position: absolute;">
-        <h2 class="col-md-6">Fases de @ViewBag.nombreAuditoria</h2>
+        <h3 class="col-md-9" title="@ViewBag.navegabilidad">Fases, @encabezado</h3>
     </div>
     <div style="position: absolute; top: 20px; right:0px;">
-        @if (Model.Count() <= 0)
+        @if (ViewBag.enable)
         {
-            @Html.ActionLink("Fases por defecto", "IndexDefault", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn btn-info" })
+            if (Model.Count() <= 0)
+            {
+                @Html.ActionLink("Fases por defecto", "IndexDefault", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn btn-info" })
+            }
+            @Html.ActionLink("Nueva Fase", "Create", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn btn-success" })
         }
-        @Html.ActionLink("Nueva Fase", "Create", new { idAuditoria = ViewBag.idAuditoria, nombreAuditoria = ViewBag.nombreAuditoria }, new { @class = "btn btn-success" })
         <br /><br />
     </div>
 </div>
 
 
 <div class="col-md-12" style="position: relative; top: 60px; padding-right: 0px; background-color: white;">
-    <div style="overflow-x:auto;">
+    <div>
         <table class="table table-bordered table-condensed table-responsive table-striped table-hover">
             <tr>
+                <th>Estatus</th>
                 <th>
                     @Html.DisplayNameFor(model => model.Fase)
                 </th>
@@ -40,12 +55,30 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Duracion)
                 </th>
+                <th style="width:7%;">% Avance</th>
                 <th>Opciones</th>
             </tr>
 
             @foreach (var item in Model)
             {
                 <tr>
+                    <td style="text-align:center;">
+                        @if (item.IdEstado == 2)
+                        {
+                            @*<div style="background-color:green; height:100%; text-align:center;">Finalizada</div>*@
+                            <i title="Finalizada" class="glyphicon glyphicon-stop" style="color:green; font-size:20px;"></i>
+                        }
+                        else if (item.FechaFin.AddHours(23).AddMinutes(59) < DateTime.Now)
+                        {
+                            @*<div style="background-color:red; height:100%; text-align:center;">Retrasada</div>*@
+                            <i title="Retrasada" class="glyphicon glyphicon-stop" style="color:red; font-size:20px;"></i>
+                        }
+                        else
+                        {
+                            @*<div style="background-color:#fee18f; height:100%; text-align:center;">En tiempo</div>*@
+                            <i title="En tiempo" class="glyphicon glyphicon-stop" style="color:#FECA2B; font-size:20px;"></i>
+                        }
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Fase)
                     </td>
@@ -59,20 +92,108 @@
                         @Html.EditorFor(modelItem => item.FechaFin, new { htmlAttributes = new { @class = "editFechaToDisplay", @disabled = "disabled", @style = "" } })
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Duracion)
+                        @{var duraci = "";}
+                        @if (item.FechaFin.AddHours(23).AddMinutes(59) < DateTime.Now && item.IdEstado != 2)
+                        {
+                            var dif = DateTime.Now - item.FechaFin;
+                            duraci = "" + item.Duracion + " (" + dif.Days + " Retraso)";
+                        }
+                        else if (item.FechaFin.AddHours(23).AddMinutes(59) < item.FechaCierre)
+                        {
+                            var dif = (DateTime)item.FechaCierre - item.FechaFin;
+                            duraci = "" + item.Duracion + " (" + dif.Days + " Retraso)";
+                        }
+                        else
+                        {
+                            duraci = "" + item.Duracion;
+                        }
+                        @Html.DisplayFor(modelItem => duraci)
                     </td>
+                    <td>@item.PorcentajeAvance.ToString("##0.00") %</td>
                     <td>
-                        @Html.ActionLink(" ", "Index", "Actividades", new { IdFase = item.IdFase, nombreAuditoria = item.Auditoria.Auditoria }, new { @class = "btn btn-success btn-sm glyphicon glyphicon-list-alt", @title = "Inspeccionar Actividades" })
-                        @Html.ActionLink(" ", "Details", new { id = item.IdFase }, new { @class = "btn btn-info btn-sm glyphicon glyphicon-info-sign", @title = "Detalles" })
-                        @Html.ActionLink(" ", "Edit", new { id = item.IdFase }, new { @class = "btn btn-warning btn-sm glyphicon glyphicon-edit", @title = "Editar" })
-                        @Html.ActionLink(" ", "Delete", new { id = item.IdFase }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash", @title = "Eliminar" })
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="btn btn-sm btn-default" style="padding:5px;" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opciones...<i class="glyphicon glyphicon-chevron-down" style="font-size: 9px;"></i></a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdown1">
+                                    <li>
+                                        @Html.ActionLink("Actividades", "Index", "Actividades", new { IdFase = item.IdFase, nombreAuditoria = item.Auditoria.Auditoria }, new { @title = "Inspeccionar Actividades" })
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Detalles", "Details", new { id = item.IdFase }, new { @title = "Detalles" })
+                                    </li>
+                                    @if (item.IdEstado == 2)
+                                    {
+                                        <li>
+                                            @Html.ActionLink("Reactivar Fase", "ReactivarFase", new { IdFase = item.IdFase }, null)
+                                        </li>
+                                    }
+                                    @if (item.IdEstado != 2)
+                                    {
+                                        <li>
+                                            @Html.ActionLink("Editar", "Edit", new { id = item.IdFase }, new { @title = "Editar" })
+                                        </li>
+                                        <li>
+                                            @Html.ActionLink("Eliminar", "Delete", new { id = item.IdFase }, new { @title = "Eliminar" })
+                                        </li>
+                                        if (item.reporte == web.Models.ReporteFase.CartaInicio)
+                                        {
+                                            <li>
+                                                <a href="javascript:cartaInicio(@item.IdAuditoria)" title="Generar carta de inicio para la auditoría">Carta Inicio</a>
+                                            </li>
+                                        }
+                                        if (item.reporte == web.Models.ReporteFase.SolicitudInformacion)
+                                        {
+                                            <li>
+                                                <a href="javascript:SolicitudInformacion(@item.IdAuditoria)" title="Generar solicitud de requerimientos de la auditoría">Solicitud de información</a>
+                                            </li>
+                                        }
+
+                                        if (item.reporte == web.Models.ReporteFase.Draft)
+                                        {
+                                            <li>
+                                                <a href="javascript:Draft(@item.IdAuditoria)" title="Generar archivo DRAFT">Informe Draft</a>
+                                            </li>
+                                        }
+                                        if (item.reporte == web.Models.ReporteFase.informeFinal)
+                                        {
+                                            <li>
+                                                <a href="javascript:InformeFinal(@item.IdAuditoria)" title="Generar informe final">Informe final</a>
+                                            </li>
+                                        }
+                                        <li>
+                                            @Html.ActionLink("Finalizar Fase", "FinalizarFase", new { IdFase = item.IdFase }, null)
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+
                     </td>
                 </tr>
-            }
+                            }
 
         </table>
     </div>
 </div>
-<div style="position:relative; bottom:-1em; margin-top: 2em;">
-    @Html.ActionLink(" ", "Index", "Auditorias", new { IdPlan= ViewBag.idPlan, nombrePlan = ViewBag.nombrePlan }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás" })
+<div style="position:relative; bottom:-3em; text-align:center;">
+    @Html.ActionLink(" ", "Index", "Auditorias", new { IdPlan = ViewBag.idPlan, nombrePlan = ViewBag.nombrePlan }, new { @class = "btn-lg glyphicon glyphicon-arrow-left", @title = "Atrás", @style = "font-size: 35px;" })
 </div>
+
+<script>
+    function cartaInicio(id) {
+        var url = 'http://192.168.16.102:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=/Desarrollo/Reports/CartaInicio&j_username=jasperadmin&j_password=jasperadmin&decorate=no&output=docx&idAuditoria=' + id;
+        window.open(url, "_self")
+    }
+    function SolicitudInformacion(id) {
+        var url = 'http://192.168.16.102:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=/Desarrollo/Reports/RequerimientoInformacion&j_username=jasperadmin&j_password=jasperadmin&decorate=no&output=docx&idAuditoria=' + id;
+        window.open(url, "_self")
+    }
+    function Draft(id) {
+        var url = 'http://192.168.16.102:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=/Desarrollo/Reports/ResultadosPreliminares&j_username=jasperadmin&j_password=jasperadmin&decorate=no&output=docx&idAuditoria=' + id;
+        window.open(url, "_self")
+    }
+    function InformeFinal(id) {
+        var url = 'http://192.168.16.102:8080/jasperserver/flow.html?_flowId=viewReportFlow&reportUnit=/Desarrollo/Reports/InformeFinal&j_username=jasperadmin&j_password=jasperadmin&decorate=no&output=docx&idAuditoria=' + id;
+        window.open(url, "_self")
+    }
+</script>

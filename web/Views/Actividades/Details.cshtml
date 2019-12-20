@@ -6,7 +6,7 @@
 }
 <div class="col-md-12 row">
     <div class="col-md-6 col-md-offset-3 row">
-        <h4>Detalles de Actividad</h4>
+        <h4>Detalles Actividad, @ViewBag.fase</h4>
         <hr />
         <dl class="dl-horizontal">
             <dt>
@@ -75,7 +75,10 @@
         </dl>
     </div>
 </div>
-    <div class="col-md-12 text-center">
+<div class="col-md-12 text-center">
+    @if (Model.IdEstado != 2)
+    {
         @Html.ActionLink("Editar", "Edit", new { id = Model.IdActividad }, new { @class = "btn btn-warning" })
-        @Html.ActionLink("Cancelar", "Index", new { idFase = Model.IdFase }, new { @class = "btn btn-success" })
-    </div>
+    }
+    @Html.ActionLink("Cancelar", "Index", new { idFase = Model.IdFase }, new { @class = "btn btn-success" })
+</div>

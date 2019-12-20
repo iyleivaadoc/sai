@@ -27,9 +27,12 @@
     <table class="table table-striped table-responsive table-bordered">
         <tr>
             <th>
-                <label>Plan</label>
+                Estatus
             </th>
             <th>
+                <label>Plan</label>
+            </th>
+            <th style="width:30%;">
                 <label>Descripción</label>
             </th>
             <th>
@@ -38,16 +41,34 @@
             <th>
                 <label>Año</label>
             </th>
-            <th><label>Opciones</label></th>
+            <th>% Avance</th>
+            <th style="width:15%;"><label>Opciones</label></th>
         </tr>
 
         @foreach (var item in Model)
         {
             <tr>
+                <td style="text-align:center;">
+                    @if (item.Porcentaje == 100)
+                    {
+                        @*<div style="background-color:green; height:100%; text-align:center;">Finalizada</div>*@
+                        <i title="Finalizado" class="glyphicon glyphicon-stop" style="color:green; font-size:20px;"></i>
+                    }
+                    else if (item.Porcentaje<100 && item.FechaInicio.AddYears(1)<DateTime.Now)
+                    {
+                        @*<div style="background-color:red; height:100%; text-align:center;">Retrasada</div>*@
+                        <i title="Retrasado" class="glyphicon glyphicon-stop" style="color:red; font-size:20px;"></i>
+                    }
+                    else
+                    {
+                        @*<div style="background-color:#fee18f; height:100%; text-align:center;">En tiempo</div>*@
+                        <i title="En tiempo" class="glyphicon glyphicon-stop" style="color:#FECA2B; font-size:20px;"></i>
+                    }
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NombrePlan)
                 </td>
-                <td>
+                <td style="text-align: justify;">
                     @Html.DisplayFor(modelItem => item.DescripcionPlan)
                 </td>
                 <td>
@@ -55,6 +76,10 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.anio)
+                </td>
+                <td>
+                    @{ var avance = item.Porcentaje.ToString("##0.00");}
+                    @Html.DisplayFor(modelItem => avance)%
                 </td>
                 <td>@Html.ActionLink(" ", "Index", "Auditorias", new { IdPlan = item.IdPlan, nombrePlan = item.NombrePlan }, new { @class = "btn btn-success btn-sm glyphicon glyphicon-list-alt", @title = "Inspeccionar auditorías" })
                     @Html.ActionLink(" ", "Details", new { id = item.IdPlan }, new { @class = "btn btn-info btn-sm glyphicon glyphicon-info-sign", @title = "Detalles" })

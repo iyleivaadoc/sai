@@ -20,6 +20,7 @@ namespace web.Models
         public DateTime FechaInicio { get; set; }
         [Required(ErrorMessage = "Se debe proporcionar una fecha de finalización"), Display(Name ="Fin"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime FechaFin { get; set; }
+        public DateTime? FechaCierre { get; set; }
         [NotMapped, Display(Name ="Duración (Días)")]
         public int Duracion
         {
@@ -28,7 +29,7 @@ namespace web.Models
                 TimeSpan dias = (FechaFin - FechaInicio);
                 AsuetosController asueto = new AsuetosController();
                 var diasAsuetos = asueto.DaysInTimeSpan(FechaInicio, FechaFin);
-                return dias.Days - diasAsuetos + 1;
+                return dias.Days - diasAsuetos;
             }
         }
         [Required(ErrorMessage = "Se debe proporcionar un porcentaje a la actividad"),Range(0.1,100,ErrorMessage ="Debe proporcionar un porcentaje entre 0 y 100") ]

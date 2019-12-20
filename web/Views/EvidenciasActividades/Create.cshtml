@@ -9,7 +9,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
-            <h4>Registrar evidencias</h4>
+            <h4>Nueva evidencia, @ViewBag.nombreActividad</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
@@ -44,6 +44,10 @@
 
                     <div class="col-md-offset-6" style="margin-top: 5px;">
                         <div id="spin" class="loader" style="display:none"></div>
+                        
+                    </div>
+                    <div id="barprogress" class="progress" style="display:none; margin-top: 5px;">
+                        <div id="barraprogreso" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;  background-color: #FECA2B;"></div>
                     </div>
                 </div>
             </div>
@@ -69,9 +73,23 @@
         dataString.append("__RequestVerificationToken", $("input[name='__RequestVerificationToken']").get(0).value);
         dataString.append("evidencias", '{ Evidencia:"' + $("#Evidencia").get(0).value + '",DescripcionEvidencia:"' + $("#DescripcionEvidencia").get(0).value + '",idActividad:' + $("#IdActividad").get(0).value + '}');
         $("#spin").show();
+        $("#barprogress").show();
         $.ajax({
+            xhr: function()
+            {
+                var xhr = new window.XMLHttpRequest();
+                //Upload progress
+                xhr.upload.addEventListener("progress", function(evt){
+                    if (evt.lengthComputable) {
+                        var percentComplete = 100*evt.loaded / evt.total;
+                        //Do something with upload progress
+                        $("#barraprogreso").css("width", percentComplete+"%")
+                    }
+                }, false);
+                return xhr;
+            },
             url: '@Url.Action("Create", "EvidenciasActividades")',
-            timeout: 300000,
+            timeout: 0,
             type: "POST",
             data: dataString,
             contentType: false,
@@ -80,6 +98,7 @@
             success: function (data) {
                 if (typeof (data.Value) != "undefined") {
                     $("#spin").hide();
+                    $("#barprogress").hide();
                     if (data.Value) {
                         window.location.href = data.Ret;
                     } else {
@@ -89,6 +108,7 @@
             },
             error: function () {
                 $("#spin").hide();
+                $("#barprogress").hide();
                 alertify.error("Error no identificado")
             }
         });

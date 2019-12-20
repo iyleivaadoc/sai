@@ -23,10 +23,11 @@ namespace web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var hall = db.Hallazgos.Where(h => h.IdHallazgo == id).SingleOrDefault();
+            var hall = db.Hallazgos.Where(h => h.IdHallazgo == id).Include(h=>h.Actividad.Fase.Auditoria).SingleOrDefault();
             ViewBag.idHallazgo = id;
-            ViewBag.nombreHallazgo = hall.Hallazgo;
+            ViewBag.nombreHallazgo = hall.Actividad.Fase.Auditoria.Auditoria+"/"+hall.Actividad.Fase.Fase+"/"+hall.Actividad.Actividad+"/"+hall.Hallazgo+"/"+ hall.Actividad.Fase.Auditoria.UsuarioRealiza.UserName;
             ViewBag.idActividad = hall.IdActividad;
+            ViewBag.activate = hall.Actividad.IdEstado;
             var evidencias = db.Evidencias.Where(e => e.Eliminado!=true && e.IdHallazgo==id).Include(e => e.Actividad).Include(e => e.Hallazgo).Include(e => e.PlanAccion);
             return View(evidencias.ToList());
         }
@@ -53,6 +54,8 @@ namespace web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            var hall = db.Hallazgos.Where(h => h.IdHallazgo == idHallazgo).Include(h => h.Actividad.Fase.Auditoria).SingleOrDefault();
+            ViewBag.nombreHallazgo = hall.Actividad.Fase.Auditoria.Auditoria + "/" + hall.Actividad.Fase.Fase + "/" + hall.Actividad.Actividad + "/" + hall.Hallazgo + "/" + hall.Actividad.Fase.Auditoria.UsuarioRealiza.UserName;
             Evidencias ev = new Evidencias();
             ev.IdHallazgo = idHallazgo;
             return View(ev);
@@ -70,7 +73,8 @@ namespace web.Controllers
             bool exito = true;
             try
             {
-                string path = Server.MapPath("~/Content/Evidencias/Hallazgos");
+                //string path = Server.MapPath("~/Content/Evidencias/Hallazgos");
+                string path = "E:/SAI/Evidencias/Hallazgos";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -134,7 +138,8 @@ namespace web.Controllers
             {
                 return HttpNotFound(); ;
             }
-            string path = Server.MapPath("~/Content/Evidencias/Hallazgos");
+            //string path = Server.MapPath("~/Content/Evidencias/Hallazgos");
+            string path = "E:/SAI/Evidencias/Hallazgos";
             string archivo = path + "\\" + evidencias.IdHallazgo + "-" + evidencias.NombreDoc;
             if (!System.IO.File.Exists(archivo))
             {

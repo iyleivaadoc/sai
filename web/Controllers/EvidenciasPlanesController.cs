@@ -23,10 +23,11 @@ namespace web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var plan = db.PlanesDeAccions.Where(p => p.IdPlanAccion == id).SingleOrDefault();
+            var plan = db.PlanesDeAccions.Where(p => p.IdPlanAccion == id).Include(p=>p.Hallazgo.Actividad.Fase.Auditoria).SingleOrDefault();
             ViewBag.idPlanAccion = id;
-            ViewBag.nombrePlanAccion = plan.NombrePlanAccion;
+            ViewBag.nombrePlanAccion = plan.Hallazgo.Actividad.Fase.Auditoria.Auditoria+"/"+plan.Hallazgo.Actividad.Fase.Fase+"/"+plan.Hallazgo.Actividad.Actividad+"/"+plan.Hallazgo.Hallazgo+"/"+plan.DescripcionPlanAccion+"/"+plan.Hallazgo.Actividad.Fase.Auditoria.UsuarioRealiza.UserName;
             ViewBag.idHallazgo = plan.IdHallazgo;
+            ViewBag.enabled = plan.IdEstado != 2;
             var evidencias = db.Evidencias.Where(e => e.Eliminado != true && e.IdPlanAccion == id).Include(e => e.Actividad).Include(e => e.Hallazgo).Include(e => e.PlanAccion);
             return View(evidencias.ToList());
         }
@@ -55,6 +56,8 @@ namespace web.Controllers
             }
             Evidencias ev = new Evidencias();
             ev.IdPlanAccion = idPlanAccion;
+            var plan = db.PlanesDeAccions.Where(p => p.IdPlanAccion == idPlanAccion).Include(p => p.Hallazgo.Actividad.Fase.Auditoria).SingleOrDefault();
+            ViewBag.nombrePlanAccion = plan.Hallazgo.Actividad.Fase.Auditoria.Auditoria + "/" + plan.Hallazgo.Actividad.Fase.Fase + "/" + plan.Hallazgo.Actividad.Actividad + "/" + plan.Hallazgo.Hallazgo + "/" + plan.DescripcionPlanAccion + "/" + plan.Hallazgo.Actividad.Fase.Auditoria.UsuarioRealiza.UserName;
             return View(ev);
         }
 
@@ -70,7 +73,8 @@ namespace web.Controllers
             bool exito = true;
             try
             {
-                string path = Server.MapPath("~/Content/Evidencias/PlanesAccion");
+                //string path = Server.MapPath("~/Content/Evidencias/PlanesAccion");
+                string path = "E:/SAI/Evidencias/PlanesAccion";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -115,7 +119,8 @@ namespace web.Controllers
             {
                 return HttpNotFound(); ;
             }
-            string path = Server.MapPath("~/Content/Evidencias/PlanesAccion");
+            //string path = Server.MapPath("~/Content/Evidencias/PlanesAccion");
+            string path = "E:/SAI/Evidencias/PlanesAccion";
             string archivo = path + "\\" + evidencias.IdPlanAccion + "-" + evidencias.NombreDoc;
             if (!System.IO.File.Exists(archivo))
             {

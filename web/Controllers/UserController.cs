@@ -37,7 +37,16 @@ namespace web.Controllers
             var user = UserManager.FindById(id);
             user.LockoutEndDateUtc = DateTime.Now;
             UserManager.Update(user);
-            return RedirectToAction("Index",new { message="Usuario Desbloqueado."});
+            var token = UserManager.GeneratePasswordResetToken(user.Id);
+            var result = UserManager.ResetPassword(user.Id, token, "Adoc"+DateTime.Now.Year+"!");
+            if (result.Succeeded)
+            {
+                Session["MyAlert"] = "<script>alertify.success('Usuario desbloqueado, nueva contraseña: " + "Adoc" + DateTime.Now.Year + "!" + "')</script>";
+            }else
+            {
+                Session["MyAlert"] = "<script>alertify.error('El usuario fue desbloqueado pero la contraseña no pudo ser reestablecida.')</script>";
+            }
+            return RedirectToAction("Index");
         }
 
         public async Task<ActionResult> Details(string id)

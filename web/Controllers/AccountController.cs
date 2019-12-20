@@ -17,7 +17,7 @@ using web.ViewModels;
 namespace web.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : OwnController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -28,7 +28,7 @@ namespace web.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager ,ApplicationRoleManager roleManager)
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationRoleManager roleManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -53,9 +53,9 @@ namespace web.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -95,6 +95,15 @@ namespace web.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: true);
+            BitacoraLogueo bl = new BitacoraLogueo()
+            {
+                FechaLogueo = DateTime.Now,
+                User = model.UserName,
+                Resultado = result.ToString(),
+                Tipo = "logIn"
+            };
+            db.Entry(bl).State = System.Data.Entity.EntityState.Added;
+            db.SaveChanges();
             switch (result)
             {
                 case SignInStatus.Success:
@@ -103,12 +112,12 @@ namespace web.Controllers
                     ApplicationUser us = cont.Users.First(u => u.Id == id);
                     List<string> rolesUsusario = new List<string>();
                     var rol = us.Roles.ToList();
-                    foreach(IdentityUserRole role in us.Roles)
+                    foreach (IdentityUserRole role in us.Roles)
                     {
                         rolesUsusario.Add(role.RoleId);
                     }
                     Session["menuPrincipal"] = MenuPorUsuario(rolesUsusario);
-                    
+
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -150,7 +159,7 @@ namespace web.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -171,7 +180,7 @@ namespace web.Controllers
         {
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (var role in RoleManager.Roles)
-                list.Add(new SelectListItem() { Value=role.Name, Text= role.Name });
+                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
             ViewBag.Roles = list;
             return View();
         }
@@ -190,8 +199,8 @@ namespace web.Controllers
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddToRoleAsync(user.Id, model.RoleName);
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -426,7 +435,18 @@ namespace web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            var id = GetUserId();
+            var us = db.Users.Find(id);
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            BitacoraLogueo bl = new BitacoraLogueo()
+            {
+                FechaLogueo = DateTime.Now,
+                User = us.UserName,
+                Resultado = "logOff",
+                Tipo = "logOff"
+            };
+            db.Entry(bl).State = System.Data.Entity.EntityState.Added;
+            db.SaveChanges();
             return RedirectToAction("Login", "Account");
         }
 
@@ -460,16 +480,16 @@ namespace web.Controllers
 
         private List<menuItemVM> MenuPorUsuario(List<string> roles)
         {
-            var a= db.Permisos.Where(x=>roles.Any(w=>w==x.ApplicationRole.Id && x.Accesos.AccesoPredecesor==null)).ToList();
+            var a = db.Permisos.Where(x => roles.Any(w => w == x.ApplicationRole.Id && x.Accesos.AccesoPredecesor == null)).ToList();
             List<Accesos> ret = new List<Accesos>();
             foreach (var permiso in a)
                 ret.Add(permiso.Accesos);
             var primerNivel = ret.Distinct().ToList();
-            List<menuItemVM> aRetornar=new List<menuItemVM>();
+            List<menuItemVM> aRetornar = new List<menuItemVM>();
             foreach (Accesos ac in primerNivel)
             {
                 //var b = db.Permisos.Where(z => z.Accesos.AccesoPredecesor == ac.id_acceso.ToString() && z.Accesos.Tipo);
-                var b = db.Permisos.Where(z => roles.Any(w => w == z.ApplicationRole.Id && z.Accesos.AccesoPredecesor == ac.id_acceso.ToString()) );
+                var b = db.Permisos.Where(z => roles.Any(w => w == z.ApplicationRole.Id && z.Accesos.AccesoPredecesor == ac.id_acceso.ToString()));
                 List<Accesos> retInt = new List<Accesos>();
                 foreach (var permisoInt in b)
                     retInt.Add(permisoInt.Accesos);
@@ -486,12 +506,12 @@ namespace web.Controllers
             return aRetornar;
         }
 
-        public string GetUserId(IPrincipal principal)
-        {
-            var claimsIdentity = (ClaimsIdentity)principal.Identity;
-            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            return claim.Value;
-        }
+        //public string GetUserId(IPrincipal principal)
+        //{
+        //    var claimsIdentity = (ClaimsIdentity)principal.Identity;
+        //    var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+        //    return claim.Value;
+        //}
 
         #region Helpers
         // Used for XSRF protection when adding external logins

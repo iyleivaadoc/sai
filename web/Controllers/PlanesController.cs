@@ -71,6 +71,7 @@ namespace web.Controllers
             planes.FechaCrea = DateTime.Now;
             planes.Eliminado = false;
             planes.UsuarioCrea = this.GetUserId(User);
+            planes.IdEstado = 1;
             ModelState.Clear();
             TryValidateModel(planes);
             if (ModelState.IsValid)

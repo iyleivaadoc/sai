@@ -22,8 +22,9 @@ namespace web.Controllers
             }
 
             var act = db.Actividades.Where(a => a.IdActividad == id && a.Eliminado != true).Include(a => a.Fase.Auditoria).SingleOrDefault();
-            ViewBag.nombreActividad = act.Actividad;
+            ViewBag.nombreActividad = act.Fase.Auditoria.Auditoria+"/"+act.Fase.Fase+"/"+act.Actividad+"/"+act.Fase.Auditoria.UsuarioRealiza.UserName;
             ViewBag.idActividad = id;
+            ViewBag.active = act.IdEstado;
             ViewBag.idFase = act.Fase.IdFase;
             ViewBag.nombreAuditoria = act.Fase.Auditoria.Auditoria;
 
@@ -43,6 +44,8 @@ namespace web.Controllers
             {
                 return HttpNotFound();
             }
+            var act = db.Actividades.Where(a => a.IdActividad == hallazgos.IdActividad && a.Eliminado != true).Include(a => a.Fase.Auditoria).SingleOrDefault();
+            ViewBag.nombreActividad = act.Fase.Auditoria.Auditoria + "/" + act.Fase.Fase + "/" + act.Actividad + "/" + act.Fase.Auditoria.UsuarioRealiza.UserName;
             return View(hallazgos);
         }
 
@@ -54,6 +57,8 @@ namespace web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ViewBag.IdActividad = new SelectList(db.Actividades, "IdActividad", "Actividad");
+            var act = db.Actividades.Where(a => a.IdActividad == idActividad && a.Eliminado != true).Include(a => a.Fase.Auditoria).SingleOrDefault();
+            ViewBag.nombreActividad = act.Fase.Auditoria.Auditoria + "/" + act.Fase.Fase + "/" + act.Actividad + "/" + act.Fase.Auditoria.UsuarioRealiza.UserName;
             Hallazgos h = new Hallazgos();
             h.IdActividad = (int)idActividad;
             h.FechaHallazgo = DateTime.Now;
@@ -67,6 +72,8 @@ namespace web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IdHallazgo,Hallazgo,DescripcionHallazgo,FechaHallazgo,IdActividad,Eliminado,UsuarioCrea,UsuarioModifica,FechaCrea,FechaModifica")] Hallazgos hallazgos)
         {
+            var act = db.Actividades.Where(a => a.IdActividad == hallazgos.IdActividad && a.Eliminado != true).Include(a => a.Fase.Auditoria).SingleOrDefault();
+            ViewBag.nombreActividad = act.Fase.Auditoria.Auditoria + "/" + act.Fase.Fase + "/" + act.Actividad + "/" + act.Fase.Auditoria.UsuarioRealiza.UserName;
             if (ModelState.IsValid)
             {
                 hallazgos.FechaCrea = DateTime.Now;
@@ -75,6 +82,7 @@ namespace web.Controllers
                 hallazgos.UsuarioCrea = GetUserId(User);
                 db.Hallazgos.Add(hallazgos);
                 db.SaveChanges();
+                Session["MyAlert"] = "<script>alertify.warning('Favor no olvidar subir la evidencia correspondiente al hallazgo.')</script>";
                 return RedirectToAction("Index",new { id=hallazgos.IdActividad});
             }
 
@@ -94,6 +102,8 @@ namespace web.Controllers
             {
                 return HttpNotFound();
             }
+            var act = db.Actividades.Where(a => a.IdActividad == hallazgos.IdActividad && a.Eliminado != true).Include(a => a.Fase.Auditoria).SingleOrDefault();
+            ViewBag.nombreActividad = act.Fase.Auditoria.Auditoria + "/" + act.Fase.Fase + "/" + act.Actividad + "/" + act.Fase.Auditoria.UsuarioRealiza.UserName;
             return View(hallazgos);
         }
 
@@ -104,6 +114,8 @@ namespace web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IdHallazgo,Hallazgo,DescripcionHallazgo,FechaHallazgo,IdActividad,Eliminado,UsuarioCrea,UsuarioModifica,FechaCrea,FechaModifica")] Hallazgos hallazgos)
         {
+            var act = db.Actividades.Where(a => a.IdActividad == hallazgos.IdActividad && a.Eliminado != true).Include(a => a.Fase.Auditoria).SingleOrDefault();
+            ViewBag.nombreActividad = act.Fase.Auditoria.Auditoria + "/" + act.Fase.Fase + "/" + act.Actividad + "/" + act.Fase.Auditoria.UsuarioRealiza.UserName;
             if (ModelState.IsValid)
             {
                 hallazgos.FechaModifica = DateTime.Now;
