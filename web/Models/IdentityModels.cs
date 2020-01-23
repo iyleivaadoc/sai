@@ -91,8 +91,7 @@ namespace web.Models
 
         public System.Data.Entity.DbSet<web.Models.PlanesDeAccion> PlanesDeAccions { get; set; }
 
-        public System.Data.Entity.DbSet<web.Models.Direccion> Direccions { get; set; }
         public DbSet<BitacoraLogueo> BitacoraLogueo { get; set; }
-        public DbSet<Prueba> Prueba { get; set; }
+        public DbSet<Sociedades> Sociedades { get; set; }
     }
 }

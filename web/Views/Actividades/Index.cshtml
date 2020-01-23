@@ -124,7 +124,7 @@
                                     <li>
                                         @Html.ActionLink("Detalles", "Details", new { id = item.IdActividad }, null)
                                     </li>
-                                    @if (item.IdEstado == 2)
+                                    @if (item.IdEstado == 2 && ViewBag.enable)
                                     {
                                         <li>
                                             @Html.ActionLink("Reactivar Actividad", "ReactivarActividad", new { IdActividad = item.IdActividad }, null)

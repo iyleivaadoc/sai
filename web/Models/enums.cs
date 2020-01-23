@@ -15,8 +15,8 @@ namespace web.Models
         [Display(Name ="Solicitud de información")]
         SolicitudInformacion =2,
         [Display(Name ="Informe Draft")]
-        Draft =3,
-        [Display(Name ="Informe final")]
-        informeFinal =4
+        Draft =3
+        //[Display(Name ="Informe final")]
+        //informeFinal =4
     }
 }

@@ -55,7 +55,7 @@
                     @Html.DisplayNameFor(model => model.First().Duracion)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.First().IdUsuarioRealiza)
+                    @Html.DisplayNameFor(model => model.First().Plan.NombrePlan)
                 </th>
                 <th style="width: 7%;">% Avance</th>
                 <th><label>Opciones</label></th>
@@ -116,7 +116,7 @@
                         @Html.DisplayFor(modelItem => duraci)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.UsuarioRealiza.NombreCompleto)
+                        @Html.DisplayFor(modelItem => item.Plan.NombrePlan)
                     </td>
                     <td>@item.PorcentajeAvance.ToString("##0.00") %</td>
                     <td style="vertical-align: middle;">

@@ -4,6 +4,8 @@
     ViewBag.Title = "Planes de auditoría";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@Html.Raw(Session["MyAlert"])
+@{ Session["MyAlert"] = null;}
 
 <div style="position: relative;">
     <div class="row col-md-12" style="position: absolute;">
@@ -19,7 +21,8 @@
         </div>
     </div>
     <div style="position: absolute; top: 20px; right:0px;">
-        @Html.ActionLink("Crear nuevo plan", "Create", null, new { @class = "btn btn-success" })
+            @Html.ActionLink("Crear nuevo plan", "Create", null, new { @class = "btn btn-success" })
+        @*@Html.ActionLink("Not", "notificar", null, new { @class = "btn btn-warning" })*@
         <br /><br />
     </div>
 </div>
@@ -32,7 +35,7 @@
             <th>
                 <label>Plan</label>
             </th>
-            <th style="width:30%;">
+            <th style="width:40%;">
                 <label>Descripción</label>
             </th>
             <th>
@@ -41,20 +44,25 @@
             <th>
                 <label>Año</label>
             </th>
+            <th>Activo</th>
             <th>% Avance</th>
-            <th style="width:15%;"><label>Opciones</label></th>
+            <th><label>Opciones</label></th>
         </tr>
 
         @foreach (var item in Model)
         {
             <tr>
                 <td style="text-align:center;">
-                    @if (item.Porcentaje == 100)
+                    @if (item.IdEstado==2)
                     {
                         @*<div style="background-color:green; height:100%; text-align:center;">Finalizada</div>*@
                         <i title="Finalizado" class="glyphicon glyphicon-stop" style="color:green; font-size:20px;"></i>
+                    }else if (item.Porcentaje == 100 && !item.AuditoriasAbiertas)
+                    {
+                        @*<div style="background-color:green; height:100%; text-align:center;">Finalizada</div>*@
+                        <i title="Finalizado no terminado" class="glyphicon glyphicon-stop" style="color:#05ef05; font-size:20px;"></i>
                     }
-                    else if (item.Porcentaje<100 && item.FechaInicio.AddYears(1)<DateTime.Now)
+                    else if (item.Porcentaje < 100 && item.FechaInicio.AddYears(1) < DateTime.Now)
                     {
                         @*<div style="background-color:red; height:100%; text-align:center;">Retrasada</div>*@
                         <i title="Retrasado" class="glyphicon glyphicon-stop" style="color:red; font-size:20px;"></i>
@@ -78,16 +86,56 @@
                     @Html.DisplayFor(modelItem => item.anio)
                 </td>
                 <td>
+                    @{ var activ = "No";
+                        if (item.IdEstado == 3)
+                        {
+                            activ = "Si";
+                        }
+                    }
+                    @activ
+                </td>
+                <td>
                     @{ var avance = item.Porcentaje.ToString("##0.00");}
                     @Html.DisplayFor(modelItem => avance)%
                 </td>
-                <td>@Html.ActionLink(" ", "Index", "Auditorias", new { IdPlan = item.IdPlan, nombrePlan = item.NombrePlan }, new { @class = "btn btn-success btn-sm glyphicon glyphicon-list-alt", @title = "Inspeccionar auditorías" })
-                    @Html.ActionLink(" ", "Details", new { id = item.IdPlan }, new { @class = "btn btn-info btn-sm glyphicon glyphicon-info-sign", @title = "Detalles" })
-                    @Html.ActionLink(" ", "Edit", new { id = item.IdPlan }, new { @class = "btn btn-warning btn-sm glyphicon glyphicon-edit", @title = "Editar" })
-                    @Html.ActionLink(" ", "Delete", new { id = item.IdPlan }, new { @class = "btn btn-danger btn-sm glyphicon glyphicon-trash", @title = "Eliminar" })
+                <td>
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="btn btn-sm btn-default" style="padding:5px;" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opciones...<i class="glyphicon glyphicon-chevron-down" style="font-size: 9px;"></i></a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown1">
+                                <li>
+                                    @Html.ActionLink("Auditorías", "Index", "Auditorias", new { IdPlan = item.IdPlan, nombrePlan = item.NombrePlan }, new { })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Detalles", "Details", new { id = item.IdPlan }, new { })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Editar", "Edit", new { id = item.IdPlan }, new { })
+                                </li>
+                                @if (item.IdEstado == 1)
+                                {
+                                    <li>
+                                        @Html.ActionLink("Eliminar", "Delete", new { id = item.IdPlan }, new { })
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Activar", "Activar", new { id = item.IdPlan }, new { })
+                                    </li>
+                                }
+                                @if (item.IdEstado == 3)
+                                {
+                                    <li>
+                                        @Html.ActionLink("Finalizar", "Finalizar", new { id = item.IdPlan }, new { })
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Desactivar", "Desactivar", new { id = item.IdPlan }, new { })
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
                 </td>
             </tr>
-        }
+                        }
 
     </table>
     @*Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount*@

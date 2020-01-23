@@ -43,6 +43,21 @@ namespace web.Models
                 return ret;
             }
         }
+        [NotMapped]
+        public bool AuditoriasAbiertas
+        {
+            get
+            {
+                var ret= false;
+                var audits = db.Auditorias.Where(a=>a.IdPlan==IdPlan && a.Elimanado!=true && a.IdEstado!=2).ToList();
+                if (audits.Count > 0)
+                {
+                    ret = true;
+                }
+                return ret;
+            }
+        }
+
         public bool Eliminado { get; set; }
         public DateTime FechaCrea { get; set; }
         public DateTime? FechaMod { get; set; }

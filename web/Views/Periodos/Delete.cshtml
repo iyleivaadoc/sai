@@ -1,0 +1,61 @@
+﻿@model web.Models.Periodos
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="col-md-offset-3 col-md-6">
+    <h3>¿Realmente desea eliminar este periodo?</h3>
+    <hr />
+    <dl class="dl-horizontal">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.NombrePeriodo)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NombrePeriodo)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DescripcionPeriodo)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DescripcionPeriodo)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaInicio)
+            </dt>
+
+            <dd>
+                @{ var fi = Model.FechaInicio.ToString("dd/MM/yyyy");
+                    var ff = Model.FechaFin.ToString("dd/MM/yyyy"); }
+                @Html.DisplayFor(model => fi)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaFin)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => ff)
+            </dd>
+
+
+        </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color text-center">
+            <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+            @Html.ActionLink("Cancelar", "Index", null ,new { @class="btn btn-success"})
+        </div>
+    }
+</div>

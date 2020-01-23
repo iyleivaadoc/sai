@@ -192,7 +192,7 @@ namespace web.Controllers
             model.UsuarioV = user;
 
             //Obtengo listado de accesos
-            var lista = (from a in RoleManager.Roles
+            var lista = (from a in RoleManager.Roles.Where(r => r.Eliminado!= true)
                          select new web.ViewModels.RolesUsuarioVM.RolesVMList()
                          {
                              Id = a.Id,

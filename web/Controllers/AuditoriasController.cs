@@ -11,6 +11,8 @@ using web.Models;
 using PagedList;
 using System.Security.Principal;
 using System.Security.Claims;
+using FluentValidation.Results;
+
 
 namespace web.Controllers
 {
@@ -32,6 +34,16 @@ namespace web.Controllers
                                        || s.DescripcionAuditoria.Contains(searchString));
             }
             auditorias = auditorias.OrderBy(a => a.FechaInicio);
+            if (((Auditorias)auditorias.FirstOrDefault()) == null)
+            {
+                ViewBag.enable = true;
+            }else if (((Auditorias)auditorias.FirstOrDefault()).Plan.IdEstado == 2)
+            {
+                ViewBag.enable = false;
+            }else
+            {
+                ViewBag.enable = true;
+            }
             int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(auditorias.ToPagedList(pageNumber, pageSize));
@@ -44,7 +56,13 @@ namespace web.Controllers
             ViewBag.nombrePlan = nombreplan;
             ViewBag.CurrentFilter = searchString;
             var idUsuario = GetUserId(User);
-            var auditorias = db.Auditorias.Where(a => a.Elimanado != true && a.IdUsuarioRealiza == idUsuario).Include(a => a.Estado).Include(a => a.Plan).Include(a => a.UsuarioRealiza);
+            var actividades = db.Actividades.Where(ac => ac.Eliminado != true && ac.Fase.Auditoria.Plan.IdEstado== 3 && ac.Fase.Auditoria.Plan.Eliminado!= true && ac.Fase.Auditoria.Elimanado != true && ac.Fase.Eliminado != true && ac.IdEncargado==idUsuario).Include(ac=>ac.Fase.Auditoria).ToList();
+            List<int> idAuditorias = new List<int>();
+            foreach (Actividades act in actividades)
+            {
+                idAuditorias.Add(act.Fase.Auditoria.IdAuditoria);
+            }
+            var auditorias = db.Auditorias.Where(a => a.Elimanado != true && a.IdUsuarioRealiza == idUsuario && a.Plan.IdEstado == 3 || idAuditorias.Any(au=>au==a.IdAuditoria)).Include(a => a.Estado).Include(a => a.Plan).Include(a => a.UsuarioRealiza);
             if (!String.IsNullOrEmpty(searchString))
             {
                 auditorias = auditorias.Where(s => s.Auditoria.Contains(searchString)
@@ -114,6 +132,10 @@ namespace web.Controllers
             auditorias.FechaCrea = DateTime.Now;
             auditorias.UsuarioCrea = this.GetUserId(User);
             auditorias.IdEstado = 1;
+            Planes pl = db.Planes.Find(auditorias.IdPlan);
+            auditorias.Plan = pl;
+            validatorAuditoria val = new validatorAuditoria();
+            ValidationResult mod = val.Validate(auditorias);
             var plan = db.Planes.Find(auditorias.IdPlan);
             if (plan.FechaInicio < DateTime.Now)
             {
@@ -124,12 +146,16 @@ namespace web.Controllers
                 auditorias.Planificada = true;
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && mod.IsValid)
             {
 
                 db.Auditorias.Add(auditorias);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index", new { idplan = auditorias.IdPlan, nombrePlan = plan.NombrePlan });
+            }
+            foreach (ValidationFailure _error in mod.Errors)
+            {
+                ModelState.AddModelError(_error.PropertyName, _error.ErrorMessage);
             }
 
             var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
@@ -169,16 +195,23 @@ namespace web.Controllers
         {
             auditorias.FechaMod = DateTime.Now;
             auditorias.UsuarioMod = this.GetUserId(User);
+            Planes pl = db.Planes.Find(auditorias.IdPlan);
+            auditorias.Plan = pl;
             //ModelState.Clear();
             //TryValidateModel(auditorias);
-            if (ModelState.IsValid)
+            validatorAuditoria val = new validatorAuditoria();
+            ValidationResult mod = val.Validate(auditorias);
+            if (ModelState.IsValid && mod.IsValid)
             {
                 db.Entry(auditorias).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 var aux = db.Planes.Where(p => p.IdPlan == auditorias.IdPlan).First();
                 return RedirectToAction("Index", new { idPlan = auditorias.IdPlan, nombrePlan = aux.NombrePlan });
             }
-
+            foreach (ValidationFailure _error in mod.Errors)
+            {
+                ModelState.AddModelError(_error.PropertyName, _error.ErrorMessage);
+            }
             var usuarios = db.Users.Where(u => u.Eliminado != true && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
             ViewBag.IdUsuarioRealiza = new SelectList(usuarios, "Id", "NombreCompleto", auditorias.IdUsuarioRealiza);
             ViewBag.IdDepartamentoRealizar = new SelectList(db.Departamentos.Where(d => d.Eliminado != true), "IdDepartamento", "NombreDepartamento", auditorias.IdDepartamentoRealizar);

@@ -1,0 +1,39 @@
+﻿@model  web.ViewModels.ReportsVM
+@{
+    ViewBag.Title = "Estado Plan de auditoría";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var types = ViewBag.TypesList as List<SelectListItem>;
+    var subtypes = ViewBag.SubTypesList as List<SelectListItem>;
+}
+
+
+<div class="form-horizontal col-md-offset-3 col-md-6">
+    <h2 class="text-center">Estado consolidado de Plan de Auditoría</h2>
+    <hr />
+    <div class="form-group">
+        @Html.LabelFor(model => model.idPlan, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(x => x.idPlan, types, new
+       {
+           @class = "form-control",
+           data_cascade_combo = "#idAuditoria",
+           data_cascade_combo_source = Url.Action("GetSubTypes", "Reportes"),
+           data_cascade_combo_param_name = "id"
+       })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-12" style="text-align:center;">
+            <input type="submit" id="generar" value="Generar Excel" class="btn btn-success" />
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+   $("#generar").click(function () {
+       var url = "http://192.168.16.102:8080/jasperserver/flow.html?_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2FDesarrollo%2FReports&reportUnit=%2FDesarrollo%2FReports%2FestadoPlanEjecutivo&standAlone=true&j_username=jasperadmin&j_password=jasperadmin&decorate=no&output=xls&idPlan=" + $("#idPlan").get(0).value;
+       window.open(url, "_self")
+   });
+</script>

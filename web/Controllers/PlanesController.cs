@@ -10,12 +10,24 @@ using System.Web;
 using System.Web.Mvc;
 using web.Models;
 using PagedList;
+using Quartz;
 
 namespace web.Controllers
 {
-    public class PlanesController : Controller
+    public class PlanesController : OwnController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        public async System.Threading.Tasks.Task<ActionResult> notificar()
+        {
+            JobNotificacionDirectores notificacion = new JobNotificacionDirectores();
+            await notificacion.ExecuteNow();
+            JobNotificacionEtapas notificacion2 = new JobNotificacionEtapas();
+            await notificacion2.ExecuteNow();
+            Session["MyAlert"] = "<script type='text/javascript'>alertify.success('las notificaciones se han enviado.');</script>";
+            return RedirectToAction("index");
+        }
+
 
         // GET: Planes
         public ActionResult Index(int? page, string searchString)
@@ -28,13 +40,70 @@ namespace web.Controllers
                 planes = planes.Where(s => s.NombrePlan.Contains(searchString)
                                        || s.DescripcionPlan.Contains(searchString));
             }
-            
+
             ViewBag.CurrentFilter = searchString;
             var a = DateTime.Now.ToString();
             planes = planes.OrderByDescending(p => p.anio);
             int pageSize = 7;
             int pageNumber = (page ?? 1);
             return View(planes.ToPagedList(pageNumber, pageSize));
+        }
+
+        public ActionResult Activar(int id)
+        {
+            var auditorias = db.Auditorias.Where(a => a.Elimanado != true && a.IdPlan == id).ToList();
+            if (auditorias.Count > 0)
+            {
+                Planes plan = db.Planes.Find(id);
+                plan.IdEstado = 3;
+                plan.FechaMod = DateTime.Now;
+                plan.UsuarioMod = GetUserId();
+                db.Entry(plan).State = EntityState.Modified;
+                db.SaveChanges();
+                Session["MyAlert"] = "<script type='text/javascript'>alertify.success('El plan ha sido activado con éxito.');</script>";
+            }
+            else
+            {
+                Session["MyAlert"] = "<script type='text/javascript'>alertify.error('El plan no se puede iniciar porque no hay auditorías registradas.');</script>";
+            }
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Finalizar(int id)
+        {
+            var auditorias = db.Auditorias.Where(a => a.Elimanado != true && a.IdPlan == id && a.IdEstado != 2).ToList();
+            if (auditorias.Count > 0)
+            {
+                Session["MyAlert"] = "<script type='text/javascript'>alertify.error('El plan no se puede finalizar porque hay auditorías activas.');</script>";
+            }
+            else
+            {
+                Planes plan = db.Planes.Find(id);
+                plan.IdEstado = 2;
+                plan.FechaMod = DateTime.Now;
+                plan.UsuarioMod = GetUserId();
+
+                db.Entry(plan).State = EntityState.Modified;
+                db.SaveChanges();
+                Session["MyAlert"] = "<script type='text/javascript'>alertify.success('El plan ha sido finalizado  con éxito.');</script>";
+            }
+            return RedirectToAction("Index");
+        }
+
+
+        public ActionResult Desactivar(int id)
+        {
+
+            Planes plan = db.Planes.Find(id);
+            plan.IdEstado = 1;
+            plan.FechaMod = DateTime.Now;
+            plan.UsuarioMod = GetUserId();
+
+            db.Entry(plan).State = EntityState.Modified;
+            db.SaveChanges();
+            Session["MyAlert"] = "<script type='text/javascript'>alertify.success('El plan ha sido desactivado  con éxito.');</script>";
+
+            return RedirectToAction("Index");
         }
 
         // GET: Planes/Details/5
@@ -56,8 +125,8 @@ namespace web.Controllers
         public ActionResult Create()
         {
             Planes plan = new Planes();
-            plan.FechaInicio = new DateTime(DateTime.Now.Year+1, 1, 2);
-            plan.anio = DateTime.Now.Year+1;
+            plan.FechaInicio = new DateTime(DateTime.Now.Year + 1, 1, 2);
+            plan.anio = DateTime.Now.Year + 1;
             return View(plan);
         }
 
@@ -154,11 +223,6 @@ namespace web.Controllers
             }
             base.Dispose(disposing);
         }
-        public string GetUserId(IPrincipal principal)
-        {
-            var claimsIdentity = (ClaimsIdentity)principal.Identity;
-            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            return claim.Value;
-        }
+
     }
 }

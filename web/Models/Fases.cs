@@ -33,7 +33,8 @@ namespace web.Models
                 TimeSpan dias = FechaFin - FechaInicio;
                 AsuetosController asueto = new AsuetosController();
                 var diasAsuetos = asueto.DaysInTimeSpan(FechaInicio, FechaFin);
-                return dias.Days - diasAsuetos;
+                var ret= (dias.Days + 1) - diasAsuetos;
+                return ret<0?1:ret;
             }
         }
         [ForeignKey("Auditoria")]

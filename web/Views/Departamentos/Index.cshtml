@@ -19,9 +19,7 @@
     <div>
         <table class="table table-bordered table-condensed table-striped table-hover table-responsive">
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Direccion.DireccionNombre)
-                </th>
+                
                 <th>
                     @Html.DisplayNameFor(model => model.NombreDepartamento)
                 </th>
@@ -31,15 +29,19 @@
                 <th>
                     @Html.DisplayNameFor(model => model.IdPersonaACargo)
                 </th>
+                <th>
+                    Reporta a
+                </th>
+                <th>
+                    Sociedad
+                </th>
                 <th>Opciones</th>
             </tr>
 
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Direccion.DireccionNombre)
-                    </td>
+                    
                     <td>
                         @Html.DisplayFor(modelItem => item.NombreDepartamento)
                     </td>
@@ -49,7 +51,12 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.PersonaACargo.NombreCompleto)
                     </td>
-
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Direccion.NombreDepartamento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sociedad.NombreSociedad)
+                    </td>
                     <td>
                         @Html.ActionLink("Editar", "Edit", new { id = item.IdDepartamento },new { @class="btn btn-warning"}) 
                         @Html.ActionLink("Eliminar", "Delete", new { id = item.IdDepartamento }, new { @class="btn btn-danger"})

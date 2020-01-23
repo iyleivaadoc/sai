@@ -1,0 +1,120 @@
+﻿@model web.Models.Actividades
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Raw(Session["MyAlert"])
+@{ Session["MyAlert"] = null;}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal col-md-6 col-md-offset-3">
+        <h4>Editar Actividad, @ViewBag.fase</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IdActividad)
+        @Html.HiddenFor(model => model.Eliminado)
+        @Html.HiddenFor(model => model.FechaCrea)
+        @Html.HiddenFor(model => model.UsuarioCrea)
+        @Html.HiddenFor(model => model.IdEstado)
+        @Html.HiddenFor(model => model.IdFase)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Actividad, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Actividad, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Actividad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DescripcionActividad, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.TextAreaFor(model => model.DescripcionActividad, new { @class = "form-control", @style = "height:100px;" })
+                @Html.ValidationMessageFor(model => model.DescripcionActividad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaInicio, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaFin, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Porcentaje, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Porcentaje, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Porcentaje, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdEncargado, "Encargado", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownList("IdEncargado", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IdEncargado, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-12" style="text-align:center;">
+                <input type="submit" value="Guardar" class="btn btn-warning" />
+                @Html.ActionLink("Cancelar", "Index2", new { idFase = Model.IdFase },new { @class="btn btn-success"})
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $("#FechaInicio").focusout(function () {
+        var fec = $("#FechaInicio").get(0).value;
+        if (fec == "") {
+            urlget = "../../Asuetos/BetweenAsueto?fecha=1990-01-01";
+        } else {
+            urlget = "../../Asuetos/BetweenAsueto?fecha=" + fec;
+        }
+        $.ajax({
+            url: urlget,
+            error: function (data) {
+                alertify.error("Error al comunicarse con el servidor...")
+            }
+        }).then(function (data) {
+            if (data.existe) {
+                alertify.warning("La Fecha de inicio se encuentra en el asueto: <strong>" + data.msj + ".</strong>")
+            }
+        });
+    })
+    $("#FechaFin").focusout(function () {
+        var fec = $("#FechaFin").get(0).value;
+        if (fec == "") {
+            urlget = "../../Asuetos/BetweenAsueto?fecha=1990-01-01";
+        } else {
+            urlget = "../../Asuetos/BetweenAsueto?fecha=" + fec;
+        }
+        $.ajax({
+            url: urlget,
+            error: function (data) {
+                alertify.error("Error al comunicarse con el servidor...")
+            }
+        }).then(function (data) {
+            if (data.existe) {
+                alertify.warning("La Fecha de finalización se encuentra en el asueto: <strong>" + data.msj + ".</strong>")
+            }
+        });
+    })
+</script>

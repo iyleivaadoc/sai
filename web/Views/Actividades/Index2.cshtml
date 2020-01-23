@@ -126,12 +126,15 @@
                                     </li>
                                     @if (item.IdEstado != 2)
                                     {
-                                        <li>
-                                            @Html.ActionLink("Editar", "Edit", new { id = item.IdActividad }, null)
-                                        </li>
-                                        <li>
-                                            @Html.ActionLink("Eliminar", "Delete", new { id = item.IdActividad }, null)
-                                        </li>
+                                        if (item.Fase.Auditoria.UsuarioRealiza.UserName == User.Identity.Name)
+                                        {
+                                            <li>
+                                                @Html.ActionLink("Editar", "Edit2", new { id = item.IdActividad }, null)
+                                            </li>
+                                            <li>
+                                                @Html.ActionLink("Eliminar", "Delete2", new { id = item.IdActividad }, null)
+                                            </li>
+                                        }
                                         <li>
                                             @Html.ActionLink("Finalizar Actividad", "FinalizarActividad2", new { IdActividad = item.IdActividad }, null)
                                         </li>

@@ -40,9 +40,18 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.IdSociedad, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @*@Html.EditorFor(model => model.IdPersonaACargo, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.DropDownList("IdSociedad", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IdSociedad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.IdDireccion, htmlAttributes: new { @class = "control-label col-md-4" })
             <div class="col-md-8">
-                @Html.DropDownList("IdDireccion", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("IdDireccion", null, "Seleccione...", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.IdDireccion, "", new { @class = "text-danger" })
             </div>
         </div>

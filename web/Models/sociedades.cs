@@ -11,10 +11,8 @@ namespace web.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdSociedad { get; set; }
-        [Display(Name ="Nombre de la sociedad")]
-        [StringLength(256,ErrorMessage = "Máximo 256 caracteres.")]
+        [StringLength(256)]
         public string NombreSociedad { get; set; }
         public bool Eliminado { get; set; }
-
     }
 }

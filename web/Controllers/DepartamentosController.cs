@@ -17,7 +17,7 @@ namespace web.Controllers
         // GET: Departamentos
         public ActionResult Index()
         {
-            var departamentos = db.Departamentos.Where(d => d.Eliminado != true).Include(d => d.Direccion);
+            var departamentos = db.Departamentos.Where(d => d.Eliminado != true).Include(d => d.Direccion).Include(d=>d.Sociedad);
             return View(departamentos.ToList());
         }
 
@@ -39,8 +39,9 @@ namespace web.Controllers
         // GET: Departamentos/Create
         public ActionResult Create()
         {
-            ViewBag.IdDireccion = new SelectList(db.Direccions.Where(di=>di.Eliminado!=true), "IdDireccion", "DireccionNombre");
+            ViewBag.IdDireccion = new SelectList(db.Departamentos.Where(di=>di.Eliminado!=true), "IdDepartamento", "NombreDepartamento");
             ViewBag.IdPersonaACargo = new SelectList(db.Users.Where(u=>u.Eliminado!=true && u.UserName!="Admin" && u.Nombres!="Administrador" && u.Apellidos!="Administrador").OrderBy(u=>u.Nombres).ThenBy(u=>u.Apellidos), "Id", "NombreCompleto");
+            ViewBag.IdSociedad = new SelectList(db.Sociedades.Where(u => u.Eliminado != true ), "IdSociedad", "NombreSociedad");
             Departamentos d = new Departamentos();
             d.FechaCrea = DateTime.Now;
             return View(d);
@@ -51,7 +52,7 @@ namespace web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IdDepartamento,NombreDepartamento,DescripcionDepartamento,IdPersonaACargo,IdDireccion,Eliminado,UsuarioCrea,UsuarioModifica,FechaCrea,FechaModifica")] Departamentos departamentos)
+        public ActionResult Create([Bind(Include = "IdDepartamento,NombreDepartamento,DescripcionDepartamento,IdPersonaACargo,IdDireccion,IdSociedad,Eliminado,UsuarioCrea,UsuarioModifica,FechaCrea,FechaModifica")] Departamentos departamentos)
         {
             if (ModelState.IsValid)
             {
@@ -62,8 +63,9 @@ namespace web.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdDireccion = new SelectList(db.Direccions.Where(di => di.Eliminado != true), "IdDireccion", "DireccionNombre", departamentos.IdDireccion);
+            ViewBag.IdDireccion = new SelectList(db.Departamentos.Where(di => di.Eliminado != true), "IdDepartamento", "NombreDepartamento", departamentos.IdDireccion);
             ViewBag.IdPersonaACargo = new SelectList(db.Users.Where(u => u.Eliminado != true && u.UserName != "Admin" && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", departamentos.IdPersonaACargo);
+            ViewBag.IdSociedad = new SelectList(db.Sociedades.Where(u => u.Eliminado != true), "IdSociedad", "NombreSociedad",departamentos.IdSociedad);
             return View(departamentos);
         }
 
@@ -79,8 +81,9 @@ namespace web.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.IdDireccion = new SelectList(db.Direccions.Where(di => di.Eliminado != true), "IdDireccion", "DireccionNombre", departamentos.IdDireccion);
+            ViewBag.IdDireccion = new SelectList(db.Departamentos.Where(di => di.Eliminado != true && di.IdDepartamento!=id), "IdDepartamento", "NombreDepartamento", departamentos.IdDireccion);
             ViewBag.IdPersonaACargo = new SelectList(db.Users.Where(u => u.Eliminado != true && u.UserName != "Admin" && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", departamentos.IdPersonaACargo);
+            ViewBag.IdSociedad = new SelectList(db.Sociedades.Where(u => u.Eliminado != true), "IdSociedad", "NombreSociedad",departamentos.IdSociedad);
             return View(departamentos);
         }
 
@@ -89,7 +92,7 @@ namespace web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IdDepartamento,NombreDepartamento,DescripcionDepartamento,IdPersonaACargo,IdDireccion,Eliminado,UsuarioCrea,UsuarioModifica,FechaCrea,FechaModifica")] Departamentos departamentos)
+        public ActionResult Edit([Bind(Include = "IdDepartamento,NombreDepartamento,DescripcionDepartamento,IdPersonaACargo,IdDireccion,IdSociedad,Eliminado,UsuarioCrea,UsuarioModifica,FechaCrea,FechaModifica")] Departamentos departamentos)
         {
             if (ModelState.IsValid)
             {
@@ -99,8 +102,9 @@ namespace web.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdDireccion = new SelectList(db.Direccions.Where(di => di.Eliminado != true), "IdDireccion", "DireccionNombre", departamentos.IdDireccion);
+            ViewBag.IdDireccion = new SelectList(db.Departamentos.Where(di => di.Eliminado != true && di.IdDepartamento != departamentos.IdDepartamento), "IdDepartamento", "NombreDepartamento", departamentos.IdDireccion);
             ViewBag.IdPersonaACargo = new SelectList(db.Users.Where(u => u.Eliminado != true && u.UserName != "Admin" && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", departamentos.IdPersonaACargo);
+            ViewBag.IdSociedad = new SelectList(db.Sociedades.Where(u => u.Eliminado != true), "IdSociedad", "NombreSociedad",departamentos.IdSociedad);
             return View(departamentos);
         }
 
@@ -111,7 +115,7 @@ namespace web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Departamentos departamentos = db.Departamentos.Find(id);
+            Departamentos departamentos = db.Departamentos.Where(d=> d.IdDepartamento==id).Include(d=>d.Sociedad).FirstOrDefault();
             if (departamentos == null)
             {
                 return HttpNotFound();

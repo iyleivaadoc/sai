@@ -97,7 +97,7 @@ namespace web.Controllers
             act.FechaInicio = fa.FechaInicio;
             act.FechaFin = fa.FechaFin;
             ViewBag.idFace = idFase;
-            var users = db.Users.Where(u =>u.Eliminado!=true && u.Nombres != "Administrador" && u.Apellidos!= "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
+            var users = db.Users.Where(u =>u.Eliminado!=true && u.Nombres != "Administrador" && u.Apellidos!= "Administrador" && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
             ViewBag.IdEncargado = new SelectList(users, "Id", "NombreCompleto",act.IdEncargado);
             return View(act);
         }
@@ -117,7 +117,7 @@ namespace web.Controllers
             act.FechaInicio = fa.FechaInicio;
             act.FechaFin = fa.FechaFin;
             ViewBag.idFace = idFase;
-            var users = db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
+            var users = db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador" && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos);
             ViewBag.IdEncargado = new SelectList(users, "Id", "NombreCompleto", act.IdEncargado);
             return View(act);
         }
@@ -232,7 +232,7 @@ namespace web.Controllers
                 return HttpNotFound();
             }
             ViewBag.fase = fa.Auditoria.Auditoria + "/" + fa.Fase + "/" + fa.Auditoria.UsuarioRealiza.UserName;
-            ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
+            ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador" && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
             return View(actividades);
         }
 
@@ -249,7 +249,7 @@ namespace web.Controllers
             ValidationResult mod = val.Validate(actividades);
             if (ModelState.IsValid && mod.IsValid)
             {
-                var lis = db.Actividades.Where(a => a.IdFase == actividades.IdFase && a.Eliminado != true && a.IdActividad!=actividades.IdActividad).ToList().AsReadOnly();
+                var lis = db.Actividades.Where(a => a.IdFase == actividades.IdFase && a.Eliminado != true && a.IdActividad != actividades.IdActividad).ToList().AsReadOnly();
                 var porcent = 0.0;
                 foreach (var item in lis)
                 {
@@ -262,7 +262,7 @@ namespace web.Controllers
                 {
                     Session["MyAlert"] = "<script type='text/javascript'>alertify.error('El Porcentaje acumulado sobrepasa el 100%, sumatoria actual: " + (porcent + actividades.Porcentaje) + "%.');</script>";
                     ViewBag.fase = fa.Auditoria.Auditoria + "/" + fa.Fase + "/" + fa.Auditoria.UsuarioRealiza.UserName;
-                    ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
+                    ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador" && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
                     return View(actividades);
                 }
                 else
@@ -279,7 +279,72 @@ namespace web.Controllers
                 ModelState.AddModelError(_error.PropertyName, _error.ErrorMessage);
             }
             ViewBag.fase = fa.Auditoria.Auditoria + "/" + fa.Fase + "/" + fa.Auditoria.UsuarioRealiza.UserName;
-            ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador").OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
+            ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador" && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
+            return View(actividades);
+        }
+
+        // GET: Actividades/Edit/5
+        public ActionResult Edit2(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Actividades actividades = db.Actividades.Find(id);
+            var fa = db.Fases.Where(f => f.IdFase == actividades.IdFase).Include(f => f.Auditoria).SingleOrDefault();
+            if (actividades == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.fase = fa.Auditoria.Auditoria + "/" + fa.Fase + "/" + fa.Auditoria.UsuarioRealiza.UserName;
+            ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador" && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
+            return View(actividades);
+        }
+
+        // POST: Actividades/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit2(Actividades actividades)
+        {
+            var fa = db.Fases.Where(f => f.IdFase == actividades.IdFase).Include(f => f.Auditoria).SingleOrDefault();
+            actividades.Fase = fa;
+            ValidadorActividades val = new ValidadorActividades();
+            ValidationResult mod = val.Validate(actividades);
+            if (ModelState.IsValid && mod.IsValid)
+            {
+                var lis = db.Actividades.Where(a => a.IdFase == actividades.IdFase && a.Eliminado != true && a.IdActividad != actividades.IdActividad).ToList().AsReadOnly();
+                var porcent = 0.0;
+                foreach (var item in lis)
+                {
+                    if (item.IdActividad != actividades.IdActividad)
+                    {
+                        porcent += item.Porcentaje;
+                    }
+                }
+                if ((porcent + actividades.Porcentaje) > 100)
+                {
+                    Session["MyAlert"] = "<script type='text/javascript'>alertify.error('El Porcentaje acumulado sobrepasa el 100%, sumatoria actual: " + (porcent + actividades.Porcentaje) + "%.');</script>";
+                    ViewBag.fase = fa.Auditoria.Auditoria + "/" + fa.Fase + "/" + fa.Auditoria.UsuarioRealiza.UserName;
+                    ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador" && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
+                    return View(actividades);
+                }
+                else
+                {
+                    actividades.UsuarioModifica = GetUserId(User);
+                    actividades.FechaModifica = DateTime.Now;
+                    db.Entry(actividades).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index2", new { idFase = actividades.IdFase });
+                }
+            }
+            foreach (ValidationFailure _error in mod.Errors)
+            {
+                ModelState.AddModelError(_error.PropertyName, _error.ErrorMessage);
+            }
+            ViewBag.fase = fa.Auditoria.Auditoria + "/" + fa.Fase + "/" + fa.Auditoria.UsuarioRealiza.UserName;
+            ViewBag.IdEncargado = new SelectList(db.Users.Where(u => u.Eliminado != true && u.Nombres != "Administrador" && u.Apellidos != "Administrador" && u.Roles.Any(r => r.RoleId == "b41a5a37-b052-4099-a63c-8107fe061b78")).OrderBy(u => u.Nombres).ThenBy(u => u.Apellidos), "Id", "NombreCompleto", actividades.IdEncargado);
             return View(actividades);
         }
 
@@ -309,7 +374,37 @@ namespace web.Controllers
             actividades.FechaModifica = DateTime.Now;
             db.Entry(actividades).State = EntityState.Modified;
             db.SaveChanges();
-            return RedirectToAction("Index", new { idFase=actividades.IdFase});
+            return RedirectToAction("Index", new { idFase = actividades.IdFase });
+        }
+
+
+        // GET: Actividades/Delete/5
+        public ActionResult Delete2(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Actividades actividades = db.Actividades.Find(id);
+            if (actividades == null)
+            {
+                return HttpNotFound();
+            }
+            return View(actividades);
+        }
+
+        // POST: Actividades/Delete/5
+        [HttpPost, ActionName("Delete2")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed2(int id)
+        {
+            Actividades actividades = db.Actividades.Find(id);
+            actividades.Eliminado = true;
+            actividades.UsuarioModifica = GetUserId(User);
+            actividades.FechaModifica = DateTime.Now;
+            db.Entry(actividades).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index2", new { idFase = actividades.IdFase });
         }
 
         public ActionResult FinalizarActividad(int IdActividad)

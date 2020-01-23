@@ -1,0 +1,72 @@
+﻿@model web.Models.Periodos
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.Raw(Session["MyAlert"])
+@{ Session["MyAlert"] = null;}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal col-md-offset-3 col-md-6">
+        <h4>Editar Periodo</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.IdPeriodo)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NombrePeriodo, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.NombrePeriodo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NombrePeriodo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DescripcionPeriodo, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.TextAreaFor(model => model.DescripcionPeriodo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DescripcionPeriodo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaInicio, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FechaFin, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        @Html.HiddenFor(m => m.UsuarioMod)
+        @Html.HiddenFor(m => m.UsuarioCrea)
+        @Html.HiddenFor(m => m.FechaMod)
+        @Html.HiddenFor(m => m.FechaCrea)
+        @Html.HiddenFor(m => m.Eliminado)
+
+        <div class="form-group">
+            <div class="text-center">
+                <input type="submit" value="Guardar" class="btn btn-warning" />
+                @Html.ActionLink("Cancelar", "Index",null ,new { @class="btn btn-success"})
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    
+</div>

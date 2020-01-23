@@ -23,7 +23,10 @@ namespace web.Models
         public String IdPersonaACargo { get; set; }
         [ForeignKey("Direccion"), Display(Name = "Dirección")]
         public int? IdDireccion { get; set; }
-        public virtual Direccion Direccion { get; set; }
+        public virtual Departamentos Direccion { get; set; }
+        [Display(Name ="Sociedad"),ForeignKey("Sociedad")]
+        public int? IdSociedad { get; set; }
+        public Sociedades Sociedad { get; set; }
         [NotMapped]
         public ApplicationUser PersonaACargo
         {

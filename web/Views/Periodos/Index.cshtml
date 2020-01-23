@@ -1,0 +1,55 @@
+﻿@model IEnumerable<web.Models.Periodos>
+
+@{
+    ViewBag.Title = "Periodos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Periodos</h2>
+
+<p>
+    @Html.ActionLink("Nuevo periodo", "Create", null,new { @class="btn btn-success"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NombrePeriodo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DescripcionPeriodo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaInicio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaFin)
+        </th>
+        <th>Opciones</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NombrePeriodo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DescripcionPeriodo)
+        </td>
+        <td>
+            @{ var fi = item.FechaInicio.ToString("dd/MM/yyyy");
+               var ff = item.FechaFin.ToString("dd/MM/yyyy");}
+            @Html.DisplayFor(modelItem => fi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => ff)
+        </td>
+        
+        <td>
+            @Html.ActionLink("Detalles", "Details", new { id = item.IdPeriodo }, new { @class = "btn btn-success" })
+            @Html.ActionLink("Editar", "Edit", new { id=item.IdPeriodo },new { @class="btn btn-warning"}) 
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.IdPeriodo }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>

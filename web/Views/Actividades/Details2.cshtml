@@ -77,5 +77,9 @@
     </div>
 </div>
 <div class="col-md-12 text-center">
+    @if (Model.IdEstado != 2)
+    {
+        @Html.ActionLink("Editar", "Edit2", new { id = Model.IdActividad }, new { @class = "btn btn-warning" })
+    }
     @Html.ActionLink("Cancelar", "Index2", new { idFase = Model.IdFase }, new { @class = "btn btn-success" })
 </div>

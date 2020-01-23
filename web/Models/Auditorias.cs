@@ -37,7 +37,8 @@ namespace web.Models
                 TimeSpan dias = FechaFin - FechaInicio;
                 AsuetosController asueto = new AsuetosController();
                 var diasAsuetos = asueto.DaysInTimeSpan(FechaInicio, FechaFin);
-                return dias.Days - diasAsuetos;
+                var ret= (dias.Days + 1) - diasAsuetos;
+                return ret < 0 ? 1 : ret;
             }
         }
         [Required(ErrorMessage = "La Fecha de Finalización es requerida."), Display(Name = "Finalización"), DataType(DataType.Date), DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
@@ -55,7 +56,7 @@ namespace web.Models
         public int IdPlan { get; set; }
         [ForeignKey("Estado")]
         public int IdEstado { get; set; }
-        [ForeignKey("DepartamentoRealizar"), Display(Name = "Lugar")]
+        [ForeignKey("DepartamentoRealizar"), Display(Name = "Área a auditar")]
         public int IdDepartamentoRealizar { get; set; }
         public virtual Departamentos DepartamentoRealizar { get; set; }
         public virtual ApplicationUser UsuarioRealiza { get; set; }
@@ -68,8 +69,8 @@ namespace web.Models
             get
             {
                 double ret = 0.0;
-                var fases = db.Fases.Where(f => f.IdAuditoria == IdAuditoria && f.Eliminado!=true);
-                foreach(var fase in fases)
+                var fases = db.Fases.Where(f => f.IdAuditoria == IdAuditoria && f.Eliminado != true);
+                foreach (var fase in fases)
                 {
                     ret += (fase.Porcentaje * fase.PorcentajeAvance);
                 }
@@ -77,5 +78,33 @@ namespace web.Models
             }
         }
 
+        [NotMapped]
+        public string[,] CorreosNotificar
+        {
+            get
+            {
+                string[,] list=new string[3,2];
+                if (IdDepartamentoRealizar != null)
+                {
+                    Departamentos dept = db.Departamentos.Find(IdDepartamentoRealizar);
+                    list[0,0] = dept.PersonaACargo.Email;
+                    list[0, 1] = dept.PersonaACargo.NombreCompleto;
+
+                    if (dept.IdDireccion != null)
+                    {
+                        Departamentos dept2 = db.Departamentos.Find(dept.IdDireccion);
+                        list[1, 0] = dept2.PersonaACargo.Email;
+                        list[1, 1] = dept2.PersonaACargo.NombreCompleto;
+                        if (dept2.IdDireccion != null)
+                        {
+                            Departamentos dept3 = db.Departamentos.Find(dept2.IdDireccion);
+                            list[2, 0] = dept3.PersonaACargo.Email;
+                            list[2, 1] = dept3.PersonaACargo.NombreCompleto;
+                        }
+                    }
+                }
+                return list;
+            }
+        }
     }
 }

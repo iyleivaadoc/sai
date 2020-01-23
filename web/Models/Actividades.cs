@@ -29,7 +29,8 @@ namespace web.Models
                 TimeSpan dias = (FechaFin - FechaInicio);
                 AsuetosController asueto = new AsuetosController();
                 var diasAsuetos = asueto.DaysInTimeSpan(FechaInicio, FechaFin);
-                return dias.Days - diasAsuetos;
+                var ret = (dias.Days + 1) - diasAsuetos;
+                return ret < 0 ? 1 : ret;
             }
         }
         [Required(ErrorMessage = "Se debe proporcionar un porcentaje a la actividad"),Range(0.1,100,ErrorMessage ="Debe proporcionar un porcentaje entre 0 y 100") ]

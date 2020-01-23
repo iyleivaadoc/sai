@@ -48,6 +48,14 @@
       <HintPath>..\packages\BeginCollectionItem.1.2.1.0\lib\net35\BeginCollectionItem.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Common.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.0.0\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentValidation.8.6.0\lib\net45\FluentValidation.dll</HintPath>
       <Private>True</Private>
@@ -99,6 +107,10 @@
     </Reference>
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Quartz, Version=2.3.3.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.3.3\lib\net40\Quartz.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -243,8 +255,12 @@
     <Compile Include="Controllers\HallazgosAuditorController.cs" />
     <Compile Include="Controllers\HallazgosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JobNotificacionDirectores.cs" />
+    <Compile Include="Controllers\JobNotificacionEtapas.cs" />
+    <Compile Include="Controllers\JobScheduler.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OwnController.cs" />
+    <Compile Include="Controllers\PeriodosController.cs" />
     <Compile Include="Controllers\PlanesController.cs" />
     <Compile Include="Controllers\PlanesDeAccionAuditorController.cs" />
     <Compile Include="Controllers\PlanesDeAccionController.cs" />
@@ -252,13 +268,34 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValidadorActividades.cs" />
+    <Compile Include="Controllers\validatorAuditoria.cs" />
     <Compile Include="Controllers\ValidatorDate.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201912171555432_rpt.cs" />
-    <Compile Include="Migrations\201912171555432_rpt.Designer.cs">
-      <DependentUpon>201912171555432_rpt.cs</DependentUpon>
+    <Compile Include="Migrations\201912231540003_area.cs" />
+    <Compile Include="Migrations\201912231540003_area.Designer.cs">
+      <DependentUpon>201912231540003_area.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912231551578_area2.cs" />
+    <Compile Include="Migrations\201912231551578_area2.Designer.cs">
+      <DependentUpon>201912231551578_area2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001151805402_aaaaa.cs" />
+    <Compile Include="Migrations\202001151805402_aaaaa.Designer.cs">
+      <DependentUpon>202001151805402_aaaaa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001212032529_isdj.cs" />
+    <Compile Include="Migrations\202001212032529_isdj.Designer.cs">
+      <DependentUpon>202001212032529_isdj.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001222121325_1025.cs" />
+    <Compile Include="Migrations\202001222121325_1025.Designer.cs">
+      <DependentUpon>202001222121325_1025.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001222150183_1024.cs" />
+    <Compile Include="Migrations\202001222150183_1024.Designer.cs">
+      <DependentUpon>202001222150183_1024.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Accesos.cs" />
@@ -268,7 +305,6 @@
     <Compile Include="Models\Auditorias.cs" />
     <Compile Include="Models\BitacoraLogueo.cs" />
     <Compile Include="Models\Departamentos.cs" />
-    <Compile Include="Models\Direccion.cs" />
     <Compile Include="Models\enums.cs" />
     <Compile Include="Models\Estados.cs" />
     <Compile Include="Models\Evidencias.cs" />
@@ -282,7 +318,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Planes.cs" />
     <Compile Include="Models\PlanesDeAccion.cs" />
-    <Compile Include="Models\Prueba.cs" />
+    <Compile Include="Models\ReportesController.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\Sociedades.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -300,6 +336,7 @@
     <Compile Include="ViewModels\FasesDefaultViewModel.cs" />
     <Compile Include="ViewModels\menuItemVM.cs" />
     <Compile Include="ViewModels\PermisosVM.cs" />
+    <Compile Include="ViewModels\ReportsVM.cs" />
     <Compile Include="ViewModels\RolesUsuarioVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -340,8 +377,23 @@
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EmbeddedResource Include="Migrations\201912171555432_rpt.resx">
-      <DependentUpon>201912171555432_rpt.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912231540003_area.resx">
+      <DependentUpon>201912231540003_area.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912231551578_area2.resx">
+      <DependentUpon>201912231551578_area2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001151805402_aaaaa.resx">
+      <DependentUpon>202001151805402_aaaaa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001212032529_isdj.resx">
+      <DependentUpon>202001212032529_isdj.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001222121325_1025.resx">
+      <DependentUpon>202001222121325_1025.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001222150183_1024.resx">
+      <DependentUpon>202001222150183_1024.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resourses\Strings.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -350,6 +402,9 @@
     </EmbeddedResource>
     <Content Include="App_Code\GlyphIcon.cshtml" />
     <Content Include="ClassDiagram1.cd" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\webapp.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -467,11 +522,6 @@
     <Content Include="Views\EvidenciasHallazgos\Edit.cshtml" />
     <Content Include="Views\EvidenciasHallazgos\Index.cshtml" />
     <Content Include="Views\EvidenciasHallazgos\ArchiveNotFound.cshtml" />
-    <Content Include="Views\Direccions\Create.cshtml" />
-    <Content Include="Views\Direccions\Delete.cshtml" />
-    <Content Include="Views\Direccions\Details.cshtml" />
-    <Content Include="Views\Direccions\Edit.cshtml" />
-    <Content Include="Views\Direccions\Index.cshtml" />
     <Content Include="Views\Departamentos\Create.cshtml" />
     <Content Include="Views\Departamentos\Delete.cshtml" />
     <Content Include="Views\Departamentos\Details.cshtml" />
@@ -528,6 +578,16 @@
     <Content Include="Views\EvidenciasActividadesAuditor\Details.cshtml" />
     <Content Include="Views\EvidenciasActividadesAuditor\Edit.cshtml" />
     <Content Include="Views\EvidenciasActividadesAuditor\Index.cshtml" />
+    <Content Include="Views\Actividades\Edit2.cshtml" />
+    <Content Include="Views\Actividades\Delete2.cshtml" />
+    <Content Include="Views\Periodos\Create.cshtml" />
+    <Content Include="Views\Periodos\Delete.cshtml" />
+    <Content Include="Views\Periodos\Details.cshtml" />
+    <Content Include="Views\Periodos\Edit.cshtml" />
+    <Content Include="Views\Periodos\Index.cshtml" />
+    <Content Include="Views\Reportes\EstadoPlan.cshtml" />
+    <Content Include="Views\Reportes\EstadoPlanEjecutivo.cshtml" />
+    <Content Include="Views\Reportes\PlanesdeAccion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
